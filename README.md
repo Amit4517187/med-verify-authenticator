@@ -1,73 +1,69 @@
-# Welcome to your Lovable project
+# MedVerify — AI-Powered Medicine Authenticator
 
-## Project info
+MedVerify is a mobile-first web app that helps users verify the authenticity of medicines in seconds. It uses a 5-layer AI analysis engine to detect counterfeit drugs from a photo of the packaging or manually entered medicine details.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+## Features
 
-## How can I edit this code?
+- 📸 **Image Upload** — Scan medicine packaging via photo upload or drag-and-drop
+- ✍️ **Manual Entry** — Enter medicine name, batch number, barcode, or manufacturer manually
+- 🤖 **AI Analysis** — 5-layer verification: Visual AI, OCR + Database, Barcode/QR, Price Intelligence, Pharmacy Check
+- 🌐 **Bilingual** — Full English and Hindi support
+- 📱 **Mobile-first** — Responsive design optimized for all screen sizes
 
-There are several ways of editing your application.
+## Tech Stack
 
-**Use Lovable**
+- **React 18** + **TypeScript**
+- **Vite** — build tool
+- **Tailwind CSS** + **shadcn/ui** — styling and components
+- **React Router** — client-side routing
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
+## Getting Started
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+# Clone the repository
+git clone https://github.com/Amit4517187/med-verify-authenticator.git
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+# Navigate into the project
+cd med-verify-authenticator
 
-# Step 3: Install the necessary dependencies.
-npm i
+# Install dependencies
+npm install
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Start the development server
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+The app will be running at `http://localhost:5173`.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## Project Structure
 
-**Use GitHub Codespaces**
+```
+src/
+├── components/       # Navbar and reusable UI components
+├── contexts/         # Language context (i18n)
+├── pages/            # Index, ScanPage, ResultsPage, AboutPage
+└── index.css         # Global styles and Tailwind configuration
+```
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## API
 
-## What technologies are used for this project?
+The app sends scan requests to a backend analysis engine. Configure the endpoint in `src/pages/ScanPage.tsx`:
 
-This project is built with:
+```ts
+const API_URL = "https://<your-backend-url>/analyze";
+```
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+The API accepts a `multipart/form-data` POST with either an `image` file or a `manual_text` string, and returns:
 
-## How can I deploy this project?
+```json
+{
+  "status": "safe" | "caution" | "danger" | "error",
+  "drug_name": "...",
+  "composition": "...",
+  "message": "..."
+}
+```
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+## Team
 
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+Built by **Team MedVerify Innovations** to protect lives against India's ₹6,000 Cr counterfeit medicine market.
