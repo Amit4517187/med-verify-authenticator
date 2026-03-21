@@ -1,0 +1,189 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 140 30% 98%;
+    --foreground: 160 25% 12%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 160 25% 12%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 160 25% 12%;
+
+    --primary: 152 68% 32%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 148 30% 92%;
+    --secondary-foreground: 152 68% 22%;
+
+    --muted: 145 20% 94%;
+    --muted-foreground: 155 15% 45%;
+
+    --accent: 148 40% 90%;
+    --accent-foreground: 152 68% 22%;
+
+    --destructive: 0 72% 50%;
+    --destructive-foreground: 0 85% 97%;
+
+    --success: 152 68% 32%;
+    --success-foreground: 0 0% 100%;
+
+    --warning: 38 95% 50%;
+    --warning-foreground: 38 95% 15%;
+
+    --border: 148 20% 88%;
+    --input: 148 20% 88%;
+    --ring: 152 68% 32%;
+
+    --radius: 0.625rem;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 160 25% 12%;
+    --sidebar-primary: 152 68% 32%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 148 30% 92%;
+    --sidebar-accent-foreground: 152 68% 22%;
+    --sidebar-border: 148 20% 88%;
+    --sidebar-ring: 152 68% 32%;
+    --chart-1: 152 68% 32%;
+    --chart-2: 152 50% 50%;
+    --chart-3: 148 30% 70%;
+    --chart-4: 38 95% 50%;
+    --chart-5: 0 72% 50%;
+    --sidebar: 0 0% 100%;
+    --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
+    --font-serif: 'Lora', ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
+    --font-mono: 'Space Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+    --shadow-2xs: 0 1px 3px 0px hsl(0 0% 0% / 0.04);
+    --shadow-xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
+    --shadow-sm: 0 1px 3px 0px hsl(0 0% 0% / 0.08), 0 1px 2px -1px hsl(0 0% 0% / 0.08);
+    --shadow: 0 1px 3px 0px hsl(0 0% 0% / 0.08), 0 1px 2px -1px hsl(0 0% 0% / 0.08);
+    --shadow-md: 0 1px 3px 0px hsl(0 0% 0% / 0.08), 0 2px 4px -1px hsl(0 0% 0% / 0.08);
+    --shadow-lg: 0 4px 16px 0px hsl(152 68% 32% / 0.10);
+    --shadow-xl: 0 8px 32px 0px hsl(152 68% 32% / 0.12);
+    --shadow-2xl: 0 16px 48px 0px hsl(152 68% 32% / 0.15);
+    --tracking-normal: 0em;
+    --spacing: 0.25rem;
+  }
+
+  .dark {
+    --background: 160 25% 8%;
+    --foreground: 140 20% 95%;
+
+    --card: 160 22% 12%;
+    --card-foreground: 140 20% 95%;
+
+    --popover: 160 22% 14%;
+    --popover-foreground: 140 20% 95%;
+
+    --primary: 152 55% 45%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 155 20% 20%;
+    --secondary-foreground: 140 20% 90%;
+
+    --muted: 155 15% 22%;
+    --muted-foreground: 148 15% 60%;
+
+    --accent: 155 20% 20%;
+    --accent-foreground: 140 20% 90%;
+
+    --destructive: 0 72% 55%;
+    --destructive-foreground: 0 85% 97%;
+
+    --success: 152 55% 45%;
+    --success-foreground: 0 0% 100%;
+
+    --warning: 38 95% 55%;
+    --warning-foreground: 38 95% 15%;
+
+    --border: 155 15% 22%;
+    --input: 155 15% 22%;
+    --ring: 152 55% 45%;
+
+    --sidebar-background: 160 25% 8%;
+    --sidebar-foreground: 140 20% 95%;
+    --sidebar-primary: 152 55% 45%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 155 20% 20%;
+    --sidebar-accent-foreground: 140 20% 90%;
+    --sidebar-border: 155 15% 22%;
+    --sidebar-ring: 152 55% 45%;
+    --sidebar: 160 22% 12%;
+    --shadow-2xs: 0 1px 3px 0px hsl(0 0% 0% / 0.1);
+    --shadow-xs: 0 1px 3px 0px hsl(0 0% 0% / 0.1);
+    --shadow-sm: 0 1px 3px 0px hsl(0 0% 0% / 0.15), 0 1px 2px -1px hsl(0 0% 0% / 0.15);
+    --shadow: 0 1px 3px 0px hsl(0 0% 0% / 0.15), 0 1px 2px -1px hsl(0 0% 0% / 0.15);
+    --shadow-md: 0 1px 3px 0px hsl(0 0% 0% / 0.15), 0 2px 4px -1px hsl(0 0% 0% / 0.15);
+    --shadow-lg: 0 4px 16px 0px hsl(0 0% 0% / 0.25);
+    --shadow-xl: 0 8px 32px 0px hsl(0 0% 0% / 0.3);
+    --shadow-2xl: 0 16px 48px 0px hsl(0 0% 0% / 0.35);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Space Grotesk', sans-serif;
+  }
+}
+
+@layer utilities {
+  .font-display {
+    font-family: 'Space Grotesk', sans-serif;
+  }
+
+  /* Medical cross pattern background */
+  .bg-medical-pattern {
+    background-image: 
+      radial-gradient(circle at 20% 50%, hsl(152 68% 32% / 0.05) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, hsl(152 68% 32% / 0.04) 0%, transparent 50%);
+  }
+
+  /* Scan line animation */
+  @keyframes scan-line {
+    0% { top: 0%; opacity: 1; }
+    100% { top: 100%; opacity: 0.3; }
+  }
+
+  .animate-scan-line {
+    animation: scan-line 2s linear infinite;
+    position: absolute;
+  }
+
+  /* Pulse ring */
+  @keyframes pulse-ring {
+    0% { transform: scale(1); opacity: 0.6; }
+    100% { transform: scale(1.4); opacity: 0; }
+  }
+
+  .animate-pulse-ring {
+    animation: pulse-ring 2s ease-out infinite;
+  }
+
+  /* Fade in */
+  @keyframes fade-in {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .animate-fade-in {
+    animation: fade-in 0.4s ease-out forwards;
+  }
+}
