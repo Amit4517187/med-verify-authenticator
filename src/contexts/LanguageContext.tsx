@@ -92,6 +92,61 @@ const translations = {
     // Footer
     footerText: "Saving Lives Through AI Innovation",
     teamName: "Team MedVerify Innovations",
+
+    // About page — hero
+    ourStory: "Our Story",
+    aboutTitle: "About MedVerify",
+    aboutSubtitle: "Built by one engineer with a mission — to use AI to protect lives from counterfeit medicines across India and beyond.",
+
+    // About page — values
+    aboutMission: "Our Mission",
+    aboutMissionDesc: "Make medicine verification accessible to every Indian citizen — from urban hospitals to the most remote rural clinics where fake medicines kill silently.",
+    aboutWhy: "Why I Built This",
+    aboutWhyDesc: "India's ₹6,000 Cr counterfeit medicine market kills thousands every year. I believe one person with the right technology can change that.",
+    aboutPromise: "My Promise",
+    aboutPromiseDesc: "MedVerify will never store your personal data. All analysis is processed securely and results are shown only to you.",
+
+    // About page — stats
+    statFakeMarket: "Fake medicine market size",
+    statAIDepth: "AI verification depth",
+    statScanTime: "Average scan time",
+
+    // About page — founder
+    theBuilder: "The Builder",
+    builtSolo: "Built Solo, From Scratch",
+    builtSoloDesc: "Every layer of MedVerify — from the AI model to the database to this interface — was designed, built, and deployed by one person.",
+    founderRole: "Founder & Solo Engineer",
+    founderBio: "Designed and built MedVerify end-to-end — AI model training, Flask backend, React frontend, BigQuery database, and all research. A one-person mission to make medicines safe for everyone.",
+    contactEmail: "Send Email",
+
+    // About page — what I built
+    builtAI: "AI Model Training",
+    builtAIDesc: "MobileNetV2 trained on real vs fake medicine image datasets",
+    builtBackend: "Backend Engineering",
+    builtBackendDesc: "Flask API with 4-layer decision engine and security hardening",
+    builtFrontend: "Frontend Development",
+    builtFrontendDesc: "React + TypeScript mobile-first interface with bilingual support",
+    builtData: "Data & Research",
+    builtDataDesc: "BigQuery database with 3 medicine tables and banned drug registry",
+
+    // About page — technology
+    technologyLabel: "Technology",
+    howWorksTitle: "How MedVerify Works",
+    tech1Title: "Deep Learning OCR",
+    tech1Desc: "Extracts text from medicine packaging with high accuracy, even from low-quality photos taken in poor lighting conditions.",
+    tech2Title: "Verified Medicine Database",
+    tech2Desc: "Cross-references extracted data against a curated BigQuery database of approved medicines, batch numbers, and manufacturers.",
+    tech3Title: "Visual Authenticity Check",
+    tech3Desc: "MobileNetV2 model trained on real vs fake medicine images analyzes packaging to detect visual signs of counterfeiting.",
+    tech4Title: "Threat Assessment Report",
+    tech4Desc: "Synthesizes all signals into a clear, actionable verdict — Genuine, Suspicious, or Fake — with a detailed explanation.",
+
+    // About page — contact
+    collaborateTitle: "Want to Collaborate?",
+    collaborateDesc: "Looking for healthcare partners, NGOs, investors, and government bodies to help scale MedVerify across India and beyond.",
+    getInTouch: "Get In Touch",
+    tryMedVerify: "Try MedVerify",
+    orEmailDirectly: "Or email directly:",
   },
   hi: {
     appName: "MedVerify",
@@ -174,7 +229,63 @@ const translations = {
 
     footerText: "AI नवाचार के माध्यम से जीवन बचाना",
     teamName: "टीम MedVerify Innovations",
+
+    // About page — hero
+    ourStory: "हमारी कहानी",
+    aboutTitle: "MedVerify के बारे में",
+    aboutSubtitle: "एक इंजीनियर द्वारा एक मिशन के साथ बनाया गया — AI का उपयोग करके भारत और उससे परे नकली दवाओं से जीवन की रक्षा करना।",
+
+    // About page — values
+    aboutMission: "हमारा मिशन",
+    aboutMissionDesc: "प्रत्येक भारतीय नागरिक तक दवा सत्यापन पहुँचाना — शहरी अस्पतालों से लेकर सबसे दूरदराज के ग्रामीण क्लिनिक तक जहाँ नकली दवाएँ चुपचाप जान लेती हैं।",
+    aboutWhy: "मैंने यह क्यों बनाया",
+    aboutWhyDesc: "भारत का ₹6,000 करोड़ का नकली दवा बाज़ार हर साल हज़ारों लोगों की जान लेता है। मेरा मानना है कि सही तकनीक से एक व्यक्ति यह बदल सकता है।",
+    aboutPromise: "मेरा वादा",
+    aboutPromiseDesc: "MedVerify आपका कोई भी व्यक्तिगत डेटा कभी संग्रहीत नहीं करेगा। सभी विश्लेषण सुरक्षित रूप से संसाधित होते हैं और परिणाम केवल आपको दिखाए जाते हैं।",
+
+    // About page — stats
+    statFakeMarket: "नकली दवा बाज़ार का आकार",
+    statAIDepth: "AI सत्यापन गहराई",
+    statScanTime: "औसत स्कैन समय",
+
+    // About page — founder
+    theBuilder: "निर्माता",
+    builtSolo: "अकेले, शुरू से बनाया",
+    builtSoloDesc: "MedVerify की हर परत — AI मॉडल से लेकर डेटाबेस और इस इंटरफ़ेस तक — एक ही व्यक्ति द्वारा डिज़ाइन, निर्मित और तैनात की गई।",
+    founderRole: "संस्थापक और एकमात्र इंजीनियर",
+    founderBio: "MedVerify को शुरू से अंत तक डिज़ाइन और निर्मित किया — AI मॉडल प्रशिक्षण, Flask बैकएंड, React फ्रंटएंड, BigQuery डेटाबेस और सभी शोध। सभी के लिए दवाओं को सुरक्षित बनाने का एक-व्यक्ति मिशन।",
+    contactEmail: "ईमेल भेजें",
+
+    // About page — what I built
+    builtAI: "AI मॉडल प्रशिक्षण",
+    builtAIDesc: "असली बनाम नकली दवा छवि डेटासेट पर प्रशिक्षित MobileNetV2",
+    builtBackend: "बैकएंड इंजीनियरिंग",
+    builtBackendDesc: "4-परत निर्णय इंजन और सुरक्षा के साथ Flask API",
+    builtFrontend: "फ्रंटएंड विकास",
+    builtFrontendDesc: "द्विभाषी समर्थन के साथ React + TypeScript मोबाइल-फर्स्ट इंटरफ़ेस",
+    builtData: "डेटा और शोध",
+    builtDataDesc: "3 दवा तालिकाओं और प्रतिबंधित दवा रजिस्ट्री के साथ BigQuery डेटाबेस",
+
+    // About page — technology
+    technologyLabel: "तकनीक",
+    howWorksTitle: "MedVerify कैसे काम करता है",
+    tech1Title: "डीप लर्निंग OCR",
+    tech1Desc: "दवा पैकेजिंग से उच्च सटीकता के साथ पाठ निकालता है, यहाँ तक कि खराब रोशनी में ली गई कम गुणवत्ता वाली तस्वीरों से भी।",
+    tech2Title: "सत्यापित दवा डेटाबेस",
+    tech2Desc: "निकाले गए डेटा को अनुमोदित दवाओं, बैच नंबर और निर्माताओं के BigQuery डेटाबेस से मिलाता है।",
+    tech3Title: "दृश्य प्रामाणिकता जाँच",
+    tech3Desc: "असली बनाम नकली दवा छवियों पर प्रशिक्षित MobileNetV2 मॉडल नकली दवाओं के दृश्य संकेतों का पता लगाता है।",
+    tech4Title: "खतरा मूल्यांकन रिपोर्ट",
+    tech4Desc: "सभी संकेतों को एक स्पष्ट निर्णय में संयोजित करता है — असली, संदिग्ध, या नकली — विस्तृत स्पष्टीकरण के साथ।",
+
+    // About page — contact
+    collaborateTitle: "सहयोग करना चाहते हैं?",
+    collaborateDesc: "स्वास्थ्य सेवा भागीदारों, NGOs, निवेशकों और सरकारी निकायों की तलाश है जो MedVerify को भारत भर में विस्तारित करने में मदद करें।",
+    getInTouch: "संपर्क करें",
+    tryMedVerify: "MedVerify आज़माएँ",
+    orEmailDirectly: "या सीधे ईमेल करें:",
   },
+
 } as const;
 
 type TranslationKey = keyof typeof translations.en;

@@ -1,51 +1,41 @@
 import { Link } from "react-router-dom";
-import { Shield, Target, Heart, Linkedin, Github, Mail, Scan, ArrowRight } from "lucide-react";
+import { Shield, Target, Heart, Mail, Scan, ArrowRight, Code, Brain, Database, Layers } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { useLanguage } from "@/contexts/LanguageContext";
 
-const team = [
-  {
-    name: "Amit Kumar",
-    role: "AI & Backend Engineer",
-    bio: "Leads the AI model development, OCR pipeline, and API backend powering MedVerify's medicine analysis engine.",
-    initials: "AK",
-    color: "bg-primary",
-  },
-  {
-    name: "Team Member 2",
-    role: "Frontend Developer",
-    bio: "Designs and builds the mobile-first React interface for seamless medicine scanning across all devices.",
-    initials: "TM",
-    color: "bg-teal-600",
-  },
-  {
-    name: "Team Member 3",
-    role: "Data & Research",
-    bio: "Curates and maintains the verified medicine database and handles integration with CDSCO regulatory records.",
-    initials: "TM",
-    color: "bg-emerald-600",
-  },
-];
-
-const values = [
-  {
-    icon: Target,
-    title: "Our Mission",
-    desc: "Make medicine verification accessible to every Indian citizen — from urban hospitals to the most remote rural clinics.",
-  },
-  {
-    icon: Heart,
-    title: "Why We Built This",
-    desc: "India's ₹6,000 Cr counterfeit medicine market kills thousands every year. Technology can and must be part of the solution.",
-  },
-  {
-    icon: Shield,
-    title: "Our Promise",
-    desc: "We will never store your personal data. All analysis is processed securely and results are shown only to you.",
-  },
-];
+const CONTACT_EMAIL = "amitkmishrawork@gmail.com";
+const MAILTO_LINK = `mailto:${CONTACT_EMAIL}?subject=MedVerify%20Collaboration&body=Hi%20Amit%2C%0A%0AI%20came%20across%20MedVerify%20and%20would%20love%20to%20discuss%20a%20collaboration.%0A%0A`;
 
 const AboutPage = () => {
+  const { t } = useLanguage();
+
+  const values = [
+    { icon: Target, title: t("aboutMission"), desc: t("aboutMissionDesc") },
+    { icon: Heart,  title: t("aboutWhy"),     desc: t("aboutWhyDesc") },
+    { icon: Shield, title: t("aboutPromise"), desc: t("aboutPromiseDesc") },
+  ];
+
+  const builtBy = [
+    { icon: Brain,    label: t("builtAI"),       desc: t("builtAIDesc") },
+    { icon: Code,     label: t("builtBackend"),   desc: t("builtBackendDesc") },
+    { icon: Layers,   label: t("builtFrontend"),  desc: t("builtFrontendDesc") },
+    { icon: Database, label: t("builtData"),      desc: t("builtDataDesc") },
+  ];
+
+  const techSteps = [
+    { num: "01", title: t("tech1Title"), desc: t("tech1Desc") },
+    { num: "02", title: t("tech2Title"), desc: t("tech2Desc") },
+    { num: "03", title: t("tech3Title"), desc: t("tech3Desc") },
+    { num: "04", title: t("tech4Title"), desc: t("tech4Desc") },
+  ];
+
+  const stats = [
+    { value: "₹6,000 Cr", label: t("statFakeMarket") },
+    { value: "5 Layers",  label: t("statAIDepth") },
+    { value: "3 Sec",     label: t("statScanTime") },
+  ];
+
   return (
     <div className="min-h-screen bg-background">
 
@@ -55,14 +45,13 @@ const AboutPage = () => {
         <div className="container relative mx-auto px-4 text-center">
           <div className="mx-auto inline-flex items-center gap-2 rounded-full border border-primary/25 bg-primary/8 px-4 py-1.5 text-sm font-medium text-primary">
             <Shield className="h-4 w-4" />
-            Our Story
+            {t("ourStory")}
           </div>
           <h1 className="mt-5 font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl">
-            About MedVerify
+            {t("aboutTitle")}
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-base text-muted-foreground sm:text-lg leading-relaxed">
-            We are a team of engineers and researchers on a mission to eliminate counterfeit medicines from India
-            using the power of artificial intelligence.
+            {t("aboutSubtitle")}
           </p>
         </div>
       </section>
@@ -88,11 +77,7 @@ const AboutPage = () => {
       <section className="border-y border-border bg-muted/40 py-10">
         <div className="container mx-auto px-4">
           <div className="mx-auto grid max-w-3xl grid-cols-3 gap-6 text-center">
-            {[
-              { value: "₹6,000 Cr", label: "Fake medicine market size" },
-              { value: "5 Layers", label: "AI verification depth" },
-              { value: "3 Sec", label: "Average scan time" },
-            ].map((s) => (
+            {stats.map((s) => (
               <div key={s.label}>
                 <p className="font-display text-2xl font-bold text-primary sm:text-3xl">{s.value}</p>
                 <p className="mt-1 text-xs text-muted-foreground sm:text-sm">{s.label}</p>
@@ -102,53 +87,62 @@ const AboutPage = () => {
         </div>
       </section>
 
-      {/* Team */}
+      {/* Solo Founder */}
       <section className="py-14 md:py-20 bg-background">
         <div className="container mx-auto px-4">
           <div className="text-center">
             <span className="inline-block rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-primary">
-              The Team
+              {t("theBuilder")}
             </span>
             <h2 className="mt-3 font-display text-2xl font-bold text-foreground sm:text-3xl">
-              Meet the Builders
+              {t("builtSolo")}
             </h2>
             <p className="mx-auto mt-2 max-w-lg text-sm text-muted-foreground sm:text-base">
-              A passionate team building technology that saves lives.
+              {t("builtSoloDesc")}
             </p>
           </div>
 
-          <div className="mx-auto mt-10 grid max-w-4xl gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {team.map((member) => (
-              <Card
-                key={member.name}
-                className="group overflow-hidden border-border/60 bg-white shadow-sm transition-all hover:border-primary/30 hover:shadow-lg hover:shadow-primary/8"
-              >
-                <CardContent className="p-6">
-                  {/* Avatar */}
-                  <div
-                    className={`mx-auto flex h-16 w-16 items-center justify-center rounded-2xl ${member.color} text-white font-display text-xl font-bold shadow-md`}
+          {/* Founder card */}
+          <div className="mx-auto mt-10 max-w-sm">
+            <Card className="group overflow-hidden border-border/60 bg-white shadow-sm transition-all hover:border-primary/30 hover:shadow-xl hover:shadow-primary/10">
+              <CardContent className="p-8">
+                <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-2xl bg-primary text-white font-display text-2xl font-bold shadow-lg shadow-primary/30">
+                  AK
+                </div>
+                <div className="mt-5 text-center">
+                  <h3 className="font-display text-xl font-bold text-foreground">Amit Kumar Mishra</h3>
+                  <p className="mt-1 text-sm font-semibold text-primary">{t("founderRole")}</p>
+                  <p className="mt-3 text-sm text-muted-foreground leading-relaxed">{t("founderBio")}</p>
+                </div>
+
+                {/* Email only */}
+                <div className="mt-5 flex items-center justify-center">
+                  <a
+                    href={MAILTO_LINK}
+                    className="flex items-center gap-2 rounded-lg bg-primary/10 px-4 py-2 text-sm font-medium text-primary transition-colors hover:bg-primary/20"
+                    title="Send Email"
                   >
-                    {member.initials}
-                  </div>
-                  <div className="mt-4 text-center">
-                    <h3 className="font-display text-base font-semibold text-foreground">{member.name}</h3>
-                    <p className="mt-0.5 text-xs font-medium text-primary">{member.role}</p>
-                    <p className="mt-3 text-sm text-muted-foreground leading-relaxed">{member.bio}</p>
-                  </div>
-                  {/* Social icons */}
-                  <div className="mt-4 flex items-center justify-center gap-3">
-                    <button className="flex h-8 w-8 items-center justify-center rounded-lg bg-muted text-muted-foreground transition-colors hover:bg-primary/10 hover:text-primary">
-                      <Linkedin className="h-4 w-4" />
-                    </button>
-                    <button className="flex h-8 w-8 items-center justify-center rounded-lg bg-muted text-muted-foreground transition-colors hover:bg-primary/10 hover:text-primary">
-                      <Github className="h-4 w-4" />
-                    </button>
-                    <button className="flex h-8 w-8 items-center justify-center rounded-lg bg-muted text-muted-foreground transition-colors hover:bg-primary/10 hover:text-primary">
-                      <Mail className="h-4 w-4" />
-                    </button>
-                  </div>
-                </CardContent>
-              </Card>
+                    <Mail className="h-4 w-4" />
+                    {t("contactEmail")}
+                  </a>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* What I built grid */}
+          <div className="mx-auto mt-12 grid max-w-4xl gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {builtBy.map((item) => (
+              <div
+                key={item.label}
+                className="rounded-xl border border-border/60 bg-white p-5 text-center shadow-sm hover:border-primary/30 hover:shadow-md transition-all"
+              >
+                <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10">
+                  <item.icon className="h-5 w-5 text-primary" />
+                </div>
+                <h4 className="mt-3 font-display text-sm font-semibold text-foreground">{item.label}</h4>
+                <p className="mt-1.5 text-xs text-muted-foreground leading-relaxed">{item.desc}</p>
+              </div>
             ))}
           </div>
         </div>
@@ -160,35 +154,14 @@ const AboutPage = () => {
           <div className="mx-auto max-w-3xl">
             <div className="text-center">
               <span className="inline-block rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-primary">
-                Technology
+                {t("technologyLabel")}
               </span>
               <h2 className="mt-3 font-display text-2xl font-bold text-foreground sm:text-3xl">
-                How MedVerify Works
+                {t("howWorksTitle")}
               </h2>
             </div>
             <div className="mt-8 space-y-4">
-              {[
-                {
-                  num: "01",
-                  title: "Deep Learning OCR",
-                  desc: "Extracts text from medicine packaging with high accuracy, even from low-quality photos taken in poor lighting conditions.",
-                },
-                {
-                  num: "02",
-                  title: "Verified Medicine Database",
-                  desc: "Cross-references extracted data against a curated database of approved medicines, batch numbers, and manufacturers.",
-                },
-                {
-                  num: "03",
-                  title: "Visual Authenticity Check",
-                  desc: "Analyzes packaging design, hologram patterns, and print quality using computer vision to flag counterfeits.",
-                },
-                {
-                  num: "04",
-                  title: "Threat Assessment Report",
-                  desc: "Synthesizes all signals into a clear, actionable verdict — Genuine, Suspicious, or Fake — with a detailed explanation.",
-                },
-              ].map((item) => (
+              {techSteps.map((item) => (
                 <div key={item.num} className="flex gap-4 rounded-xl border border-border/60 bg-background p-4 sm:p-5">
                   <span className="font-display text-2xl font-bold text-primary/20 shrink-0 leading-none mt-0.5">
                     {item.num}
@@ -204,34 +177,36 @@ const AboutPage = () => {
         </div>
       </section>
 
-      {/* Contact / CTA */}
+      {/* Contact CTA */}
       <section className="py-14 md:py-20 bg-muted/40">
         <div className="container mx-auto px-4 text-center">
           <h2 className="font-display text-2xl font-bold text-foreground sm:text-3xl">
-            Want to Collaborate?
+            {t("collaborateTitle")}
           </h2>
           <p className="mx-auto mt-3 max-w-md text-sm text-muted-foreground sm:text-base">
-            We're looking for healthcare partners, NGOs, and government bodies to help scale MedVerify across India.
+            {t("collaborateDesc")}
           </p>
           <div className="mt-6 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-            <a href="mailto:team@medverify.in">
-              <Button size="lg" className="w-full sm:w-auto gap-2 bg-primary hover:bg-primary/90">
+            <a href={MAILTO_LINK}>
+              <Button size="lg" className="w-full sm:w-auto gap-2 bg-primary hover:bg-primary/90 shadow-lg shadow-primary/25">
                 <Mail className="h-4 w-4" />
-                Get In Touch
+                {t("getInTouch")}
               </Button>
             </a>
             <Link to="/scan">
-              <Button
-                variant="outline"
-                size="lg"
-                className="w-full sm:w-auto gap-2 border-primary/30 text-primary hover:bg-primary/5"
-              >
+              <Button variant="outline" size="lg" className="w-full sm:w-auto gap-2 border-primary/30 text-primary hover:bg-primary/5">
                 <Scan className="h-4 w-4" />
-                Try MedVerify
+                {t("tryMedVerify")}
                 <ArrowRight className="h-4 w-4" />
               </Button>
             </Link>
           </div>
+          <p className="mt-4 text-xs text-muted-foreground">
+            {t("orEmailDirectly")}{" "}
+            <a href={`mailto:${CONTACT_EMAIL}`} className="text-primary hover:underline font-medium">
+              {CONTACT_EMAIL}
+            </a>
+          </p>
         </div>
       </section>
     </div>

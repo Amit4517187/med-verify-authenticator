@@ -11,7 +11,7 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter,
 } from "@/components/ui/dialog";
 
-const API_URL = "https://nonfeeble-charisse-difficile.ngrok-free.dev/analyze";
+const API_URL = import.meta.env.VITE_API_URL || "";
 
 const ANALYSIS_STEPS = [
   "analyzingStep1",
@@ -107,6 +107,10 @@ const ScanPage = () => {
 
       const response = await fetch(API_URL, {
         method: "POST",
+        headers: {
+          "X-API-Key": import.meta.env.VITE_API_KEY || "",
+          "ngrok-skip-browser-warning": "true"
+        },
         body: formData,
       });
 
@@ -147,7 +151,7 @@ const ScanPage = () => {
         setErrorType("server");
         setErrorMessage(
           err?.message ||
-            "Cannot connect to the MediGuard Engine. Please try again later."
+          "Cannot connect to the MediGuard Engine. Please try again later."
         );
       }
       setShowError(true);
@@ -190,9 +194,8 @@ const ScanPage = () => {
               {ANALYSIS_STEPS.map((_, i) => (
                 <div
                   key={i}
-                  className={`h-2 w-2 rounded-full transition-all duration-500 ${
-                    i <= currentStep ? "bg-primary scale-125" : "bg-muted-foreground/30"
-                  }`}
+                  className={`h-2 w-2 rounded-full transition-all duration-500 ${i <= currentStep ? "bg-primary scale-125" : "bg-muted-foreground/30"
+                    }`}
                 />
               ))}
             </div>
@@ -220,10 +223,10 @@ const ScanPage = () => {
               {errorType === "network"
                 ? t("connectionErrorTitle")
                 : errorType === "validation"
-                ? "Missing Information"
-                : errorType === "server"
-                ? "Server Error"
-                : "Analysis Error"}
+                  ? "Missing Information"
+                  : errorType === "server"
+                    ? "Server Error"
+                    : "Analysis Error"}
             </DialogTitle>
             <DialogDescription className="text-center text-sm">
               {errorMessage || t("connectionError")}
