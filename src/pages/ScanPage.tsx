@@ -94,15 +94,10 @@ const ScanPage = () => {
       if (imageFile) {
         formData.append("image", imageFile);
       } else {
-        const manualText = [
-          trimmedName && `Medicine: ${trimmedName}`,
-          trimmedBatch && `Batch: ${trimmedBatch}`,
-          trimmedBarcode && `Barcode: ${trimmedBarcode}`,
-          trimmedMfg && `Manufacturer: ${trimmedMfg}`,
-        ]
-          .filter(Boolean)
-          .join("\n");
-        formData.append("manual_text", manualText);
+        formData.append("medicineName", trimmedName);
+        formData.append("batchNumber", trimmedBatch);
+        formData.append("barcode", trimmedBarcode);
+        formData.append("manufacturer", trimmedMfg);
       }
 
       const response = await fetch(API_URL, {
