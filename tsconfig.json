@@ -13,6 +13,9 @@
     "strictNullChecks": false
   },
   "files": [],
+  "exclude": [
+    "MedVerifyApp"
+  ],
   "references": [
     {
       "path": "./tsconfig.app.json"

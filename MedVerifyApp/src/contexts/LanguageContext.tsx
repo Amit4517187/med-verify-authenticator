@@ -9,13 +9,15 @@ const translations = {
     tagline: "Verify. Trust. Stay Safe.",
     home: "Home",
     scan: "Scan Medicine",
-    about: "About Us",
+    about: "About",
     results: "Results",
+    history: "History",
     language: "हिंदी",
 
     // Landing
     heroTitle: "Is Your Medicine Real?",
-    heroSubtitle: "India's ₹6,000 Cr fake medicine market kills thousands every year. Verify any medicine in 3 seconds with AI-powered multi-layer authentication.",
+    heroSubtitle:
+      "India's ₹6,000 Cr fake medicine market kills thousands every year. Verify any medicine in seconds with AI-powered multi-layer authentication.",
     scanNow: "Scan Medicine Now",
     howItWorks: "How It Works",
 
@@ -44,9 +46,11 @@ const translations = {
 
     // Scan page
     uploadTitle: "Scan Your Medicine",
-    uploadSubtitle: "Upload a photo of the medicine packaging or enter details manually",
-    uploadPhoto: "Upload Photo",
-    dragDrop: "Drag & drop or click to upload",
+    uploadSubtitle: "Take a photo, upload from gallery, scan barcode, or enter details manually",
+    uploadPhoto: "Take Photo",
+    uploadGallery: "Choose from Gallery",
+    scanBarcode: "Scan Barcode / QR",
+    dragDrop: "Tap to add medicine photo",
     orEnterManually: "Or Enter Details Manually",
     medicineName: "Medicine Name",
     batchNumber: "Batch Number",
@@ -54,7 +58,8 @@ const translations = {
     manufacturer: "Manufacturer",
     verifyMedicine: "Verify Medicine",
     analyzing: "Analyzing...",
-    analyzingDetail: "Analyzing Medical Data... Please do not close this page",
+    analyzingDetail: "Analyzing Medical Data...",
+    analyzingSubDetail: "Please do not close the app",
     analyzingStep1: "Running Deep Learning OCR...",
     analyzingStep2: "Querying Medicine Database...",
     analyzingStep3: "Checking Web Footprint...",
@@ -62,6 +67,7 @@ const translations = {
     connectionError: "Error: Cannot connect to the MediGuard Engine. Please try again later.",
     connectionErrorTitle: "Connection Failed",
     tryAgain: "Try Again",
+    cancel: "Cancel",
 
     // Result data fields
     drugName: "Drug Name",
@@ -75,9 +81,11 @@ const translations = {
     // Results
     verificationComplete: "Verification Complete",
     genuine: "Genuine Medicine",
+    realMedicine: "Real Medicine",
     suspicious: "Suspicious",
     fake: "Potentially Fake",
     genuineDesc: "This medicine has passed all 5 layers of verification.",
+    realMedicineDesc: "The ingredients are authentic and recognized globally. This specific brand is safe, but always buy from a trusted pharmacy.",
     suspiciousDesc: "Some checks raised concerns. Exercise caution.",
     fakeDesc: "Multiple verification layers failed. Do NOT consume.",
     confidence: "Confidence Score",
@@ -89,47 +97,43 @@ const translations = {
     reportFake: "Report as Fake",
     findPharmacy: "Find Genuine Pharmacy",
 
+    // History
+    historyTitle: "Scan History",
+    historyEmpty: "No scans yet",
+    historyEmptyDesc: "Your medicine scan history will appear here",
+    clearHistory: "Clear History",
+
     // Footer
     footerText: "Saving Lives Through AI Innovation",
     teamName: "Team MedVerify Innovations",
 
-    // About page — hero
+    // About
     ourStory: "Our Story",
     aboutTitle: "About MedVerify",
     aboutSubtitle: "Built by one engineer with a mission — to use AI to protect lives from counterfeit medicines across India and beyond.",
-
-    // About page — values
     aboutMission: "Our Mission",
-    aboutMissionDesc: "Make medicine verification accessible to every Indian citizen — from urban hospitals to the most remote rural clinics where fake medicines kill silently.",
+    aboutMissionDesc: "Make medicine verification accessible to every Indian citizen — from urban hospitals to the most remote rural clinics.",
     aboutWhy: "Why I Built This",
     aboutWhyDesc: "India's ₹6,000 Cr counterfeit medicine market kills thousands every year. I believe one person with the right technology can change that.",
     aboutPromise: "My Promise",
     aboutPromiseDesc: "MedVerify will never store your personal data. All analysis is processed securely and results are shown only to you.",
-
-    // About page — stats
     statFakeMarket: "Fake medicine market size",
     statAIDepth: "AI verification depth",
     statScanTime: "Average scan time",
-
-    // About page — founder
     theBuilder: "The Builder",
     builtSolo: "Built Solo, From Scratch",
-    builtSoloDesc: "Every layer of MedVerify — from the AI model to the database to this interface — was designed, built, and deployed by one person.",
+    builtSoloDesc: "Every layer of MedVerify — from the AI model to the database to this app — was designed, built, and deployed by one person.",
     founderRole: "Founder & Solo Engineer",
-    founderBio: "Designed and built MedVerify end-to-end — AI model training, Flask backend, React frontend, BigQuery database, and all research. A one-person mission to make medicines safe for everyone.",
+    founderBio: "Designed and built MedVerify end-to-end — AI model training, Flask backend, React Native app, BigQuery database, and all research.",
     contactEmail: "Send Email",
-
-    // About page — what I built
     builtAI: "AI Model Training",
     builtAIDesc: "MobileNetV2 trained on real vs fake medicine image datasets",
     builtBackend: "Backend Engineering",
     builtBackendDesc: "Flask API with 4-layer decision engine and security hardening",
-    builtFrontend: "Frontend Development",
-    builtFrontendDesc: "React + TypeScript mobile-first interface with bilingual support",
+    builtFrontend: "Mobile Development",
+    builtFrontendDesc: "React Native app with bilingual support and native camera integration",
     builtData: "Data & Research",
     builtDataDesc: "BigQuery database with 3 medicine tables and banned drug registry",
-
-    // About page — technology
     technologyLabel: "Technology",
     howWorksTitle: "How MedVerify Works",
     tech1Title: "Deep Learning OCR",
@@ -140,49 +144,11 @@ const translations = {
     tech3Desc: "MobileNetV2 model trained on real vs fake medicine images analyzes packaging to detect visual signs of counterfeiting.",
     tech4Title: "Threat Assessment Report",
     tech4Desc: "Synthesizes all signals into a clear, actionable verdict — Genuine, Suspicious, or Fake — with a detailed explanation.",
-
-    // About page — contact
     collaborateTitle: "Want to Collaborate?",
     collaborateDesc: "Looking for healthcare partners, NGOs, investors, and government bodies to help scale MedVerify across India and beyond.",
     getInTouch: "Get In Touch",
     tryMedVerify: "Try MedVerify",
     orEmailDirectly: "Or email directly:",
-
-    // Index - Live Demo
-    liveDemo: "LIVE DEMO",
-    seeItInAction: "See It In Action",
-    demoSubtitle: "Watch MedVerify authenticate a medicine in real-time. Every detail — batch number, manufacturer, expiry — cross-checked against official records.",
-    demoFeature1Title: "3-Second Results",
-    demoFeature1Desc: "Faster than reading the label manually.",
-    demoFeature2Title: "Works Offline",
-    demoFeature2Desc: "Cached CDSCO data for rural areas with poor connectivity.",
-    demoFeature3Title: "Hindi & English",
-    demoFeature3Desc: "Full support for both languages across all results.",
-    demoStatus: "VERIFIED AUTHENTIC",
-    demoMedicine: "Paracetamol 500mg",
-    demoManufacturer: "Cipla Ltd., Mumbai",
-    demoBatch: "CPL-2025-B4471",
-    demoExpiry: "Dec 2026",
-    demoCdscoStatus: "Approved",
-    scanAgain: "Scan Again",
-    reportSuspicious: "Report Suspicious Medicine",
-
-    // Index - Testimonials
-    fromTheField: "FROM THE FIELD",
-    trustedTitle: "Trusted by India's Health Workers",
-    trustedSubtitle: "Real stories from ASHA workers, doctors, and pharmacists protecting their communities from counterfeit medicines.",
-    testimonial1Quote: "I verified 12 medicines last week at our rural health camp. MedVerify flagged two suspicious batches that the supplier claimed were genuine. It saved lives.",
-    testimonial1Author: "Sunita Devi",
-    testimonial1Role: "ASHA Worker - Varanasi, UP",
-    testimonial1Stat: "12 medicines verified",
-    testimonial2Quote: "The CDSCO database integration is what sets MedVerify apart. I can show patients the official verification record on my phone. Trust is everything in rural healthcare.",
-    testimonial2Author: "Dr. Ramesh Patel",
-    testimonial2Role: "Primary Health Centre Doctor - Rajkot, Gujarat",
-    testimonial2Stat: "200+ verifications/month",
-    testimonial3Quote: "Before MedVerify, I had no way to verify if a new supplier's stock was genuine. Now I scan every new batch before it goes on my shelves. It takes 3 seconds.",
-    testimonial3Author: "Meera Krishnamurthy",
-    testimonial3Role: "Community Pharmacist - Coimbatore, TN",
-    testimonial3Stat: "Zero fake medicines since Jan 2025",
   },
   hi: {
     appName: "MedVerify",
@@ -191,10 +157,11 @@ const translations = {
     scan: "दवा स्कैन करें",
     about: "हमारे बारे में",
     results: "परिणाम",
+    history: "इतिहास",
     language: "English",
 
     heroTitle: "क्या आपकी दवा असली है?",
-    heroSubtitle: "भारत का ₹6,000 करोड़ का नकली दवा बाज़ार हर साल हज़ारों लोगों की जान लेता है। AI-संचालित बहु-स्तरीय प्रमाणीकरण से किसी भी दवा को 3 सेकंड में सत्यापित करें।",
+    heroSubtitle: "भारत का ₹6,000 करोड़ का नकली दवा बाज़ार हर साल हज़ारों लोगों की जान लेता है। AI-संचालित बहु-स्तरीय प्रमाणीकरण से किसी भी दवा को सेकंड में सत्यापित करें।",
     scanNow: "अभी दवा स्कैन करें",
     howItWorks: "यह कैसे काम करता है",
 
@@ -220,9 +187,11 @@ const translations = {
     feature5Desc: "सत्यापित करता है कि विक्रय फार्मेसी लाइसेंस प्राप्त और पंजीकृत है",
 
     uploadTitle: "अपनी दवा स्कैन करें",
-    uploadSubtitle: "दवा पैकेजिंग की फोटो अपलोड करें या मैन्युअल रूप से विवरण दर्ज करें",
-    uploadPhoto: "फोटो अपलोड करें",
-    dragDrop: "खींचें और छोड़ें या अपलोड करने के लिए क्लिक करें",
+    uploadSubtitle: "फोटो लें, गैलरी से अपलोड करें, बारकोड स्कैन करें, या मैन्युअल रूप से विवरण दर्ज करें",
+    uploadPhoto: "फोटो लें",
+    uploadGallery: "गैलरी से चुनें",
+    scanBarcode: "बारकोड / QR स्कैन करें",
+    dragDrop: "दवा फोटो जोड़ने के लिए टैप करें",
     orEnterManually: "या मैन्युअल रूप से विवरण दर्ज करें",
     medicineName: "दवा का नाम",
     batchNumber: "बैच नंबर",
@@ -230,7 +199,8 @@ const translations = {
     manufacturer: "निर्माता",
     verifyMedicine: "दवा सत्यापित करें",
     analyzing: "विश्लेषण हो रहा है...",
-    analyzingDetail: "चिकित्सा डेटा का विश्लेषण हो रहा है... कृपया इस पेज को बंद न करें",
+    analyzingDetail: "चिकित्सा डेटा का विश्लेषण हो रहा है...",
+    analyzingSubDetail: "कृपया ऐप बंद न करें",
     analyzingStep1: "डीप लर्निंग OCR चल रहा है...",
     analyzingStep2: "दवा डेटाबेस में खोज रहा है...",
     analyzingStep3: "वेब फुटप्रिंट जांच रहा है...",
@@ -238,6 +208,7 @@ const translations = {
     connectionError: "त्रुटि: MediGuard इंजन से कनेक्ट नहीं हो पा रहा है। कृपया बाद में पुनः प्रयास करें।",
     connectionErrorTitle: "कनेक्शन विफल",
     tryAgain: "पुनः प्रयास करें",
+    cancel: "रद्द करें",
 
     drugName: "दवा का नाम",
     composition: "संरचना",
@@ -249,9 +220,11 @@ const translations = {
 
     verificationComplete: "सत्यापन पूर्ण",
     genuine: "असली दवा",
+    realMedicine: "असली दवा",
     suspicious: "संदिग्ध",
     fake: "संभावित नकली",
     genuineDesc: "इस दवा ने सभी 5 स्तरों का सत्यापन पास कर लिया है।",
+    realMedicineDesc: "सामग्री प्रामाणिक हैं और विश्व स्तर पर मान्यता प्राप्त हैं। यह विशिष्ट ब्रांड सुरक्षित है, लेकिन हमेशा एक विश्वसनीय फार्मेसी से खरीदें।",
     suspiciousDesc: "कुछ जांचों ने चिंताएं जताई हैं। सावधानी बरतें।",
     fakeDesc: "कई सत्यापन स्तर विफल रहे। सेवन न करें।",
     confidence: "विश्वास स्कोर",
@@ -263,101 +236,56 @@ const translations = {
     reportFake: "नकली के रूप में रिपोर्ट करें",
     findPharmacy: "असली फार्मेसी खोजें",
 
+    historyTitle: "स्कैन इतिहास",
+    historyEmpty: "अभी तक कोई स्कैन नहीं",
+    historyEmptyDesc: "आपका दवा स्कैन इतिहास यहाँ दिखाई देगा",
+    clearHistory: "इतिहास साफ़ करें",
+
     footerText: "AI नवाचार के माध्यम से जीवन बचाना",
     teamName: "टीम MedVerify Innovations",
 
-    // About page — hero
     ourStory: "हमारी कहानी",
     aboutTitle: "MedVerify के बारे में",
     aboutSubtitle: "एक इंजीनियर द्वारा एक मिशन के साथ बनाया गया — AI का उपयोग करके भारत और उससे परे नकली दवाओं से जीवन की रक्षा करना।",
-
-    // About page — values
     aboutMission: "हमारा मिशन",
-    aboutMissionDesc: "प्रत्येक भारतीय नागरिक तक दवा सत्यापन पहुँचाना — शहरी अस्पतालों से लेकर सबसे दूरदराज के ग्रामीण क्लिनिक तक जहाँ नकली दवाएँ चुपचाप जान लेती हैं।",
+    aboutMissionDesc: "प्रत्येक भारतीय नागरिक तक दवा सत्यापन पहुँचाना — शहरी अस्पतालों से लेकर दूरदराज के ग्रामीण क्लिनिक तक।",
     aboutWhy: "मैंने यह क्यों बनाया",
     aboutWhyDesc: "भारत का ₹6,000 करोड़ का नकली दवा बाज़ार हर साल हज़ारों लोगों की जान लेता है। मेरा मानना है कि सही तकनीक से एक व्यक्ति यह बदल सकता है।",
     aboutPromise: "मेरा वादा",
-    aboutPromiseDesc: "MedVerify आपका कोई भी व्यक्तिगत डेटा कभी संग्रहीत नहीं करेगा। सभी विश्लेषण सुरक्षित रूप से संसाधित होते हैं और परिणाम केवल आपको दिखाए जाते हैं।",
-
-    // About page — stats
+    aboutPromiseDesc: "MedVerify आपका कोई भी व्यक्तिगत डेटा कभी संग्रहीत नहीं करेगा।",
     statFakeMarket: "नकली दवा बाज़ार का आकार",
     statAIDepth: "AI सत्यापन गहराई",
     statScanTime: "औसत स्कैन समय",
-
-    // About page — founder
     theBuilder: "निर्माता",
     builtSolo: "अकेले, शुरू से बनाया",
-    builtSoloDesc: "MedVerify की हर परत — AI मॉडल से लेकर डेटाबेस और इस इंटरफ़ेस तक — एक ही व्यक्ति द्वारा डिज़ाइन, निर्मित और तैनात की गई।",
+    builtSoloDesc: "MedVerify की हर परत — AI मॉडल से लेकर डेटाबेस और इस ऐप तक — एक ही व्यक्ति द्वारा बनाई गई।",
     founderRole: "संस्थापक और एकमात्र इंजीनियर",
-    founderBio: "MedVerify को शुरू से अंत तक डिज़ाइन और निर्मित किया — AI मॉडल प्रशिक्षण, Flask बैकएंड, React फ्रंटएंड, BigQuery डेटाबेस और सभी शोध। सभी के लिए दवाओं को सुरक्षित बनाने का एक-व्यक्ति मिशन।",
+    founderBio: "MedVerify को शुरू से अंत तक डिज़ाइन और निर्मित किया — AI मॉडल प्रशिक्षण, Flask बैकएंड, React Native ऐप, BigQuery डेटाबेस।",
     contactEmail: "ईमेल भेजें",
-
-    // About page — what I built
     builtAI: "AI मॉडल प्रशिक्षण",
     builtAIDesc: "असली बनाम नकली दवा छवि डेटासेट पर प्रशिक्षित MobileNetV2",
     builtBackend: "बैकएंड इंजीनियरिंग",
-    builtBackendDesc: "4-परत निर्णय इंजन और सुरक्षा के साथ Flask API",
-    builtFrontend: "फ्रंटएंड विकास",
-    builtFrontendDesc: "द्विभाषी समर्थन के साथ React + TypeScript मोबाइल-फर्स्ट इंटरफ़ेस",
+    builtBackendDesc: "4-परत निर्णय इंजन के साथ Flask API",
+    builtFrontend: "मोबाइल विकास",
+    builtFrontendDesc: "द्विभाषी समर्थन के साथ React Native ऐप",
     builtData: "डेटा और शोध",
-    builtDataDesc: "3 दवा तालिकाओं और प्रतिबंधित दवा रजिस्ट्री के साथ BigQuery डेटाबेस",
-
-    // About page — technology
+    builtDataDesc: "3 दवा तालिकाओं के साथ BigQuery डेटाबेस",
     technologyLabel: "तकनीक",
     howWorksTitle: "MedVerify कैसे काम करता है",
     tech1Title: "डीप लर्निंग OCR",
-    tech1Desc: "दवा पैकेजिंग से उच्च सटीकता के साथ पाठ निकालता है, यहाँ तक कि खराब रोशनी में ली गई कम गुणवत्ता वाली तस्वीरों से भी।",
+    tech1Desc: "दवा पैकेजिंग से उच्च सटीकता के साथ पाठ निकालता है।",
     tech2Title: "सत्यापित दवा डेटाबेस",
-    tech2Desc: "निकाले गए डेटा को अनुमोदित दवाओं, बैच नंबर और निर्माताओं के BigQuery डेटाबेस से मिलाता है।",
+    tech2Desc: "निकाले गए डेटा को अनुमोदित दवाओं के BigQuery डेटाबेस से मिलाता है।",
     tech3Title: "दृश्य प्रामाणिकता जाँच",
-    tech3Desc: "असली बनाम नकली दवा छवियों पर प्रशिक्षित MobileNetV2 मॉडल नकली दवाओं के दृश्य संकेतों का पता लगाता है।",
+    tech3Desc: "MobileNetV2 मॉडल नकली दवाओं के दृश्य संकेतों का पता लगाता है।",
     tech4Title: "खतरा मूल्यांकन रिपोर्ट",
-    tech4Desc: "सभी संकेतों को एक स्पष्ट निर्णय में संयोजित करता है — असली, संदिग्ध, या नकली — विस्तृत स्पष्टीकरण के साथ।",
-
-    // About page — contact
+    tech4Desc: "सभी संकेतों को एक स्पष्ट निर्णय में संयोजित करता है।",
     collaborateTitle: "सहयोग करना चाहते हैं?",
-    collaborateDesc: "स्वास्थ्य सेवा भागीदारों, NGOs, निवेशकों और सरकारी निकायों की तलाश है जो MedVerify को भारत भर में विस्तारित करने में मदद करें।",
+    collaborateDesc: "स्वास्थ्य सेवा भागीदारों, NGOs और निवेशकों की तलाश है।",
     getInTouch: "संपर्क करें",
     tryMedVerify: "MedVerify आज़माएँ",
     orEmailDirectly: "या सीधे ईमेल करें:",
-
-    // Index - Live Demo
-    liveDemo: "लाइव डेमो",
-    seeItInAction: "इसे क्रियान्वित देखें",
-    demoSubtitle: "MedVerify को वास्तविक समय में दवा को प्रमाणित करते हुए देखें। हर विवरण — बैच नंबर, निर्माता, समाप्ति — आधिकारिक रिकॉर्ड के साथ क्रॉस-चेक किया जाता है।",
-    demoFeature1Title: "3-सेकंड परिणाम",
-    demoFeature1Desc: "लेबल को मैन्युअल रूप से पढ़ने से तेज़।",
-    demoFeature2Title: "ऑफ़लाइन काम करता है",
-    demoFeature2Desc: "खराब कनेक्टिविटी वाले ग्रामीण क्षेत्रों के लिए कैश किया गया CDSCO डेटा।",
-    demoFeature3Title: "हिंदी और अंग्रेजी",
-    demoFeature3Desc: "सभी परिणामों में दोनों भाषाओं के लिए पूर्ण समर्थन।",
-    demoStatus: "सत्यापित असली",
-    demoMedicine: "पैरासिटामोल 500mg",
-    demoManufacturer: "सिप्ला लिमिटेड, मुंबई",
-    demoBatch: "CPL-2025-B4471",
-    demoExpiry: "दिसंबर 2026",
-    demoCdscoStatus: "अनुमोदित",
-    scanAgain: "फिर से स्कैन करें",
-    reportSuspicious: "संदिग्ध दवा की रिपोर्ट करें",
-
-    // Index - Testimonials
-    fromTheField: "क्षेत्र से रिपोर्ट",
-    trustedTitle: "भारत के स्वास्थ्य कार्यकर्ताओं द्वारा विश्वसनीय",
-    trustedSubtitle: "आशा कार्यकर्ताओं, डॉक्टरों और फार्मासिस्टों की वास्तविक कहानियाँ जो अपने समुदायों को नकली दवाओं से बचा रहे हैं।",
-    testimonial1Quote: "मैंने पिछले हफ्ते अपने ग्रामीण स्वास्थ्य शिविर में 12 दवाओं का सत्यापन किया। MedVerify ने दो संदिग्ध बैचों को पकड़ा जिन्हें आपूर्तिकर्ता ने असली बताया था। इसने जानें बचाईं।",
-    testimonial1Author: "सुनीता देवी",
-    testimonial1Role: "आशा कार्यकर्ता - वाराणसी, यूपी",
-    testimonial1Stat: "12 दवाओं का सत्यापन किया गया",
-    testimonial2Quote: "CDSCO डेटाबेस एकीकरण MedVerify को अलग बनाता है। मैं अपने फोन पर मरीजों को आधिकारिक सत्यापन रिकॉर्ड दिखा सकता हूँ। ग्रामीण स्वास्थ्य सेवा में विश्वास ही सब कुछ है।",
-    testimonial2Author: "डॉ. रमेश पटेल",
-    testimonial2Role: "प्राथमिक स्वास्थ्य केंद्र के डॉक्टर - राजकोट, गुजरात",
-    testimonial2Stat: "200+ सत्यापन/माह",
-    testimonial3Quote: "MedVerify से पहले, मेरे पास यह सत्यापित करने का कोई तरीका नहीं था कि नए आपूर्तिकर्ता का स्टॉक असली है या नहीं। अब मैं अपने अलमारियों में रखने से पहले हर नए बैच को स्कैन करता हूँ। इसमें 3 सेकंड लगते हैं।",
-    testimonial3Author: "मीरा कृष्णमूर्ति",
-    testimonial3Role: "सामुदायिक फार्मासिस्ट - कोयंबटूर, टीएन",
-    testimonial3Stat: "जनवरी 2025 से शून्य नकली दवाएँ",
   },
-
 } as const;
 
 type TranslationKey = keyof typeof translations.en;
@@ -378,7 +306,7 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   }, []);
 
   const t = useCallback(
-    (key: TranslationKey) => translations[lang][key] || key,
+    (key: TranslationKey): string => translations[lang][key] || key,
     [lang]
   );
 
