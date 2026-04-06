@@ -11,7 +11,11 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter,
 } from "@/components/ui/dialog";
 
-const API_URL = import.meta.env.VITE_API_URL || "";
+const FALLBACK_API_URL = "https://amitkmishraa-medverify-backend.hf.space";
+const FALLBACK_API_KEY = "medverify_prod_2024_xK9mN3qR";
+
+const API_URL = import.meta.env.VITE_API_URL || FALLBACK_API_URL;
+const API_KEY = import.meta.env.VITE_API_KEY || FALLBACK_API_KEY;
 
 const ANALYSIS_STEPS = [
   "analyzingStep1",
@@ -118,7 +122,7 @@ const ScanPage = () => {
       const response = await fetch(finalUrl, {
         method: "POST",
         headers: {
-          "X-API-Key": import.meta.env.VITE_API_KEY || "",
+          "X-API-Key": API_KEY,
         },
         body: formData,
       });
