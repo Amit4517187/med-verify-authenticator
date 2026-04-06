@@ -1,13 +1,8 @@
 import Constants from "expo-constants";
 import { VerificationResult } from "../types";
 
-const API_URL =
-  (Constants.expoConfig?.extra?.apiUrl as string) ||
-  "https://amitkmishraa-medverify-backend.hf.space/analyze";
-
-const API_KEY =
-  (Constants.expoConfig?.extra?.apiKey as string) ||
-  "medverify_prod_2024_xK9mN3qR";
+const API_URL = (Constants.expoConfig?.extra?.apiUrl as string) || "";
+const API_KEY = (Constants.expoConfig?.extra?.apiKey as string) || "";
 
 export type AnalyzeInput =
   | { type: "image"; uri: string; mimeType: string; fileName: string }
