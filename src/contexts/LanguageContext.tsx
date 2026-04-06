@@ -183,6 +183,31 @@ const translations = {
     testimonial3Author: "Meera Krishnamurthy",
     testimonial3Role: "Community Pharmacist - Coimbatore, TN",
     testimonial3Stat: "Zero fake medicines since Jan 2025",
+
+    // Footer & Legal
+    privacyPolicy: "Privacy Policy",
+    termsOfService: "Terms of Service",
+    copyright: "© 2026 MedVerify. All rights reserved.",
+    
+    // Privacy Page
+    privacyTitle: "Privacy Policy",
+    privacySubtitle: "How MedVerify handles your data and ensures medical privacy.",
+    privacy1Title: "Data Minimization",
+    privacy1Desc: "MedVerify does not store your name, phone number, or biometric data. Images are processed in real-time and deleted immediately after analysis.",
+    privacy2Title: "AI Ethics",
+    privacy2Desc: "Our AI models are trained on public medical databases. No user-uploaded images are used for model training without explicit consent.",
+    privacy3Title: "Local Processing",
+    privacy3Desc: "Key verification layers run securely to ensure minimal data transmission, protecting your privacy in every scan.",
+
+    // Terms Page
+    termsTitle: "Terms of Service",
+    termsSubtitle: "Legal framework and AI disclaimers for using MedVerify.",
+    terms1Title: "No Medical Advice",
+    terms1Desc: "MedVerify is an authentication tool, not a medical diagnostic service. Always consult a licensed healthcare professional before use.",
+    terms2Title: "Verification Limits",
+    terms2Desc: "AI analysis is a risk-assessment tool. It cannot detect chemical purity without laboratory testing. Use as a primary screening layer.",
+    terms3Title: "User Responsibility",
+    terms3Desc: "Users are encouraged to report suspicious medicines to authorities. MedVerify is not liable for errors in visual AI detection.",
   },
   hi: {
     appName: "MedVerify",
@@ -356,6 +381,31 @@ const translations = {
     testimonial3Author: "मीरा कृष्णमूर्ति",
     testimonial3Role: "सामुदायिक फार्मासिस्ट - कोयंबटूर, टीएन",
     testimonial3Stat: "जनवरी 2025 से शून्य नकली दवाएँ",
+
+    // Footer & Legal
+    privacyPolicy: "गोपनीयता नीति",
+    termsOfService: "सेवा की शर्तें",
+    copyright: "© 2026 MedVerify. सर्वाधिकार सुरक्षित।",
+
+    // Privacy Page
+    privacyTitle: "गोपनीयता नीति",
+    privacySubtitle: "MedVerify आपके डेटा को कैसे संभालता है और चिकित्सा गोपनीयता सुनिश्चित करता है।",
+    privacy1Title: "डेटा न्यूनतमकरण",
+    privacy1Desc: "MedVerify आपका नाम, फोन नंबर या बायोमेट्रिक डेटा संग्रहीत नहीं करता है। छवियों को वास्तविक समय में संसाधित किया जाता है और विश्लेषण के तुरंत बाद हटा दिया जाता है।",
+    privacy2Title: "AI आचार संहिता",
+    privacy2Desc: "हमारे AI मॉडल सार्वजनिक चिकित्सा डेटाबेस पर प्रशिक्षित हैं। उपयोगकर्ता द्वारा अपलोड की गई छवियों का उपयोग स्पष्ट सहमति के बिना मॉडल प्रशिक्षण के लिए नहीं किया जाता है।",
+    privacy3Title: "स्थानीय प्रसंस्करण",
+    privacy3Desc: "न्यूनतम डेटा ट्रांसमिशन सुनिश्चित करने के लिए मुख्य सत्यापन स्तर सुरक्षित रूप से चलते हैं, जिससे हर स्कैन में आपकी गोपनीयता बनी रहती है।",
+
+    // Terms Page
+    termsTitle: "सेवा की शर्तें",
+    termsSubtitle: "MedVerify का उपयोग करने के लिए कानूनी ढाँचा और AI अस्वीकरण।",
+    terms1Title: "कोई चिकित्सा सलाह नहीं",
+    terms1Desc: "MedVerify एक प्रमाणीकरण उपकरण है, चिकित्सा निदान सेवा नहीं। उपयोग करने से पहले हमेशा एक लाइसेंस प्राप्त स्वास्थ्य पेशेवर से परामर्श लें।",
+    terms2Title: "सत्यापन सीमाएं",
+    terms2Desc: "AI विश्लेषण एक जोखिम-मूल्यांकन उपकरण है। यह प्रयोगशाला परीक्षण के बिना रासायनिक शुद्धता का पता नहीं लगा सकता है। इसका उपयोग प्राथमिक स्क्रीनिंग परत के रूप में करें।",
+    terms3Title: "उपयोगकर्ता की जिम्मेदारी",
+    terms3Desc: "उपयोगकर्ताओं को अधिकारियों को संदिग्ध दवाओं की रिपोर्ट करने के लिए प्रोत्साहित किया जाता है। MedVerify विज़ुअल AI पहचान में त्रुटियों के लिए उत्तरदायी नहीं है।",
   },
 
 } as const;

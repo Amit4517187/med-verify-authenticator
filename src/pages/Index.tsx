@@ -449,25 +449,6 @@ const Index = () => {
           </ScrollReveal>
         </div>
       </section>
-
-      {/* Footer */}
-      <footer className="border-t border-border bg-background py-8">
-        <div className="container mx-auto px-4 text-center">
-          <div className="flex items-center justify-center gap-2">
-            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary">
-              <Shield className="h-4 w-4 text-white" />
-            </div>
-            <span className="font-display font-semibold text-foreground">{t("appName")}</span>
-          </div>
-          <p className="mt-2 text-sm text-muted-foreground">{t("footerText")}</p>
-          <p className="mt-1 text-xs text-muted-foreground">{t("teamName")}</p>
-          <div className="mt-4 flex justify-center gap-4 text-xs text-muted-foreground">
-            <Link to="/about" className="hover:text-primary transition-colors">About Us</Link>
-            <span>·</span>
-            <Link to="/scan" className="hover:text-primary transition-colors">Scan Medicine</Link>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 };
