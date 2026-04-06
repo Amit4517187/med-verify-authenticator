@@ -10,7 +10,7 @@ import { Separator } from "@/components/ui/separator";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { ScrollReveal } from "../components/animations/ScrollReveal";
 
-type ApiStatus = "safe" | "caution" | "danger";
+type ApiStatus = "safe" | "caution" | "danger" | "verified_global";
 
 interface ResultState {
   status: ApiStatus | "error";
@@ -50,7 +50,7 @@ const ResultsPage = () => {
     );
   }
 
-  const config = {
+  const configMap: Record<string, any> = {
     safe: {
       Icon: ShieldCheck,
       title: t("genuine"),
@@ -60,6 +60,16 @@ const ResultsPage = () => {
       borderClass: "border-primary/30",
       badgeBg: "bg-primary/10",
       threatLabel: "LOW — No threat detected",
+    },
+    verified_global: {
+      Icon: ShieldCheck,
+      title: "NIH Globally Verified",
+      desc: "This medicine is verified through the NIH RxNorm Global Database.",
+      bgClass: "bg-blue-500/8",
+      textClass: "text-blue-600",
+      borderClass: "border-blue-500/30",
+      badgeBg: "bg-blue-500/10",
+      threatLabel: "AUTHENTIC — Global Match Found",
     },
     caution: {
       Icon: ShieldAlert,
@@ -81,7 +91,9 @@ const ResultsPage = () => {
       badgeBg: "bg-destructive/10",
       threatLabel: "HIGH — Likely counterfeit",
     },
-  }[status];
+  };
+
+  const config = configMap[status];
 
   // Safety net: if status is an unknown value, redirect rather than crash
   if (!config) return <Navigate to="/scan" replace />;
