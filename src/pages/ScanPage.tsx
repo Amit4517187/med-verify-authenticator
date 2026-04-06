@@ -100,11 +100,13 @@ const ScanPage = () => {
         formData.append("manufacturer", trimmedMfg);
       }
 
-      const response = await fetch(API_URL, {
+      const baseApiUrl = API_URL.endsWith("/") ? API_URL.slice(0, -1) : API_URL;
+      const finalUrl = baseApiUrl.endsWith("/analyze") ? baseApiUrl : `${baseApiUrl}/analyze`;
+
+      const response = await fetch(finalUrl, {
         method: "POST",
         headers: {
           "X-API-Key": import.meta.env.VITE_API_KEY || "",
-          "ngrok-skip-browser-warning": "true"
         },
         body: formData,
       });
