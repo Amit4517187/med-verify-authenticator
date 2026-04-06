@@ -58,8 +58,7 @@ const App = () => {
       </LanguageProvider>
     </TooltipProvider>
   </QueryClientProvider>
-);
-// fix: change ); to }; below
+  );
 };
 
 export default App;
