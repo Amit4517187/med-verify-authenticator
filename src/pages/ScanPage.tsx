@@ -100,8 +100,20 @@ const ScanPage = () => {
         formData.append("manufacturer", trimmedMfg);
       }
 
-      const baseApiUrl = API_URL.endsWith("/") ? API_URL.slice(0, -1) : API_URL;
-      const finalUrl = baseApiUrl.endsWith("/analyze") ? baseApiUrl : `${baseApiUrl}/analyze`;
+      let baseApiUrl = API_URL.trim();
+      
+      // Auto-fix Hugging Face UI URLs to Direct API URLs
+      if (baseApiUrl.includes("huggingface.co/spaces/")) {
+        const parts = baseApiUrl.split("huggingface.co/spaces/")[1].split("/");
+        if (parts.length >= 2) {
+          const user = parts[0].toLowerCase();
+          const space = parts[1].toLowerCase();
+          baseApiUrl = `https://${user}-${space}.hf.space`;
+        }
+      }
+
+      const finalBase = baseApiUrl.endsWith("/") ? baseApiUrl.slice(0, -1) : baseApiUrl;
+      const finalUrl = finalBase.endsWith("/analyze") ? finalBase : `${finalBase}/analyze`;
 
       const response = await fetch(finalUrl, {
         method: "POST",
