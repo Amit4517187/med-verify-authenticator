@@ -145,6 +145,8 @@ const ScanPage = () => {
           drugName: data.drug_name,
           composition: data.composition,
           message: data.message,
+          communityFlagged: data.community_flagged ?? false,
+          communityReportCount: data.community_report_count ?? 0,
         },
       });
     } catch (err: any) {

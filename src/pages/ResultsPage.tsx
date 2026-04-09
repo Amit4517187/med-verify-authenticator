@@ -1,8 +1,9 @@
+import { useState } from "react";
 import { Link, useLocation, Navigate } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 import {
   ShieldCheck, ShieldAlert, ShieldX, AlertTriangle, MapPin, ChevronRight,
-  Pill, FlaskConical, Scan, FileText,
+  Pill, FlaskConical, Scan, FileText, Users, CheckCircle2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -17,6 +18,8 @@ interface ResultState {
   drugName: string;
   composition: string;
   message: string;
+  communityFlagged?: boolean;
+  communityReportCount?: number;
 }
 
 const ResultsPage = () => {
@@ -24,9 +27,12 @@ const ResultsPage = () => {
   const location = useLocation();
   const state = location.state as ResultState | null;
 
+  const [reported, setReported] = useState(false);
+  const [reporting, setReporting] = useState(false);
+
   if (!state) return <Navigate to="/scan" replace />;
 
-  const { status, drugName, composition, message } = state;
+  const { status, drugName, composition, message, communityFlagged, communityReportCount } = state;
 
   if (status === "error") {
     return (
@@ -135,6 +141,21 @@ const ResultsPage = () => {
           </Card>
         </ScrollReveal>
 
+        {/* Community Warning Banner */}
+        {communityFlagged && (
+          <ScrollReveal delay={0.15} duration={0.5}>
+            <div className="mt-4 flex items-start gap-3 rounded-xl border border-warning/40 bg-warning/10 p-4">
+              <Users className="mt-0.5 h-5 w-5 shrink-0 text-warning" />
+              <div>
+                <p className="text-sm font-bold text-warning">Community Warning</p>
+                <p className="mt-0.5 text-xs text-muted-foreground">
+                  {communityReportCount} users near you have flagged this medicine as suspicious. Verify with a licensed pharmacist before use.
+                </p>
+              </div>
+            </div>
+          </ScrollReveal>
+        )}
+
         {/* Analysis data */}
         <ScrollReveal delay={0.2} duration={0.6}>
           <Card className="mt-5 border-border/60 shadow-sm">
@@ -217,10 +238,39 @@ const ResultsPage = () => {
               </Button>
             </Link>
             <div className="grid grid-cols-1 gap-3 xs:grid-cols-2">
-              {status !== "safe" && (
-                <Button variant="destructive" size="lg" className="w-full gap-2">
-                  <AlertTriangle className="h-4 w-4" />
-                  {t("reportFake")}
+              {status !== "safe" && status !== "verified_global" && (
+                <Button
+                  variant="destructive"
+                  size="lg"
+                  className="w-full gap-2"
+                  disabled={reported || reporting}
+                  onClick={async () => {
+                    setReporting(true);
+                    try {
+                      const API_URL = import.meta.env.VITE_API_URL || "";
+                      const API_KEY = import.meta.env.VITE_API_KEY || "";
+                      const base = API_URL.replace(/\/analyze$/, "");
+                      await fetch(`${base}/report`, {
+                        method: "POST",
+                        headers: {
+                          "Content-Type": "application/json",
+                          "X-API-Key": API_KEY,
+                        },
+                        body: JSON.stringify({ medicine_name: drugName }),
+                      });
+                      setReported(true);
+                    } catch {
+                      // fail silently — report best-effort
+                    } finally {
+                      setReporting(false);
+                    }
+                  }}
+                >
+                  {reported ? (
+                    <><CheckCircle2 className="h-4 w-4" /> Report Submitted — Thank you!</>
+                  ) : (
+                    <><AlertTriangle className="h-4 w-4" /> {t("reportFake")}</>
+                  )}
                 </Button>
               )}
               <Button
