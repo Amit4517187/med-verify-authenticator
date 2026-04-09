@@ -139,6 +139,19 @@ const ScanPage = () => {
         return;
       }
 
+      // Phase 3: Save scan to local history for proactive recall alerts
+      if (data.drug_name && (data.status === "safe" || data.status === "verified_global")) {
+        try {
+          const history = JSON.parse(localStorage.getItem("medverify_scan_history") || "[]");
+          history.push({ name: data.drug_name, scannedAt: new Date().toISOString() });
+          // Keep only the last 50 scans to avoid overflowing storage
+          if (history.length > 50) history.splice(0, history.length - 50);
+          localStorage.setItem("medverify_scan_history", JSON.stringify(history));
+        } catch {
+          // localStorage might be unavailable in some browsers — fail silently
+        }
+      }
+
       navigate("/results", {
         state: {
           status: data.status,

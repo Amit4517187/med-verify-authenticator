@@ -1,9 +1,10 @@
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 import {
   Shield, Eye, FileText, QrCode, IndianRupee, Building2,
   ArrowRight, Scan, CheckCircle2, HeartPulse, Pill,
-  Zap, WifiOff, Languages, Quote,
+  Zap, WifiOff, Languages, Quote, AlertTriangle, X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -11,6 +12,40 @@ import { ScrollReveal } from "../components/animations/ScrollReveal";
 
 const Index = () => {
   const { t } = useLanguage();
+
+  // Phase 3: Proactive Health Safety Alerts
+  const [recallAlerts, setRecallAlerts] = useState<string[]>([]);
+  const [alertDismissed, setAlertDismissed] = useState(false);
+
+  useEffect(() => {
+    const checkForRecalls = async () => {
+      try {
+        const history: { name: string; scannedAt: string }[] = JSON.parse(
+          localStorage.getItem("medverify_scan_history") || "[]"
+        );
+        if (history.length === 0) return;
+
+        const API_URL = import.meta.env.VITE_API_URL || "";
+        const base = API_URL.replace(/\/analyze$/, "");
+        const res = await fetch(`${base}/recent-bans`);
+        if (!res.ok) return;
+
+        const data = await res.json();
+        const recentBans: string[] = (data.recent_bans || []).map(
+          (b: { drug_name: string }) => b.drug_name.toLowerCase()
+        );
+
+        const matches = history
+          .filter((h) => recentBans.includes(h.name.toLowerCase()))
+          .map((h) => h.name);
+
+        if (matches.length > 0) setRecallAlerts([...new Set(matches)]);
+      } catch {
+        // Fail silently — alert is best-effort
+      }
+    };
+    checkForRecalls();
+  }, []);
 
   const stats = [
     { value: t("stat1Value"), label: t("stat1Label"), color: "text-destructive" },
@@ -35,6 +70,30 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
+
+      {/* Phase 3: Proactive Recall Alert Banner */}
+      {recallAlerts.length > 0 && !alertDismissed && (
+        <div className="sticky top-0 z-50 bg-destructive text-destructive-foreground px-4 py-3 shadow-lg">
+          <div className="container mx-auto flex items-start gap-3">
+            <AlertTriangle className="h-5 w-5 shrink-0 mt-0.5 animate-pulse" />
+            <div className="flex-1 text-sm font-medium">
+              <span className="font-bold">⚠️ SAFETY RECALL ALERT: </span>
+              {recallAlerts.length === 1 ? (
+                <>The medicine <strong>"{recallAlerts[0]}"</strong> that you previously scanned has been <strong>banned by CDSCO</strong>. Stop use immediately and consult your doctor.</>
+              ) : (
+                <>{recallAlerts.length} medicines you previously scanned have been <strong>banned by CDSCO</strong>: <strong>{recallAlerts.join(", ")}</strong>. Stop use and consult a doctor immediately.</>
+              )}
+            </div>
+            <button
+              onClick={() => setAlertDismissed(true)}
+              className="shrink-0 rounded-full p-0.5 hover:bg-white/20 transition-colors"
+              aria-label="Dismiss alert"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Hero */}
       <section className="relative overflow-hidden py-16 md:py-32 bg-medical-pattern">
