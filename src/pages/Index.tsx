@@ -5,6 +5,7 @@ import {
   Shield, Eye, FileText, QrCode, IndianRupee, Building2,
   ArrowRight, Scan, CheckCircle2, HeartPulse, Pill,
   Zap, WifiOff, Languages, Quote, AlertTriangle, X,
+  Archive, CalendarClock, ClockAlert
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -46,6 +47,31 @@ const Index = () => {
     };
     checkForRecalls();
   }, []);
+
+  // Phase 5 Polish: My Medicine Cabinet
+  const [cabinet, setCabinet] = useState<any[]>([]);
+  useEffect(() => {
+    try {
+      const stored = JSON.parse(localStorage.getItem("medverify_cabinet") || "[]");
+      // Sort by expiry date (closest first)
+      stored.sort((a: any, b: any) => new Date(a.expiryDate).getTime() - new Date(b.expiryDate).getTime());
+      setCabinet(stored);
+    } catch {
+      // Ignore
+    }
+  }, []);
+
+  const removeFromCabinet = (idToRemove: string) => {
+    const updated = cabinet.filter(m => m.id !== idToRemove);
+    setCabinet(updated);
+    localStorage.setItem("medverify_cabinet", JSON.stringify(updated));
+  };
+
+  const isExpired = (dateStr: string) => new Date(dateStr) < new Date();
+  const isExpiringSoon = (dateStr: string) => {
+    const days = (new Date(dateStr).getTime() - new Date().getTime()) / (1000 * 3600 * 24);
+    return days > 0 && days <= 60; // Less than 2 months
+  };
 
   const stats = [
     { value: t("stat1Value"), label: t("stat1Label"), color: "text-destructive" },
@@ -206,8 +232,62 @@ const Index = () => {
         </div>
       </section>
 
+      {/* Phase 5 Polish: My Medicine Cabinet */}
+      {cabinet.length > 0 && (
+        <section className="py-12 bg-white">
+          <div className="container mx-auto px-4">
+            <ScrollReveal>
+              <div className="flex items-center gap-3 mb-6">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                  <Archive className="h-5 w-5" />
+                </div>
+                <div>
+                  <h2 className="font-display text-2xl font-bold">My Medicine Cabinet</h2>
+                  <p className="text-sm text-muted-foreground">Keep track of your genuine purchases and expiry dates.</p>
+                </div>
+              </div>
+            </ScrollReveal>
+
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
+              {cabinet.map((med, idx) => {
+                const expired = isExpired(med.expiryDate);
+                const expiringSoon = !expired && isExpiringSoon(med.expiryDate);
+
+                return (
+                  <ScrollReveal key={med.id} delay={idx * 0.1}>
+                    <Card className={`overflow-hidden border focus-within:ring-2 focus-within:ring-primary ${expired ? 'border-destructive/40 bg-destructive/5' : expiringSoon ? 'border-warning/40 bg-warning/5' : 'border-border/50'}`}>
+                      <CardContent className="p-4 relative">
+                        <button 
+                          onClick={() => removeFromCabinet(med.id)}
+                          className="absolute top-3 right-3 text-muted-foreground hover:text-foreground transition-colors"
+                          aria-label="Remove from cabinet"
+                        >
+                          <X className="h-4 w-4" />
+                        </button>
+                        <h3 className="font-semibold text-foreground pr-6 truncate">{med.name}</h3>
+                        <p className="text-xs text-muted-foreground mt-0.5 truncate">{med.composition}</p>
+                        
+                        <div className="mt-4 flex items-center justify-between">
+                          <div className={`flex items-center gap-1.5 text-xs font-semibold ${expired ? 'text-destructive' : expiringSoon ? 'text-warning' : 'text-primary'}`}>
+                            {expired || expiringSoon ? <ClockAlert className="h-3.5 w-3.5" /> : <CalendarClock className="h-3.5 w-3.5" />}
+                            <span>Exp: {new Date(med.expiryDate).toLocaleDateString()}</span>
+                          </div>
+                          <span className="text-[10px] text-muted-foreground">
+                            Added: {new Date(med.addedAt).toLocaleDateString()}
+                          </span>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </ScrollReveal>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Stats */}
-      <section className="border-y border-border bg-white py-10">
+      <section className="border-y border-border bg-slate-50 py-10">
         <div className="container mx-auto grid grid-cols-2 gap-6 px-4 md:grid-cols-4">
           {stats.map((stat, idx) => (
             <ScrollReveal key={stat.label} delay={idx * 0.1}>

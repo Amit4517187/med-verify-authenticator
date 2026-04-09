@@ -1,11 +1,15 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Link, useLocation, Navigate } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 import {
   ShieldCheck, ShieldAlert, ShieldX, AlertTriangle, MapPin, ChevronRight,
   Pill, FlaskConical, Scan, FileText, Users, CheckCircle2, Package, CalendarClock, Factory,
-  Search, Building2, Star, Loader2
+  Search, Building2, Star, Loader2, Download, Plus, Archive
 } from "lucide-react";
+// @ts-ignore
+import jsPDF from "jspdf";
+// @ts-ignore
+import html2canvas from "html2canvas";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -44,6 +48,56 @@ const ResultsPage = () => {
 
   const [reported, setReported] = useState(false);
   const [reporting, setReporting] = useState(false);
+
+  // Phase 5 Polish: PDF & Cabinet state
+  const certificateRef = useRef<HTMLDivElement>(null);
+  const [downloadingPDF, setDownloadingPDF] = useState(false);
+  const [addedToCabinet, setAddedToCabinet] = useState(false);
+
+  const downloadPDF = async () => {
+    if (!certificateRef.current) return;
+    try {
+      setDownloadingPDF(true);
+      const canvas = await html2canvas(certificateRef.current, { scale: 2, useCORS: true });
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF("p", "mm", "a4");
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+      
+      pdf.addImage(imgData, "PNG", 0, 10, pdfWidth, pdfHeight);
+      
+      // Footer text
+      pdf.setFontSize(10);
+      pdf.setTextColor(100);
+      pdf.text(`MedVerify Verification Certificate - Document Generated: ${new Date().toLocaleString()}`, 15, pdf.internal.pageSize.getHeight() - 10);
+      
+      pdf.save(`MedVerify_Certificate_${drugName.replace(/\s+/g, "_")}.pdf`);
+    } catch (err) {
+      console.error("PDF generation failed", err);
+    } finally {
+      setDownloadingPDF(false);
+    }
+  };
+
+  const addToCabinet = () => {
+    try {
+      const cabinet = JSON.parse(localStorage.getItem("medverify_cabinet") || "[]");
+      const newMed = {
+        id: Date.now().toString(),
+        name: drugName,
+        composition,
+        addedAt: new Date().toISOString(),
+        expiryDate: batchVerification?.expiry_date && batchVerification.expiry_date !== "N/A" 
+            ? batchVerification.expiry_date 
+            : new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString().split('T')[0] // Default +1 yr
+      };
+      cabinet.push(newMed);
+      localStorage.setItem("medverify_cabinet", JSON.stringify(cabinet));
+      setAddedToCabinet(true);
+    } catch {
+      // Fail silently
+    }
+  };
 
   // Phase 5: Verified Pharmacy Search State
   const [showPharmacySearch, setShowPharmacySearch] = useState(false);
@@ -159,7 +213,8 @@ const ResultsPage = () => {
         </p>
 
         {/* Main result card */}
-        <ScrollReveal duration={0.6}>
+        <div ref={certificateRef} className="bg-background pb-2">
+          <ScrollReveal duration={0.6}>
           <Card className={`mt-5 overflow-hidden border-2 shadow-md ${config.borderClass}`}>
             <div className={`flex flex-col items-center gap-4 p-6 sm:p-8 ${config.bgClass}`}>
               <div className="relative">
@@ -346,6 +401,7 @@ const ResultsPage = () => {
             </Card>
           </ScrollReveal>
         )}
+        </div>
 
         {/* Actions */}
         <ScrollReveal delay={0.4}>
@@ -392,6 +448,38 @@ const ResultsPage = () => {
                   )}
                 </Button>
               )}
+              
+              {(status === "safe" || status === "verified_global") && (
+                <>
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    className="gap-2 border-primary/30 text-primary hover:bg-primary/5"
+                    disabled={addedToCabinet}
+                    onClick={addToCabinet}
+                  >
+                    {addedToCabinet ? (
+                      <><CheckCircle2 className="h-4 w-4 shrink-0" /> Saved to Cabinet</>
+                    ) : (
+                      <><Archive className="h-4 w-4 shrink-0" /> Add to Cabinet</>
+                    )}
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    className="gap-2 border-primary/30 text-primary hover:bg-primary/5"
+                    disabled={downloadingPDF}
+                    onClick={downloadPDF}
+                  >
+                    {downloadingPDF ? (
+                      <><Loader2 className="h-4 w-4 shrink-0 animate-spin" /> ...</>
+                    ) : (
+                      <><Download className="h-4 w-4 shrink-0" /> Get Certificate</>
+                    )}
+                  </Button>
+                </>
+              )}
+
               <Button
                 variant={showPharmacySearch ? "default" : "outline"}
                 size="lg"
