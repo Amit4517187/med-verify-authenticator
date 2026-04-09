@@ -31,7 +31,7 @@ load_dotenv()
 # ==========================================
 # ⚙️ Configuration
 # ==========================================
-PROJECT_ID = os.getenv('BIGQUERY_PROJECT', 'studio-4456263262-8b86f')
+PROJECT_ID = os.getenv('BIGQUERY_PROJECT')
 TRACKER_FILE = 'scripts/processed_pdfs.json'
 BANNED_TABLE = f'{PROJECT_ID}.med_data.banned_drugs_clean'
 
