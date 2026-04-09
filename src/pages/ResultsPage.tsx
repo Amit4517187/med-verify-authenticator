@@ -4,8 +4,10 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import {
   ShieldCheck, ShieldAlert, ShieldX, AlertTriangle, MapPin, ChevronRight,
   Pill, FlaskConical, Scan, FileText, Users, CheckCircle2, Package, CalendarClock, Factory,
+  Search, Building2, Star, Loader2
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
@@ -42,6 +44,31 @@ const ResultsPage = () => {
 
   const [reported, setReported] = useState(false);
   const [reporting, setReporting] = useState(false);
+
+  // Phase 5: Verified Pharmacy Search State
+  const [showPharmacySearch, setShowPharmacySearch] = useState(false);
+  const [pincode, setPincode] = useState("");
+  const [pharmacies, setPharmacies] = useState<any[]>([]);
+  const [loadingPharmacies, setLoadingPharmacies] = useState(false);
+  const [pharmacySearched, setPharmacySearched] = useState(false);
+
+  const fetchPharmacies = async () => {
+    setLoadingPharmacies(true);
+    setPharmacySearched(true);
+    try {
+      const API_URL = import.meta.env.VITE_API_URL || "";
+      const base = API_URL.replace(/\/analyze$/, "");
+      const res = await fetch(`${base}/verified-pharmacies?pincode=${pincode}`);
+      if (res.ok) {
+        const data = await res.json();
+        setPharmacies(data.pharmacies || []);
+      }
+    } catch {
+      // Fail silently, show empty list
+    } finally {
+      setLoadingPharmacies(false);
+    }
+  };
 
   if (!state) return <Navigate to="/scan" replace />;
 
@@ -366,17 +393,79 @@ const ResultsPage = () => {
                 </Button>
               )}
               <Button
-                variant="outline"
+                variant={showPharmacySearch ? "default" : "outline"}
                 size="lg"
-                className={`gap-2 border-primary/30 text-primary hover:bg-primary/5 ${
+                className={`gap-2 ${showPharmacySearch ? "bg-primary text-primary-foreground" : "border-primary/30 text-primary hover:bg-primary/5"} ${
                   status === "safe" ? "xs:col-span-2" : ""
                 }`}
+                onClick={() => setShowPharmacySearch(!showPharmacySearch)}
               >
                 <MapPin className="h-4 w-4 shrink-0" />
-                <span className="truncate">{t("findPharmacy")}</span>
-                <ChevronRight className="ml-auto h-4 w-4 shrink-0" />
+                <span className="truncate">{showPharmacySearch ? "Close Pharmacy Search" : t("findPharmacy")}</span>
+                {!showPharmacySearch && <ChevronRight className="ml-auto h-4 w-4 shrink-0" />}
               </Button>
             </div>
+            
+            {/* Phase 5: Pharmacy Search Section */}
+            {showPharmacySearch && (
+              <Card className="mt-2 border-primary/20 bg-primary/5">
+                <CardContent className="p-4 space-y-4">
+                  <div className="flex flex-col gap-2">
+                    <p className="text-sm font-bold text-foreground">Find MedVerify Trusted Stockists</p>
+                    <p className="text-xs text-muted-foreground">Only buy from verified partners to ensure genuine medicines. Enter your code (e.g. 110001, 400001) for demo.</p>
+                  </div>
+                  <div className="flex gap-2">
+                    <div className="relative flex-1">
+                      <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                      <Input 
+                        placeholder="Enter Pincode..." 
+                        className="pl-9 h-10 border-primary/20"
+                        value={pincode}
+                        onChange={(e) => setPincode(e.target.value)}
+                        onKeyDown={(e) => e.key === "Enter" && fetchPharmacies()}
+                      />
+                    </div>
+                    <Button onClick={fetchPharmacies} disabled={loadingPharmacies} className="h-10">
+                      {loadingPharmacies ? <Loader2 className="h-4 w-4 animate-spin" /> : "Search"}
+                    </Button>
+                  </div>
+
+                  {pharmacySearched && !loadingPharmacies && pharmacies.length === 0 && (
+                    <div className="text-center py-4 bg-white/50 rounded-lg border border-border/50">
+                      <ShieldX className="h-6 w-6 text-muted-foreground mx-auto mb-2 opacity-50" />
+                      <p className="text-xs text-muted-foreground">No MedVerify Trusted pharmacies found near {pincode || "this location"}.</p>
+                    </div>
+                  )}
+
+                  {pharmacies.length > 0 && (
+                    <div className="space-y-3 mt-4">
+                      {pharmacies.map((pharmacy, idx) => (
+                        <div key={idx} className="flex items-start gap-3 p-3 rounded-xl bg-white border border-primary/10 shadow-sm transition-all hover:border-primary/30">
+                          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+                            <Building2 className="h-5 w-5" />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex justify-between items-start">
+                              <p className="text-sm font-bold text-foreground truncate">{pharmacy.pharmacy_name}</p>
+                              {pharmacy.rating && (
+                                <div className="flex items-center gap-1 bg-yellow-100 text-yellow-700 px-1.5 py-0.5 rounded text-[10px] font-bold shrink-0">
+                                  <Star className="h-3 w-3 fill-current" /> {pharmacy.rating}
+                                </div>
+                              )}
+                            </div>
+                            <p className="text-[10px] text-muted-foreground mt-0.5 font-medium">Lic: {pharmacy.license_number}</p>
+                            <div className="flex items-start gap-1 mt-1.5">
+                              <MapPin className="h-3 w-3 text-muted-foreground shrink-0 mt-0.5" />
+                              <p className="text-xs text-muted-foreground leading-tight">{pharmacy.address}, {pharmacy.pincode}</p>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            )}
           </div>
         </ScrollReveal>
       </div>
