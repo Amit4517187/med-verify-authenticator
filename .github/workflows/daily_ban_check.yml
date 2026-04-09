@@ -1,0 +1,51 @@
+name: 🔴 Daily CDSCO Ban Monitor
+
+on:
+  schedule:
+    - cron: '30 18 * * *'   # Runs at 18:30 UTC = midnight IST every night
+  workflow_dispatch:          # Also allows one-click manual trigger from GitHub UI
+
+jobs:
+  monitor-cdsco:
+    name: Check CDSCO for Newly Banned Drugs
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write         # Needed to commit updated processed_pdfs.json back
+
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 🐍 Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: 📦 Install dependencies
+        run: |
+          pip install --quiet \
+            pdfplumber \
+            requests \
+            beautifulsoup4 \
+            google-cloud-bigquery \
+            google-cloud-bigquery-storage \
+            google-auth \
+            python-dotenv \
+            lxml \
+            db-dtypes
+
+      - name: 🔍 Run CDSCO Monitor
+        env:
+          GCP_JSON_KEY: ${{ secrets.GCP_JSON_KEY }}
+          BIGQUERY_PROJECT: ${{ secrets.BIGQUERY_PROJECT }}
+        run: python scripts/cdsco_monitor.py
+
+      - name: 💾 Commit updated PDF tracker
+        run: |
+          git config --global user.name 'MedVerify Bot'
+          git config --global user.email 'bot@medverify.app'
+          git add scripts/processed_pdfs.json
+          git diff --staged --quiet || git commit -m "chore: update CDSCO processed PDFs tracker [skip ci]"
+          git push
