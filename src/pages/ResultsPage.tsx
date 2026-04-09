@@ -3,7 +3,7 @@ import { Link, useLocation, Navigate } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 import {
   ShieldCheck, ShieldAlert, ShieldX, AlertTriangle, MapPin, ChevronRight,
-  Pill, FlaskConical, Scan, FileText, Users, CheckCircle2,
+  Pill, FlaskConical, Scan, FileText, Users, CheckCircle2, Package, CalendarClock, Factory,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -13,6 +13,18 @@ import { ScrollReveal } from "../components/animations/ScrollReveal";
 
 type ApiStatus = "safe" | "caution" | "danger" | "verified_global";
 
+interface BatchVerification {
+  status: "verified" | "recalled" | "not_found" | "error";
+  source?: string;
+  batch_number?: string;
+  manufacturer?: string;
+  manufacture_date?: string;
+  expiry_date?: string;
+  distribution_states?: string;
+  recall_status?: string;
+  message?: string;
+}
+
 interface ResultState {
   status: ApiStatus | "error";
   drugName: string;
@@ -20,6 +32,7 @@ interface ResultState {
   message: string;
   communityFlagged?: boolean;
   communityReportCount?: number;
+  batchVerification?: BatchVerification | null;
 }
 
 const ResultsPage = () => {
@@ -32,7 +45,7 @@ const ResultsPage = () => {
 
   if (!state) return <Navigate to="/scan" replace />;
 
-  const { status, drugName, composition, message, communityFlagged, communityReportCount } = state;
+  const { status, drugName, composition, message, communityFlagged, communityReportCount, batchVerification } = state;
 
   if (status === "error") {
     return (
@@ -227,6 +240,85 @@ const ResultsPage = () => {
             </CardContent>
           </Card>
         </ScrollReveal>
+
+        {/* Phase 4: Batch Verification Card */}
+        {batchVerification && batchVerification.status !== "error" && (
+          <ScrollReveal delay={0.35}>
+            <Card className={`mt-4 border-2 ${
+              batchVerification.status === "recalled"
+                ? "border-destructive/60 bg-destructive/5"
+                : batchVerification.status === "verified"
+                ? "border-primary/40 bg-primary/5"
+                : "border-border/60"
+            }`}>
+              <CardHeader className="pb-3">
+                <CardTitle className="flex items-center gap-2 text-sm font-bold">
+                  <Package className={`h-4 w-4 ${
+                    batchVerification.status === "recalled" ? "text-destructive" :
+                    batchVerification.status === "verified" ? "text-primary" : "text-muted-foreground"
+                  }`} />
+                  Batch-Level Verification
+                  <span className={`ml-auto rounded-full px-2 py-0.5 text-[10px] font-bold ${
+                    batchVerification.status === "recalled" ? "bg-destructive text-destructive-foreground" :
+                    batchVerification.status === "verified"  ? "bg-primary text-primary-foreground" :
+                    "bg-muted text-muted-foreground"
+                  }`}>
+                    {batchVerification.status === "recalled" ? "⛔ RECALLED" :
+                     batchVerification.status === "verified"  ? "✅ VERIFIED"  : "⚠️ NOT FOUND"}
+                  </span>
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3 pt-0">
+                <p className="text-xs text-muted-foreground leading-relaxed">{batchVerification.message}</p>
+                <Separator />
+                <div className="grid grid-cols-2 gap-3 text-xs">
+                  {batchVerification.batch_number && (
+                    <div>
+                      <p className="font-medium text-muted-foreground">Batch No.</p>
+                      <p className="font-bold text-foreground">{batchVerification.batch_number}</p>
+                    </div>
+                  )}
+                  {batchVerification.manufacturer && (
+                    <div className="flex items-start gap-1">
+                      <Factory className="h-3 w-3 mt-0.5 shrink-0 text-muted-foreground" />
+                      <div>
+                        <p className="font-medium text-muted-foreground">Manufacturer</p>
+                        <p className="font-bold text-foreground">{batchVerification.manufacturer}</p>
+                      </div>
+                    </div>
+                  )}
+                  {batchVerification.manufacture_date && batchVerification.manufacture_date !== "N/A" && (
+                    <div className="flex items-start gap-1">
+                      <CalendarClock className="h-3 w-3 mt-0.5 shrink-0 text-muted-foreground" />
+                      <div>
+                        <p className="font-medium text-muted-foreground">Manufactured</p>
+                        <p className="font-bold text-foreground">{batchVerification.manufacture_date}</p>
+                      </div>
+                    </div>
+                  )}
+                  {batchVerification.expiry_date && batchVerification.expiry_date !== "N/A" && (
+                    <div>
+                      <p className="font-medium text-muted-foreground">Expires</p>
+                      <p className="font-bold text-foreground">{batchVerification.expiry_date}</p>
+                    </div>
+                  )}
+                </div>
+                {batchVerification.distribution_states && batchVerification.distribution_states !== "N/A" && (
+                  <div className="flex items-start gap-2 rounded-lg bg-background/60 p-2">
+                    <MapPin className="h-3 w-3 mt-0.5 shrink-0 text-primary" />
+                    <div>
+                      <p className="text-[10px] font-medium text-muted-foreground">Authorized Distribution</p>
+                      <p className="text-xs font-semibold text-foreground">{batchVerification.distribution_states}</p>
+                    </div>
+                  </div>
+                )}
+                {batchVerification.source && (
+                  <p className="text-[10px] text-muted-foreground text-right">Source: {batchVerification.source}</p>
+                )}
+              </CardContent>
+            </Card>
+          </ScrollReveal>
+        )}
 
         {/* Actions */}
         <ScrollReveal delay={0.4}>

@@ -144,11 +144,26 @@ const ScanPage = () => {
         try {
           const history = JSON.parse(localStorage.getItem("medverify_scan_history") || "[]");
           history.push({ name: data.drug_name, scannedAt: new Date().toISOString() });
-          // Keep only the last 50 scans to avoid overflowing storage
           if (history.length > 50) history.splice(0, history.length - 50);
           localStorage.setItem("medverify_scan_history", JSON.stringify(history));
         } catch {
-          // localStorage might be unavailable in some browsers — fail silently
+          // localStorage unavailable — fail silently
+        }
+      }
+
+      // Phase 4: Batch-Level Verification (runs in parallel, non-blocking)
+      let batchVerification = null;
+      if (trimmedBatch) {
+        try {
+          const finalBase = finalUrl.replace(/\/analyze$/, "");
+          const batchRes = await fetch(`${finalBase}/verify-batch`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json", "X-API-Key": API_KEY },
+            body: JSON.stringify({ medicine_name: data.drug_name || trimmedName, batch_number: trimmedBatch }),
+          });
+          if (batchRes.ok) batchVerification = await batchRes.json();
+        } catch {
+          // Batch check is best-effort — don't block the main result
         }
       }
 
@@ -160,6 +175,7 @@ const ScanPage = () => {
           message: data.message,
           communityFlagged: data.community_flagged ?? false,
           communityReportCount: data.community_report_count ?? 0,
+          batchVerification,
         },
       });
     } catch (err: any) {
