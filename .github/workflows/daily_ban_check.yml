@@ -41,6 +41,12 @@ jobs:
           BIGQUERY_PROJECT: ${{ secrets.BIGQUERY_PROJECT }}
         run: python scripts/cdsco_monitor.py
 
+      - name: 🛡️ Run DB Immortality Protocol
+        env:
+          GCP_JSON_KEY: ${{ secrets.GCP_JSON_KEY }}
+          BIGQUERY_PROJECT: ${{ secrets.BIGQUERY_PROJECT }}
+        run: python scripts/db_immortality.py
+
       - name: 💾 Commit updated PDF tracker
         run: |
           git config --global user.name 'MedVerify Bot'
