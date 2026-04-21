@@ -42,6 +42,7 @@ jobs:
         run: python scripts/cdsco_monitor.py
 
       - name: 🛡️ Run DB Immortality Protocol
+        if: always()
         env:
           GCP_JSON_KEY: ${{ secrets.GCP_JSON_KEY }}
           BIGQUERY_PROJECT: ${{ secrets.BIGQUERY_PROJECT }}
