@@ -172,6 +172,7 @@ const ScanPage = () => {
           status: data.status,
           drugName: data.drug_name,
           composition: data.composition,
+          usage_description: data.usage_description,
           message: data.message,
           communityFlagged: data.community_flagged ?? false,
           communityReportCount: data.community_report_count ?? 0,
