@@ -126,7 +126,7 @@ const ResultsPage = () => {
 
   if (!state) return <Navigate to="/scan" replace />;
 
-  const { status, drugName, composition, message, communityFlagged, communityReportCount, batchVerification } = state;
+  const { status, drugName, composition, usage_description, message, communityFlagged, communityReportCount, batchVerification } = state;
 
   if (status === "error") {
     return (
@@ -285,6 +285,12 @@ const ResultsPage = () => {
                   >
                     {composition}
                   </p>
+                  {usage_description && usage_description !== "Information not available." && (
+                    <div className="mt-2 rounded-md bg-muted/50 p-2.5 border border-border/50">
+                      <p className="text-xs font-semibold text-primary mb-0.5 mt-0">What it is used for:</p>
+                      <p className="text-xs text-muted-foreground leading-relaxed">{usage_description}</p>
+                    </div>
+                  )}
                 </div>
               </div>
 

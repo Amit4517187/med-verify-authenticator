@@ -12,6 +12,9 @@ import { useLanguage } from "../contexts/LanguageContext";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../../App";
 import { LinearGradient } from "expo-linear-gradient";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useFocusEffect } from "@react-navigation/native";
+import Constants from 'expo-constants';
 
 type Props = {
   navigation: any;
@@ -37,9 +40,66 @@ const STATS = [
 export default function HomeScreen({ navigation }: Props) {
   const { t } = useLanguage();
 
+  const [cabinet, setCabinet] = React.useState<any[]>([]);
+  const [recallAlerts, setRecallAlerts] = React.useState<string[]>([]);
+  const [alertDismissed, setAlertDismissed] = React.useState(false);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      // 1. Load Medicine Cabinet
+      const loadCabinet = async () => {
+        try {
+          const stored = await AsyncStorage.getItem("medverify_cabinet");
+          if (stored) {
+            setCabinet(JSON.parse(stored));
+          }
+        } catch { }
+      };
+
+      // 2. Load Proactive Recall Alerts
+      const checkRecalls = async () => {
+        try {
+          const histStatus = await AsyncStorage.getItem("medverify_history");
+          const history = histStatus ? JSON.parse(histStatus) : [];
+          if (history.length === 0) return;
+
+          const res = await fetch("https://amitkmishraa-medverify-backend.hf.space/recent-bans");
+          if (res.ok) {
+            const data = await res.json();
+            const recentBans = (data.recent_bans || []).map((b: any) => b.drug_name.toLowerCase());
+            
+            const matches = history
+              .filter((h: any) => recentBans.includes((h.medicineName || "").toLowerCase()))
+              .map((h: any) => h.medicineName);
+            
+            if (matches.length > 0) setRecallAlerts([...new Set<string>(matches)]);
+          }
+        } catch { }
+      };
+
+      loadCabinet();
+      checkRecalls();
+    }, [])
+  );
+
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       <StatusBar barStyle="light-content" />
+
+      {/* Proactive Recall Alert Banner */}
+      {recallAlerts.length > 0 && !alertDismissed && (
+        <View style={styles.recallBanner}>
+          <Text style={styles.recallBannerTitle}>⚠️ SAFETY RECALL ALERT</Text>
+          <Text style={styles.recallBannerText}>
+            {recallAlerts.length === 1
+              ? `The medicine "${recallAlerts[0]}" that you previously scanned has been banned by CDSCO. Stop use immediately and consult your doctor.`
+              : `${recallAlerts.length} medicines you previously scanned have been banned by CDSCO: ${recallAlerts.join(", ")}. Stop use and consult a doctor immediately.`}
+          </Text>
+          <TouchableOpacity style={styles.recallDismissBtn} onPress={() => setAlertDismissed(true)}>
+            <Text style={styles.recallDismissBtnText}>Dismiss</Text>
+          </TouchableOpacity>
+        </View>
+      )}
 
       {/* Hero Section */}
       <LinearGradient colors={["#0f172a", "#1e3a5f", "#0f172a"]} style={styles.hero}>
@@ -57,6 +117,21 @@ export default function HomeScreen({ navigation }: Props) {
           <Text style={styles.ctaButtonText}>📸  {t("scanNow")}</Text>
         </TouchableOpacity>
       </LinearGradient>
+
+      {/* Medicine Cabinet Section */}
+      {cabinet.length > 0 && (
+        <View style={styles.cabinetSection}>
+          <Text style={styles.sectionTitle}>🗄️ My Medicine Cabinet</Text>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.cabinetScroll}>
+            {cabinet.map((med) => (
+              <View key={med.id} style={styles.cabinetCard}>
+                <Text style={styles.cabinetMedName} numberOfLines={1}>{med.name}</Text>
+                <Text style={styles.cabinetMedComp} numberOfLines={2}>{med.composition}</Text>
+              </View>
+            ))}
+          </ScrollView>
+        </View>
+      )}
 
       {/* Stats Grid */}
       <View style={styles.section}>
@@ -153,6 +228,32 @@ const styles = StyleSheet.create({
     elevation: 8,
   },
   ctaButtonText: { color: "#fff", fontSize: 16, fontWeight: "700" },
+
+  // Recall Banner
+  recallBanner: {
+    backgroundColor: "#ef4444",
+    padding: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: "#b91c1c",
+  },
+  recallBannerTitle: { fontSize: 13, fontWeight: "800", color: "#fff", marginBottom: 4 },
+  recallBannerText: { fontSize: 12, color: "#fef2f2", lineHeight: 18 },
+  recallDismissBtn: { alignSelf: "flex-end", marginTop: 8, paddingHorizontal: 10, paddingVertical: 4, backgroundColor: "rgba(0,0,0,0.2)", borderRadius: 6 },
+  recallDismissBtnText: { color: "#fff", fontSize: 11, fontWeight: "600" },
+
+  // Cabinet Section
+  cabinetSection: { paddingVertical: 24, paddingLeft: 20 },
+  cabinetScroll: { gap: 12, paddingRight: 20 },
+  cabinetCard: {
+    width: 160,
+    backgroundColor: "rgba(30,58,95,0.4)",
+    borderWidth: 1,
+    borderColor: "rgba(59,130,246,0.3)",
+    borderRadius: 14,
+    padding: 14,
+  },
+  cabinetMedName: { fontSize: 14, fontWeight: "700", color: "#f8fafc", marginBottom: 4 },
+  cabinetMedComp: { fontSize: 11, color: "#94a3b8", lineHeight: 16 },
 
   // Sections
   section: { paddingHorizontal: 20, paddingVertical: 24 },

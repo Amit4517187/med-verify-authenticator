@@ -12,8 +12,9 @@ import { useLanguage } from "../contexts/LanguageContext";
 import { getScanHistory, clearScanHistory } from "../services/storage";
 import { ScanHistoryItem } from "../types";
 
-const STATUS_CONFIG = {
+const STATUS_CONFIG: Record<string, { emoji: string; color: string; label: string }> = {
   safe: { emoji: "✅", color: "#34d399", label: "Genuine" },
+  verified_global: { emoji: "🌐", color: "#34d399", label: "Genuine (Global)" },
   caution: { emoji: "⚠️", color: "#fbbf24", label: "Suspicious" },
   danger: { emoji: "🚨", color: "#f87171", label: "Fake" },
   error: { emoji: "❓", color: "#94a3b8", label: "Unknown" },

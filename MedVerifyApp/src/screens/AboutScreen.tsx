@@ -25,7 +25,12 @@ const TECH_ITEMS = [
   { icon: "📊", key: "tech4" as const },
 ];
 
-export default function AboutScreen() {
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../../App";
+
+type AboutScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, "MainTabs">;
+
+export default function AboutScreen({ navigation }: { navigation: AboutScreenNavigationProp }) {
   const { t } = useLanguage();
 
   const openEmail = (subject = "MedVerify Inquiry") => {
@@ -132,6 +137,16 @@ export default function AboutScreen() {
         <Text style={styles.orText}>{t("orEmailDirectly")}</Text>
         <TouchableOpacity onPress={() => openEmail()}>
           <Text style={styles.emailLink}>{FOUNDER_EMAIL}</Text>
+        </TouchableOpacity>
+      </View>
+
+      {/* Legal Links */}
+      <View style={styles.legalSection}>
+        <TouchableOpacity style={styles.legalBtn} onPress={() => navigation.navigate("Privacy" as any)}>
+          <Text style={styles.legalBtnText}>📜 Privacy Policy</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.legalBtn} onPress={() => navigation.navigate("Terms" as any)}>
+          <Text style={styles.legalBtnText}>⚖️ Terms and Conditions</Text>
         </TouchableOpacity>
       </View>
 
@@ -282,6 +297,28 @@ const styles = StyleSheet.create({
   ctaBtnText: { color: "#fff", fontSize: 15, fontWeight: "700" },
   orText: { fontSize: 12, color: "#475569", marginBottom: 4 },
   emailLink: { fontSize: 14, color: "#60a5fa", fontWeight: "600" },
+
+  // Legal
+  legalSection: {
+    padding: 20,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    gap: 16,
+    flexWrap: 'wrap',
+  },
+  legalBtn: {
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    borderRadius: 8,
+    backgroundColor: 'rgba(59,130,246,0.1)',
+    borderWidth: 1,
+    borderColor: 'rgba(59,130,246,0.2)',
+  },
+  legalBtnText: {
+    fontSize: 13,
+    color: '#94a3b8',
+    fontWeight: '600'
+  },
 
   // Footer
   footer: {

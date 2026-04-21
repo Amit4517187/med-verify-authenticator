@@ -32,7 +32,8 @@
         {
           "cameraPermission": "Allow MedVerify to access your camera to scan medicine barcodes."
         }
-      ]
+      ],
+      "expo-sharing"
     ]
   }
 }

@@ -5,7 +5,13 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
+  Alert,
+  ActivityIndicator,
+  Linking,
 } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as Print from "expo-print";
+import * as Sharing from "expo-sharing";
 import { useLanguage } from "../contexts/LanguageContext";
 import { VerificationResult } from "../types";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -69,7 +75,59 @@ export default function ResultsScreen({ navigation, route }: Props) {
   const { t } = useLanguage();
   const { result } = route.params;
 
+  const [addedToCabinet, setAddedToCabinet] = React.useState(false);
+  const [isGeneratingPdf, setIsGeneratingPdf] = React.useState(false);
+
   const config = STATUS_CONFIG[result.status] || STATUS_CONFIG.error;
+
+  const handleAddToCabinet = async () => {
+    try {
+      const stored = await AsyncStorage.getItem("medverify_cabinet");
+      const cabinet = stored ? JSON.parse(stored) : [];
+      const newMed = {
+        id: Date.now().toString(),
+        name: result.drug_name || "Unknown Medicine",
+        composition: result.composition || "",
+        addedAt: new Date().toISOString(),
+      };
+      cabinet.push(newMed);
+      await AsyncStorage.setItem("medverify_cabinet", JSON.stringify(cabinet));
+      setAddedToCabinet(true);
+      Alert.alert("Success", "Added to your Medicine Cabinet.");
+    } catch (e) {
+      Alert.alert("Error", "Could not add to cabinet.");
+    }
+  };
+
+  const handleGetCertificate = async () => {
+    try {
+      setIsGeneratingPdf(true);
+      const html = `
+        <html>
+          <body style="font-family: sans-serif; padding: 40px;">
+            <h1 style="color: #0f172a;">MedVerify Certificate</h1>
+            <h2 style="color: ${config.textColor};">${t(config.label as any)}</h2>
+            <hr />
+            <p><strong>Medicine Name:</strong> ${result.drug_name || "N/A"}</p>
+            <p><strong>Composition:</strong> ${result.composition || "N/A"}</p>
+            <p><strong>Analysis:</strong> ${result.message || "N/A"}</p>
+            <br />
+            <p style="color: #64748b; font-size: 12px;">Generated on: ${new Date().toLocaleString()}</p>
+          </body>
+        </html>
+      `;
+      const { uri } = await Print.printToFileAsync({ html });
+      await Sharing.shareAsync(uri, { UTI: '.pdf', mimeType: 'application/pdf' });
+    } catch (e) {
+      Alert.alert("Error", "Could not generate certificate.");
+    } finally {
+      setIsGeneratingPdf(false);
+    }
+  };
+
+  const handleFindPharmacy = () => {
+    Linking.openURL("https://www.google.com/maps/search/pharmacies+near+me");
+  };
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
@@ -104,6 +162,12 @@ export default function ResultsScreen({ navigation, route }: Props) {
             <View style={styles.detailRow}>
               <Text style={styles.detailLabel}>{t("composition")}</Text>
               <Text style={styles.detailValue}>{result.composition}</Text>
+              {result.usage_description && result.usage_description !== "Information not available." && (
+                <View style={styles.usageContainer}>
+                  <Text style={styles.usageTitle}>What it is used for:</Text>
+                  <Text style={styles.usageText}>{result.usage_description}</Text>
+                </View>
+              )}
             </View>
           )}
           {result.message && (
@@ -112,6 +176,16 @@ export default function ResultsScreen({ navigation, route }: Props) {
               <Text style={[styles.detailValue, styles.messageText]}>{result.message}</Text>
             </View>
           )}
+        </View>
+      )}
+
+      {/* Community Warning Banner */}
+      {result.communityFlagged && (
+        <View style={styles.communityWarningCard}>
+          <Text style={styles.communityWarningTitle}>👥 Community Warning</Text>
+          <Text style={styles.communityWarningText}>
+            {result.communityReportCount || 1} users near you have flagged this medicine as suspicious. Verify with a licensed pharmacist before use.
+          </Text>
         </View>
       )}
 
@@ -132,6 +206,35 @@ export default function ResultsScreen({ navigation, route }: Props) {
         activeOpacity={0.85}
       >
         <Text style={styles.primaryBtnText}>📸  {t("scanAnother")}</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={styles.actionBtn}
+        onPress={handleAddToCabinet}
+        disabled={addedToCabinet}
+      >
+        <Text style={[styles.actionBtnText, addedToCabinet && { color: "#10b981" }]}>
+          {addedToCabinet ? "✅ Added to Cabinet" : "🗄️ Add to Cabinet"}
+        </Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={styles.actionBtn}
+        onPress={handleGetCertificate}
+        disabled={isGeneratingPdf}
+      >
+        {isGeneratingPdf ? (
+          <ActivityIndicator color="#cbd5e1" size="small" />
+        ) : (
+          <Text style={styles.actionBtnText}>📄 Get Certificate</Text>
+        )}
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={styles.actionBtn}
+        onPress={handleFindPharmacy}
+      >
+        <Text style={styles.actionBtnText}>📍 Find Genuine Pharmacy</Text>
       </TouchableOpacity>
 
       <TouchableOpacity
@@ -198,7 +301,25 @@ const styles = StyleSheet.create({
   detailValue: { fontSize: 14, color: "#cbd5e1", lineHeight: 20 },
   messageRow: {},
   messageText: { lineHeight: 22 },
-
+  usageContainer: {
+    marginTop: 10,
+    backgroundColor: "rgba(59, 130, 246, 0.1)",
+    padding: 10,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: "rgba(59, 130, 246, 0.2)",
+  },
+  usageTitle: {
+    color: "#3b82f6",
+    fontSize: 12,
+    fontWeight: "bold",
+    marginBottom: 4,
+  },
+  usageText: {
+    color: "#94a3b8",
+    fontSize: 12,
+    lineHeight: 18,
+  },
   // Warning Card
   warningCard: {
     backgroundColor: "rgba(239,68,68,0.12)",
@@ -210,6 +331,18 @@ const styles = StyleSheet.create({
   },
   warningTitle: { fontSize: 16, fontWeight: "800", color: "#f87171", marginBottom: 8 },
   warningText: { fontSize: 13, color: "#fca5a5", lineHeight: 20 },
+
+  // Community Warning Card
+  communityWarningCard: {
+    backgroundColor: "rgba(245,158,11,0.12)",
+    borderWidth: 1,
+    borderColor: "rgba(245,158,11,0.35)",
+    borderRadius: 16,
+    padding: 18,
+    marginBottom: 20,
+  },
+  communityWarningTitle: { fontSize: 16, fontWeight: "800", color: "#fbbf24", marginBottom: 8 },
+  communityWarningText: { fontSize: 13, color: "#fcd34d", lineHeight: 20 },
 
   // Buttons
   primaryBtn: {
@@ -225,6 +358,16 @@ const styles = StyleSheet.create({
     elevation: 6,
   },
   primaryBtnText: { color: "#fff", fontSize: 15, fontWeight: "700" },
+  actionBtn: {
+    backgroundColor: "rgba(30,41,59,0.8)",
+    borderWidth: 1,
+    borderColor: "rgba(59,130,246,0.2)",
+    borderRadius: 14,
+    paddingVertical: 14,
+    alignItems: "center",
+    marginBottom: 12,
+  },
+  actionBtnText: { color: "#cbd5e1", fontSize: 14, fontWeight: "600" },
   secondaryBtn: {
     backgroundColor: "rgba(30,41,59,0.8)",
     borderWidth: 1,

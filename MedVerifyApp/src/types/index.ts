@@ -1,10 +1,13 @@
-export type VerificationStatus = "safe" | "caution" | "danger" | "error";
+export type VerificationStatus = "safe" | "caution" | "danger" | "error" | "verified_global";
 
 export interface VerificationResult {
   status: VerificationStatus;
   drug_name?: string;
   composition?: string;
+  usage_description?: string;
   message?: string;
+  communityFlagged?: boolean;
+  communityReportCount?: number;
 }
 
 export interface ScanHistoryItem {

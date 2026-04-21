@@ -16,15 +16,20 @@ import ScanScreen from "./src/screens/ScanScreen";
 import ResultsScreen from "./src/screens/ResultsScreen";
 import HistoryScreen from "./src/screens/HistoryScreen";
 import AboutScreen from "./src/screens/AboutScreen";
+import PrivacyScreen from "./src/screens/PrivacyScreen";
+import TermsScreen from "./src/screens/TermsScreen";
 
 import { NavigatorScreenParams } from "@react-navigation/native";
 
+// ==========================================
 // ==========================================
 // NAVIGATION TYPES
 // ==========================================
 export type RootStackParamList = {
   MainTabs: NavigatorScreenParams<TabParamList>;
   Results: { result: VerificationResult };
+  Privacy: undefined;
+  Terms: undefined;
 };
 
 export type TabParamList = {
@@ -161,6 +166,16 @@ function RootNavigator() {
           animation: "slide_from_bottom",
           presentation: "modal",
         }}
+      />
+      <Stack.Screen
+        name="Privacy"
+        component={PrivacyScreen}
+        options={{ headerShown: true, title: "Privacy Policy", headerStyle: { backgroundColor: '#0f172a' }, headerTintColor: '#fff' }}
+      />
+      <Stack.Screen
+        name="Terms"
+        component={TermsScreen}
+        options={{ headerShown: true, title: "Terms and Conditions", headerStyle: { backgroundColor: '#0f172a' }, headerTintColor: '#fff' }}
       />
     </Stack.Navigator>
   );
