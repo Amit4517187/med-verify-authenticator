@@ -60,6 +60,15 @@ const STATUS_CONFIG = {
     label: "fake",
     desc: "fakeDesc",
   },
+  unable_to_verify: {
+    emoji: "❓",
+    bgColor: "rgba(148,163,184,0.15)",
+    borderColor: "rgba(148,163,184,0.3)",
+    textColor: "#94a3b8",
+    badgeBg: "rgba(148,163,184,0.15)",
+    label: "unableToVerify",
+    desc: "unableToVerifyDesc",
+  },
   error: {
     emoji: "❓",
     bgColor: "rgba(148,163,184,0.15)",

@@ -2,7 +2,7 @@ import { useState, useRef } from "react";
 import { Link, useLocation, Navigate } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 import {
-  ShieldCheck, ShieldAlert, ShieldX, AlertTriangle, MapPin, ChevronRight,
+  ShieldCheck, ShieldAlert, ShieldX, AlertTriangle, MapPin, ChevronRight, HelpCircle,
   Pill, FlaskConical, Scan, FileText, Users, CheckCircle2, Package, CalendarClock, Factory,
   Search, Building2, Star, Loader2, Download, Plus, Archive
 } from "lucide-react";
@@ -17,7 +17,7 @@ import { Separator } from "@/components/ui/separator";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { ScrollReveal } from "../components/animations/ScrollReveal";
 
-type ApiStatus = "safe" | "caution" | "danger" | "verified_global";
+type ApiStatus = "safe" | "caution" | "danger" | "verified_global" | "unable_to_verify";
 
 interface BatchVerification {
   status: "verified" | "recalled" | "not_found" | "error";
@@ -191,6 +191,16 @@ const ResultsPage = () => {
       badgeBg: "bg-destructive/10",
       threatLabel: "HIGH — Likely counterfeit",
     },
+    unable_to_verify: {
+      Icon: HelpCircle,
+      title: t("unableToVerify"),
+      desc: t("unableToVerifyDesc"),
+      bgClass: "bg-slate-500/8",
+      textClass: "text-slate-400",
+      borderClass: "border-slate-500/30",
+      badgeBg: "bg-slate-500/10",
+      threatLabel: "INCONCLUSIVE — Manual review recommended",
+    },
   };
 
   const config = configMap[status];
@@ -199,10 +209,12 @@ const ResultsPage = () => {
   if (!config) return <Navigate to="/scan" replace />;
 
   const threatColorClass =
-    status === "safe"
+    status === "safe" || status === "verified_global"
       ? "text-primary"
       : status === "caution"
       ? "text-warning"
+      : status === "unable_to_verify"
+      ? "text-slate-400"
       : "text-destructive";
 
   return (

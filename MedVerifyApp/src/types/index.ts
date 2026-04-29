@@ -1,4 +1,4 @@
-export type VerificationStatus = "safe" | "caution" | "danger" | "error" | "verified_global";
+export type VerificationStatus = "safe" | "caution" | "danger" | "error" | "verified_global" | "unable_to_verify";
 
 export interface VerificationResult {
   status: VerificationStatus;
