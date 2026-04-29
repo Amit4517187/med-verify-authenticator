@@ -163,13 +163,13 @@ const ResultsPage = () => {
     },
     verified_global: {
       Icon: ShieldCheck,
-      title: "NIH Globally Verified",
-      desc: "This medicine is verified through the NIH RxNorm Global Database.",
+      title: t("realMedicine"),
+      desc: t("realMedicineDesc"),
       bgClass: "bg-blue-500/8",
       textClass: "text-blue-600",
       borderClass: "border-blue-500/30",
       badgeBg: "bg-blue-500/10",
-      threatLabel: "AUTHENTIC — Global Match Found",
+      threatLabel: "VERIFIED — Global Registry Match",
     },
     caution: {
       Icon: ShieldAlert,

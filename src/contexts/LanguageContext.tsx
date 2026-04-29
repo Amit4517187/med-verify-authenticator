@@ -75,9 +75,11 @@ const translations = {
     // Results
     verificationComplete: "Verification Complete",
     genuine: "Verified Database Match",
+    realMedicine: "Global Registry Match",
     suspicious: "Verification Warning",
     fake: "Regulatory Warning",
     genuineDesc: "This medicine matched verified regulatory databases.",
+    realMedicineDesc: "The active ingredient is recognized globally. Always buy from a trusted pharmacy.",
     suspiciousDesc: "Some verification checks raised concerns. Please verify with a pharmacist.",
     fakeDesc: "This medicine is flagged by regulatory authorities. Consult a healthcare professional.",
     unableToVerify: "Unable to Verify",
@@ -276,9 +278,11 @@ const translations = {
 
     verificationComplete: "सत्यापन पूर्ण",
     genuine: "सत्यापित डेटाबेस मैच",
+    realMedicine: "ग्लोबल रजिस्ट्री मैच",
     suspicious: "सत्यापन चेतावनी",
     fake: "नियामक चेतावनी",
     genuineDesc: "यह दवा सत्यापित नियामक डेटाबेस में मिली।",
+    realMedicineDesc: "सक्रिय सामग्री विश्व स्तर पर मान्यता प्राप्त है। हमेशा एक विश्वसनीय फार्मेसी से खरीदें।",
     suspiciousDesc: "कुछ सत्यापन जांचों ने चिंताएं जताई हैं। कृपया फार्मासिस्ट से सत्यापित करें।",
     fakeDesc: "यह दवा नियामक अधिकारियों द्वारा चिह्नित है। स्वास्थ्य पेशेवर से परामर्श करें।",
     unableToVerify: "सत्यापित नहीं हो सका",
