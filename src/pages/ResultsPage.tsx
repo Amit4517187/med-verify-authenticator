@@ -39,6 +39,13 @@ interface ResultState {
   communityFlagged?: boolean;
   communityReportCount?: number;
   batchVerification?: BatchVerification | null;
+  evidence?: {
+    medicine_identified: string;
+    database_match: string;
+    regulatory_status: string;
+    packaging_analysis: string;
+  };
+  recommendation?: string;
 }
 
 const ResultsPage = () => {
@@ -325,18 +332,58 @@ const ResultsPage = () => {
 
               <Separator />
 
-              {/* Message */}
-              <div className="flex items-start gap-3">
-                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 sm:h-9 sm:w-9">
-                  <FileText className="h-4 w-4 text-primary" />
+              {/* Message / Evidence Breakdown */}
+              {state?.evidence ? (
+                <div className="flex flex-col gap-3">
+                  <div className="flex items-start gap-3">
+                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 sm:h-9 sm:w-9">
+                      <FileText className="h-4 w-4 text-primary" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-xs font-medium text-muted-foreground">{t("evidenceBreakdown")}</p>
+                      <ul className="mt-2 space-y-1.5 text-sm text-foreground bg-muted/30 p-2.5 rounded-md border border-border/50">
+                        <li className="flex justify-between items-center border-b border-border/40 pb-1">
+                          <span className="text-muted-foreground text-xs">{t("medicineIdentified")}</span>
+                          <span className="font-semibold text-xs">{state.evidence.medicine_identified}</span>
+                        </li>
+                        <li className="flex justify-between items-center border-b border-border/40 pb-1">
+                          <span className="text-muted-foreground text-xs">{t("databaseMatch")}</span>
+                          <span className="font-semibold text-xs">{state.evidence.database_match}</span>
+                        </li>
+                        <li className="flex justify-between items-center border-b border-border/40 pb-1">
+                          <span className="text-muted-foreground text-xs">{t("regulatoryStatus")}</span>
+                          <span className="font-semibold text-xs">{state.evidence.regulatory_status}</span>
+                        </li>
+                        <li className="flex justify-between items-center">
+                          <span className="text-muted-foreground text-xs">{t("packagingAnalysis")}</span>
+                          <span className="font-semibold text-xs">{state.evidence.packaging_analysis}</span>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  {state?.recommendation && (
+                    <>
+                      <Separator className="my-1" />
+                      <div className="rounded-md bg-blue-50 dark:bg-blue-900/20 p-3 border border-blue-200 dark:border-blue-800">
+                        <p className="text-xs font-bold text-blue-700 dark:text-blue-300 mb-1">{t("recommendation")}</p>
+                        <p className="text-xs text-blue-800 dark:text-blue-200 leading-relaxed font-medium">{state.recommendation}</p>
+                      </div>
+                    </>
+                  )}
                 </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-xs font-medium text-muted-foreground">Threat Matrix Analysis</p>
-                  <p className="mt-0.5 text-sm text-foreground whitespace-pre-line break-words leading-relaxed">
-                    {message}
-                  </p>
+              ) : (
+                <div className="flex items-start gap-3">
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 sm:h-9 sm:w-9">
+                    <FileText className="h-4 w-4 text-primary" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs font-medium text-muted-foreground">Threat Matrix Analysis</p>
+                    <p className="mt-0.5 text-sm text-foreground whitespace-pre-line break-words leading-relaxed">
+                      {message}
+                    </p>
+                  </div>
                 </div>
-              </div>
+              )}
             </CardContent>
           </Card>
         </ScrollReveal>

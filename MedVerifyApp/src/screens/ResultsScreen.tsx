@@ -179,12 +179,42 @@ export default function ResultsScreen({ navigation, route }: Props) {
               )}
             </View>
           )}
-          {result.message && (
+          {result.evidence ? (
+            <>
+              <View style={[styles.detailRow, { borderBottomWidth: 0 }]}>
+                <Text style={styles.detailLabel}>{t("evidenceBreakdown" as any)}</Text>
+                <View style={styles.evidenceContainer}>
+                  <View style={styles.evidenceRow}>
+                    <Text style={styles.evidenceLabel}>{t("medicineIdentified" as any)}:</Text>
+                    <Text style={styles.evidenceValue}>{result.evidence.medicine_identified}</Text>
+                  </View>
+                  <View style={styles.evidenceRow}>
+                    <Text style={styles.evidenceLabel}>{t("databaseMatch" as any)}:</Text>
+                    <Text style={styles.evidenceValue}>{result.evidence.database_match}</Text>
+                  </View>
+                  <View style={styles.evidenceRow}>
+                    <Text style={styles.evidenceLabel}>{t("regulatoryStatus" as any)}:</Text>
+                    <Text style={styles.evidenceValue}>{result.evidence.regulatory_status}</Text>
+                  </View>
+                  <View style={styles.evidenceRow}>
+                    <Text style={styles.evidenceLabel}>{t("packagingAnalysis" as any)}:</Text>
+                    <Text style={styles.evidenceValue}>{result.evidence.packaging_analysis}</Text>
+                  </View>
+                </View>
+              </View>
+              {result.recommendation && (
+                <View style={[styles.detailRow, styles.recommendationContainer]}>
+                  <Text style={styles.recommendationTitle}>{t("recommendation" as any)}</Text>
+                  <Text style={styles.recommendationText}>{result.recommendation}</Text>
+                </View>
+              )}
+            </>
+          ) : result.message ? (
             <View style={[styles.detailRow, styles.messageRow]}>
               <Text style={styles.detailLabel}>Analysis</Text>
               <Text style={[styles.detailValue, styles.messageText]}>{result.message}</Text>
             </View>
-          )}
+          ) : null}
         </View>
       )}
 
@@ -317,6 +347,49 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     borderWidth: 1,
     borderColor: "rgba(59, 130, 246, 0.2)",
+  },
+  evidenceContainer: {
+    marginTop: 8,
+    backgroundColor: "rgba(255,255,255,0.05)",
+    padding: 12,
+    borderRadius: 8,
+    gap: 8,
+  },
+  evidenceRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    borderBottomWidth: 1,
+    borderBottomColor: "rgba(255,255,255,0.05)",
+    paddingBottom: 4,
+  },
+  evidenceLabel: {
+    fontSize: 12,
+    color: "#94a3b8",
+  },
+  evidenceValue: {
+    fontSize: 12,
+    color: "#f8fafc",
+    fontWeight: "600",
+  },
+  recommendationContainer: {
+    backgroundColor: "rgba(59, 130, 246, 0.1)",
+    padding: 12,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: "rgba(59, 130, 246, 0.2)",
+  },
+  recommendationTitle: {
+    fontSize: 12,
+    fontWeight: "bold",
+    color: "#60a5fa",
+    marginBottom: 4,
+  },
+  recommendationText: {
+    fontSize: 13,
+    color: "#bfdbfe",
+    lineHeight: 18,
+    fontWeight: "500",
   },
   usageTitle: {
     color: "#3b82f6",

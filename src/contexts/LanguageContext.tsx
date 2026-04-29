@@ -92,6 +92,12 @@ const translations = {
     scanAnother: "Scan Another Medicine",
     reportFake: "Report as Fake",
     findPharmacy: "Find Genuine Pharmacy",
+    evidenceBreakdown: "Evidence Breakdown",
+    medicineIdentified: "Medicine Identified",
+    databaseMatch: "Database Match",
+    regulatoryStatus: "Regulatory Status",
+    packagingAnalysis: "Packaging Analysis",
+    recommendation: "Recommendation",
 
     // Footer
     footerText: "Saving Lives Through AI Innovation",
@@ -295,6 +301,12 @@ const translations = {
     scanAnother: "अन्य दवा स्कैन करें",
     reportFake: "नकली के रूप में रिपोर्ट करें",
     findPharmacy: "असली फार्मेसी खोजें",
+    evidenceBreakdown: "सबूत का विवरण",
+    medicineIdentified: "दवा की पहचान हुई",
+    databaseMatch: "डेटाबेस मैच",
+    regulatoryStatus: "नियामक स्थिति",
+    packagingAnalysis: "पैकेजिंग विश्लेषण",
+    recommendation: "सिफ़ारिश",
 
     footerText: "AI नवाचार के माध्यम से जीवन बचाना",
     teamName: "टीम MedVerify Innovations",

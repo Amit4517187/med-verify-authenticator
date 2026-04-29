@@ -8,6 +8,13 @@ export interface VerificationResult {
   message?: string;
   communityFlagged?: boolean;
   communityReportCount?: number;
+  evidence?: {
+    medicine_identified: string;
+    database_match: string;
+    regulatory_status: string;
+    packaging_analysis: string;
+  };
+  recommendation?: string;
 }
 
 export interface ScanHistoryItem {
