@@ -44,6 +44,8 @@ interface ResultState {
     database_match: string;
     regulatory_status: string;
     packaging_analysis: string;
+    barcode_match: string;
+    ocr_confidence: string;
   };
   recommendation?: string;
 }
@@ -354,9 +356,17 @@ const ResultsPage = () => {
                           <span className="text-muted-foreground text-xs">{t("regulatoryStatus")}</span>
                           <span className="font-semibold text-xs">{state.evidence.regulatory_status}</span>
                         </li>
-                        <li className="flex justify-between items-center">
+                        <li className="flex justify-between items-center border-b border-border/40 pb-1">
                           <span className="text-muted-foreground text-xs">{t("packagingAnalysis")}</span>
                           <span className="font-semibold text-xs">{state.evidence.packaging_analysis}</span>
+                        </li>
+                        <li className="flex justify-between items-center border-b border-border/40 pb-1">
+                          <span className="text-muted-foreground text-xs">{t("barcodeMatch")}</span>
+                          <span className="font-semibold text-xs">{state.evidence.barcode_match}</span>
+                        </li>
+                        <li className="flex justify-between items-center">
+                          <span className="text-muted-foreground text-xs">{t("ocrConfidence")}</span>
+                          <span className="font-semibold text-xs">{state.evidence.ocr_confidence}</span>
                         </li>
                       </ul>
                     </div>

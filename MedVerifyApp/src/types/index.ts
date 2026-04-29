@@ -13,6 +13,8 @@ export interface VerificationResult {
     database_match: string;
     regulatory_status: string;
     packaging_analysis: string;
+    barcode_match: string;
+    ocr_confidence: string;
   };
   recommendation?: string;
 }

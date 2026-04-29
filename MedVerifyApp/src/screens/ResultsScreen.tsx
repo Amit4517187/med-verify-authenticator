@@ -200,6 +200,14 @@ export default function ResultsScreen({ navigation, route }: Props) {
                     <Text style={styles.evidenceLabel}>{t("packagingAnalysis" as any)}:</Text>
                     <Text style={styles.evidenceValue}>{result.evidence.packaging_analysis}</Text>
                   </View>
+                  <View style={styles.evidenceRow}>
+                    <Text style={styles.evidenceLabel}>{t("barcodeMatch" as any)}:</Text>
+                    <Text style={styles.evidenceValue}>{result.evidence.barcode_match}</Text>
+                  </View>
+                  <View style={[styles.evidenceRow, { borderBottomWidth: 0 }]}>
+                    <Text style={styles.evidenceLabel}>{t("ocrConfidence" as any)}:</Text>
+                    <Text style={styles.evidenceValue}>{result.evidence.ocr_confidence}</Text>
+                  </View>
                 </View>
               </View>
               {result.recommendation && (

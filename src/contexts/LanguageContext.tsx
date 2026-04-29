@@ -97,6 +97,8 @@ const translations = {
     databaseMatch: "Database Match",
     regulatoryStatus: "Regulatory Status",
     packagingAnalysis: "Packaging Analysis",
+    barcodeMatch: "Barcode/QR Result",
+    ocrConfidence: "OCR Confidence",
     recommendation: "Recommendation",
 
     // Footer
@@ -306,6 +308,8 @@ const translations = {
     databaseMatch: "डेटाबेस मैच",
     regulatoryStatus: "नियामक स्थिति",
     packagingAnalysis: "पैकेजिंग विश्लेषण",
+    barcodeMatch: "बारकोड/QR परिणाम",
+    ocrConfidence: "OCR कॉन्फिडेंस",
     recommendation: "सिफ़ारिश",
 
     footerText: "AI नवाचार के माध्यम से जीवन बचाना",
