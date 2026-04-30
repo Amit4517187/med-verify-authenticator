@@ -1,8 +1,8 @@
 import Constants from "expo-constants";
 import { VerificationResult } from "../types";
 
-const API_URL = (Constants.expoConfig?.extra?.apiUrl as string) || "";
-const API_KEY = (Constants.expoConfig?.extra?.apiKey as string) || "";
+export const API_URL = (Constants.expoConfig?.extra?.apiUrl as string) || "";
+export const API_KEY = (Constants.expoConfig?.extra?.apiKey as string) || "";
 
 export type AnalyzeInput =
   | { type: "image"; uri: string; mimeType: string; fileName: string }
@@ -12,12 +12,12 @@ export async function analyzeMedicine(input: AnalyzeInput): Promise<Verification
   const formData = new FormData();
 
   if (input.type === "image") {
-    // React Native FormData accepts { uri, type, name }
+    // @ts-expect-error - React Native FormData accepts { uri, type, name }
     formData.append("image", {
       uri: input.uri,
       type: input.mimeType,
       name: input.fileName,
-    } as any);
+    });
   } else {
     const parts = [
       input.medicineName && `Medicine: ${input.medicineName}`,

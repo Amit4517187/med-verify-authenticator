@@ -11,6 +11,12 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ScrollReveal } from "../components/animations/ScrollReveal";
 
+interface CabinetItem {
+  id: string;
+  name: string;
+  expiryDate: string;
+}
+
 const Index = () => {
   const { t } = useLanguage();
 
@@ -49,12 +55,14 @@ const Index = () => {
   }, []);
 
   // Phase 5 Polish: My Medicine Cabinet
-  const [cabinet, setCabinet] = useState<any[]>([]);
+  const [cabinet, setCabinet] = useState<CabinetItem[]>([]);
   useEffect(() => {
     try {
       const stored = JSON.parse(localStorage.getItem("medverify_cabinet") || "[]");
       // Sort by expiry date (closest first)
-      stored.sort((a: any, b: any) => new Date(a.expiryDate).getTime() - new Date(b.expiryDate).getTime());
+      stored.sort((a: CabinetItem, b: CabinetItem) => 
+        new Date(a.expiryDate).getTime() - new Date(b.expiryDate).getTime()
+      );
       setCabinet(stored);
     } catch {
       // Ignore

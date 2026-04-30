@@ -6,9 +6,9 @@ import {
   Pill, FlaskConical, Scan, FileText, Users, CheckCircle2, Package, CalendarClock, Factory,
   Search, Building2, Star, Loader2, Download, Plus, Archive
 } from "lucide-react";
-// @ts-ignore
+// @ts-expect-error - jspdf types
 import jsPDF from "jspdf";
-// @ts-ignore
+// @ts-expect-error - html2canvas types
 import html2canvas from "html2canvas";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -111,7 +111,7 @@ const ResultsPage = () => {
   // Phase 5: Verified Pharmacy Search State
   const [showPharmacySearch, setShowPharmacySearch] = useState(false);
   const [pincode, setPincode] = useState("");
-  const [pharmacies, setPharmacies] = useState<any[]>([]);
+  const [pharmacies, setPharmacies] = useState<unknown[]>([]);
   const [loadingPharmacies, setLoadingPharmacies] = useState(false);
   const [pharmacySearched, setPharmacySearched] = useState(false);
 
@@ -159,8 +159,16 @@ const ResultsPage = () => {
     );
   }
 
-  const configMap: Record<string, any> = {
-    safe: {
+  const configMap: Record<string, {
+    Icon: React.ElementType;
+    title: string;
+    desc: string;
+    bgClass: string;
+    textClass: string;
+    borderClass: string;
+    badgeBg: string;
+  }> = {
+    verified_database: {
       Icon: ShieldCheck,
       title: t("genuine"),
       desc: t("genuineDesc"),
@@ -168,7 +176,17 @@ const ResultsPage = () => {
       textClass: "text-primary",
       borderClass: "border-primary/30",
       badgeBg: "bg-primary/10",
-      threatLabel: "LOW — No threat detected",
+      threatLabel: "LOW — Database Match",
+    },
+    verified_barcode: {
+      Icon: ShieldCheck,
+      title: t("genuine"),
+      desc: t("genuineDesc"),
+      bgClass: "bg-primary/8",
+      textClass: "text-primary",
+      borderClass: "border-primary/30",
+      badgeBg: "bg-primary/10",
+      threatLabel: "LOW — Barcode Match",
     },
     verified_global: {
       Icon: ShieldCheck,
@@ -205,10 +223,10 @@ const ResultsPage = () => {
       title: t("unableToVerify"),
       desc: t("unableToVerifyDesc"),
       bgClass: "bg-slate-500/8",
-      textClass: "text-slate-400",
+      textClass: "text-slate-600",
       borderClass: "border-slate-500/30",
       badgeBg: "bg-slate-500/10",
-      threatLabel: "INCONCLUSIVE — Manual review recommended",
+      threatLabel: "UNKNOWN — Not found in databases",
     },
   };
 
@@ -218,7 +236,7 @@ const ResultsPage = () => {
   if (!config) return <Navigate to="/scan" replace />;
 
   const threatColorClass =
-    status === "safe" || status === "verified_global"
+    status === "verified_database" || status === "verified_barcode" || status === "verified_global"
       ? "text-primary"
       : status === "caution"
       ? "text-warning"
@@ -498,7 +516,7 @@ const ResultsPage = () => {
                     setReporting(true);
                     try {
                       const API_URL = import.meta.env.VITE_API_URL || "";
-                      const API_KEY = import.meta.env.VITE_API_KEY || "";
+                      const API_KEY = import.meta.env.VITE_MEDVERIFY_ACCESS_TOKEN || "";
                       const base = API_URL.replace(/\/analyze$/, "");
                       await fetch(`${base}/report`, {
                         method: "POST",

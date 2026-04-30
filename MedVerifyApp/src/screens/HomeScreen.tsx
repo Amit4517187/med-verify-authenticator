@@ -8,7 +8,8 @@ import {
   StatusBar,
   Dimensions,
 } from "react-native";
-import { useLanguage } from "../contexts/LanguageContext";
+import { useLanguage, TranslationKey } from "../contexts/LanguageContext";
+import { API_URL } from "../services/api";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../../App";
 import { LinearGradient } from "expo-linear-gradient";
@@ -17,7 +18,7 @@ import { useFocusEffect } from "@react-navigation/native";
 import Constants from 'expo-constants';
 
 type Props = {
-  navigation: any;
+  navigation: NativeStackNavigationProp<RootStackParamList, "Home">;
 };
 
 const { width } = Dimensions.get("window");
@@ -40,7 +41,7 @@ const STATS = [
 export default function HomeScreen({ navigation }: Props) {
   const { t } = useLanguage();
 
-  const [cabinet, setCabinet] = React.useState<any[]>([]);
+  const [cabinet, setCabinet] = React.useState<unknown[]>([]);
   const [recallAlerts, setRecallAlerts] = React.useState<string[]>([]);
   const [alertDismissed, setAlertDismissed] = React.useState(false);
 
@@ -53,7 +54,9 @@ export default function HomeScreen({ navigation }: Props) {
           if (stored) {
             setCabinet(JSON.parse(stored));
           }
-        } catch { }
+        } catch (error) { 
+          console.error("Failed to load cabinet:", error);
+        }
       };
 
       // 2. Load Proactive Recall Alerts
@@ -63,18 +66,21 @@ export default function HomeScreen({ navigation }: Props) {
           const history = histStatus ? JSON.parse(histStatus) : [];
           if (history.length === 0) return;
 
-          const res = await fetch("https://amitkmishraa-medverify-backend.hf.space/recent-bans");
+          const base = API_URL.replace(/\/analyze$/, "");
+          const res = await fetch(`${base}/recent-bans`);
           if (res.ok) {
             const data = await res.json();
-            const recentBans = (data.recent_bans || []).map((b: any) => b.drug_name.toLowerCase());
+            const recentBans = (data.recent_bans || []).map((b: { drug_name: string }) => b.drug_name.toLowerCase());
             
             const matches = history
-              .filter((h: any) => recentBans.includes((h.medicineName || "").toLowerCase()))
-              .map((h: any) => h.medicineName);
+              .filter((h: { medicineName: string }) => recentBans.includes((h.medicineName || "").toLowerCase()))
+              .map((h: { medicineName: string }) => h.medicineName);
             
             if (matches.length > 0) setRecallAlerts([...new Set<string>(matches)]);
           }
-        } catch { }
+        } catch (error) {
+          console.error("Failed to check recalls:", error);
+        }
       };
 
       loadCabinet();
@@ -138,8 +144,8 @@ export default function HomeScreen({ navigation }: Props) {
         <View style={styles.statsGrid}>
           {STATS.map(({ key }) => (
             <View key={key} style={styles.statCard}>
-              <Text style={styles.statValue}>{t(`${key}Value` as any)}</Text>
-              <Text style={styles.statLabel}>{t(`${key}Label` as any)}</Text>
+              <Text style={styles.statValue}>{t(`${key}Value` as TranslationKey)}</Text>
+              <Text style={styles.statLabel}>{t(`${key}Label` as TranslationKey)}</Text>
             </View>
           ))}
         </View>
@@ -152,8 +158,8 @@ export default function HomeScreen({ navigation }: Props) {
           {FEATURES.map(({ icon, key }) => (
             <View key={key} style={styles.featureCard}>
               <Text style={styles.featureIcon}>{icon}</Text>
-              <Text style={styles.featureTitle}>{t(`${key}Title` as any)}</Text>
-              <Text style={styles.featureDesc}>{t(`${key}Desc` as any)}</Text>
+              <Text style={styles.featureTitle}>{t(`${key}Title` as TranslationKey)}</Text>
+              <Text style={styles.featureDesc}>{t(`${key}Desc` as TranslationKey)}</Text>
             </View>
           ))}
         </View>

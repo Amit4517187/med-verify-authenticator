@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   Linking,
 } from "react-native";
-import { useLanguage } from "../contexts/LanguageContext";
+import { useLanguage, TranslationKey } from "../contexts/LanguageContext";
 
 const FOUNDER_EMAIL = "amitkmishrawork@gmail.com";
 
@@ -101,8 +101,8 @@ export default function AboutScreen({ navigation }: { navigation: AboutScreenNav
           {BUILT_ITEMS.map(({ icon, key }) => (
             <View key={key} style={styles.builtCard}>
               <Text style={styles.builtIcon}>{icon}</Text>
-              <Text style={styles.builtTitle}>{t(`${key}` as any)}</Text>
-              <Text style={styles.builtDesc}>{t(`${key}Desc` as any)}</Text>
+              <Text style={styles.builtTitle}>{t(`${key}` as TranslationKey)}</Text>
+              <Text style={styles.builtDesc}>{t(`${key}Desc` as TranslationKey)}</Text>
             </View>
           ))}
         </View>
@@ -119,8 +119,8 @@ export default function AboutScreen({ navigation }: { navigation: AboutScreenNav
                 <Text style={styles.techNum}>{i + 1}</Text>
               </View>
               <View style={styles.techContent}>
-                <Text style={styles.techIcon}>{icon} {t(`${key}Title` as any)}</Text>
-                <Text style={styles.techDesc}>{t(`${key}Desc` as any)}</Text>
+                <Text style={styles.techIcon}>{icon} {t(`${key}Title` as TranslationKey)}</Text>
+                <Text style={styles.techDesc}>{t(`${key}Desc` as TranslationKey)}</Text>
               </View>
             </View>
           ))}
@@ -142,10 +142,10 @@ export default function AboutScreen({ navigation }: { navigation: AboutScreenNav
 
       {/* Legal Links */}
       <View style={styles.legalSection}>
-        <TouchableOpacity style={styles.legalBtn} onPress={() => navigation.navigate("Privacy" as any)}>
+        <TouchableOpacity style={styles.legalBtn} onPress={() => navigation.navigate("Privacy" as TranslationKey)}>
           <Text style={styles.legalBtnText}>📜 Privacy Policy</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.legalBtn} onPress={() => navigation.navigate("Terms" as any)}>
+        <TouchableOpacity style={styles.legalBtn} onPress={() => navigation.navigate("Terms" as TranslationKey)}>
           <Text style={styles.legalBtnText}>⚖️ Terms and Conditions</Text>
         </TouchableOpacity>
       </View>

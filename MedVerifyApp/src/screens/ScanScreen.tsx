@@ -22,7 +22,7 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../../App";
 
 type Props = {
-  navigation: any;
+  navigation: NativeStackNavigationProp<RootStackParamList, "Scan">;
 };
 
 const { width } = Dimensions.get("window");
@@ -168,16 +168,17 @@ export default function ScanScreen({ navigation }: Props) {
       );
 
       navigation.navigate("Results", { result });
-    } catch (err: any) {
+    } catch (err: unknown) {
+      const error = err as Error;
       const isNetwork =
-        err?.message?.includes("Failed to fetch") ||
-        err?.message?.includes("NetworkError") ||
-        err?.message?.includes("network");
+        error?.message?.includes("Failed to fetch") ||
+        error?.message?.includes("NetworkError") ||
+        error?.message?.includes("network");
       Alert.alert(
         isNetwork ? t("connectionErrorTitle") : "Server Error",
         isNetwork
           ? t("connectionError")
-          : err?.message || "Cannot connect to the MediGuard Engine. Please try again.",
+          : error?.message || "Cannot connect to the MediGuard Engine. Please try again.",
         [
           { text: t("tryAgain"), onPress: handleSubmit },
           { text: t("cancel"), style: "cancel" },

@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/dialog";
 
 const API_URL = import.meta.env.VITE_API_URL || "";
-const API_KEY = import.meta.env.VITE_API_KEY || "";
+const API_KEY = import.meta.env.VITE_MEDVERIFY_ACCESS_TOKEN || "";
 
 const ANALYSIS_STEPS = [
   "analyzingStep1",
@@ -119,7 +119,7 @@ const ScanPage = () => {
       const response = await fetch(finalUrl, {
         method: "POST",
         headers: {
-          "X-API-Key": API_KEY,
+          // X-API-Key removed for security: backend now uses Domain-Lock (Origin header)
         },
         body: formData,
       });
@@ -158,7 +158,7 @@ const ScanPage = () => {
           const finalBase = finalUrl.replace(/\/analyze$/, "");
           const batchRes = await fetch(`${finalBase}/verify-batch`, {
             method: "POST",
-            headers: { "Content-Type": "application/json", "X-API-Key": API_KEY },
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ medicine_name: data.drug_name || trimmedName, batch_number: trimmedBatch }),
           });
           if (batchRes.ok) batchVerification = await batchRes.json();
@@ -177,14 +177,17 @@ const ScanPage = () => {
           communityFlagged: data.community_flagged ?? false,
           communityReportCount: data.community_report_count ?? 0,
           batchVerification,
+          evidence: data.evidence,
+          recommendation: data.recommendation,
         },
       });
-    } catch (err: any) {
+    } catch (err: unknown) {
+      const error = err as Error;
       const isNetworkError =
-        err?.message?.includes("Failed to fetch") ||
-        err?.message?.includes("NetworkError") ||
-        err?.message?.includes("ERR_NETWORK") ||
-        err?.message?.includes("net::");
+        error?.message?.includes("Failed to fetch") ||
+        error?.message?.includes("NetworkError") ||
+        error?.message?.includes("ERR_NETWORK") ||
+        error?.message?.includes("net::");
 
       if (isNetworkError) {
         setErrorType("network");
@@ -192,7 +195,7 @@ const ScanPage = () => {
       } else {
         setErrorType("server");
         setErrorMessage(
-          err?.message ||
+          error?.message ||
           "Cannot connect to the MediGuard Engine. Please try again later."
         );
       }

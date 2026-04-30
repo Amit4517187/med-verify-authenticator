@@ -12,19 +12,28 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Print from "expo-print";
 import * as Sharing from "expo-sharing";
-import { useLanguage } from "../contexts/LanguageContext";
+import { useLanguage, TranslationKey } from "../contexts/LanguageContext";
 import { VerificationResult } from "../types";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RouteProp } from "@react-navigation/native";
 import { RootStackParamList } from "../../App";
 
 type Props = {
-  navigation: any;
+  navigation: NativeStackNavigationProp<RootStackParamList, "Results">;
   route: RouteProp<RootStackParamList, "Results">;
 };
 
 const STATUS_CONFIG = {
-  safe: {
+  verified_database: {
+    emoji: "✅",
+    bgColor: "rgba(16,185,129,0.15)",
+    borderColor: "rgba(16,185,129,0.4)",
+    textColor: "#34d399",
+    badgeBg: "rgba(16,185,129,0.2)",
+    label: "genuine",
+    desc: "genuineDesc",
+  },
+  verified_barcode: {
     emoji: "✅",
     bgColor: "rgba(16,185,129,0.15)",
     borderColor: "rgba(16,185,129,0.4)",
@@ -115,7 +124,7 @@ export default function ResultsScreen({ navigation, route }: Props) {
         <html>
           <body style="font-family: sans-serif; padding: 40px;">
             <h1 style="color: #0f172a;">MedVerify Certificate</h1>
-            <h2 style="color: ${config.textColor};">${t(config.label as any)}</h2>
+            <h2 style="color: ${config.textColor};">${t(config.label as TranslationKey)}</h2>
             <hr />
             <p><strong>Medicine Name:</strong> ${result.drug_name || "N/A"}</p>
             <p><strong>Composition:</strong> ${result.composition || "N/A"}</p>
@@ -151,10 +160,10 @@ export default function ResultsScreen({ navigation, route }: Props) {
         <Text style={styles.verificationComplete}>{t("verificationComplete")}</Text>
         <View style={[styles.statusBadge, { backgroundColor: config.badgeBg }]}>
           <Text style={[styles.statusBadgeText, { color: config.textColor }]}>
-            {t(config.label as any)}
+            {t(config.label as TranslationKey)}
           </Text>
         </View>
-        <Text style={styles.statusDesc}>{t(config.desc as any)}</Text>
+        <Text style={styles.statusDesc}>{t(config.desc as TranslationKey)}</Text>
       </View>
 
       {/* Drug Details */}
@@ -182,37 +191,37 @@ export default function ResultsScreen({ navigation, route }: Props) {
           {result.evidence ? (
             <>
               <View style={[styles.detailRow, { borderBottomWidth: 0 }]}>
-                <Text style={styles.detailLabel}>{t("evidenceBreakdown" as any)}</Text>
+                <Text style={styles.detailLabel}>{t("evidenceBreakdown" as TranslationKey)}</Text>
                 <View style={styles.evidenceContainer}>
                   <View style={styles.evidenceRow}>
-                    <Text style={styles.evidenceLabel}>{t("medicineIdentified" as any)}:</Text>
+                    <Text style={styles.evidenceLabel}>{t("medicineIdentified" as TranslationKey)}:</Text>
                     <Text style={styles.evidenceValue}>{result.evidence.medicine_identified}</Text>
                   </View>
                   <View style={styles.evidenceRow}>
-                    <Text style={styles.evidenceLabel}>{t("databaseMatch" as any)}:</Text>
+                    <Text style={styles.evidenceLabel}>{t("databaseMatch" as TranslationKey)}:</Text>
                     <Text style={styles.evidenceValue}>{result.evidence.database_match}</Text>
                   </View>
                   <View style={styles.evidenceRow}>
-                    <Text style={styles.evidenceLabel}>{t("regulatoryStatus" as any)}:</Text>
+                    <Text style={styles.evidenceLabel}>{t("regulatoryStatus" as TranslationKey)}:</Text>
                     <Text style={styles.evidenceValue}>{result.evidence.regulatory_status}</Text>
                   </View>
                   <View style={styles.evidenceRow}>
-                    <Text style={styles.evidenceLabel}>{t("packagingAnalysis" as any)}:</Text>
+                    <Text style={styles.evidenceLabel}>{t("packagingAnalysis" as TranslationKey)}:</Text>
                     <Text style={styles.evidenceValue}>{result.evidence.packaging_analysis}</Text>
                   </View>
                   <View style={styles.evidenceRow}>
-                    <Text style={styles.evidenceLabel}>{t("barcodeMatch" as any)}:</Text>
+                    <Text style={styles.evidenceLabel}>{t("barcodeMatch" as TranslationKey)}:</Text>
                     <Text style={styles.evidenceValue}>{result.evidence.barcode_match}</Text>
                   </View>
                   <View style={[styles.evidenceRow, { borderBottomWidth: 0 }]}>
-                    <Text style={styles.evidenceLabel}>{t("ocrConfidence" as any)}:</Text>
+                    <Text style={styles.evidenceLabel}>{t("ocrConfidence" as TranslationKey)}:</Text>
                     <Text style={styles.evidenceValue}>{result.evidence.ocr_confidence}</Text>
                   </View>
                 </View>
               </View>
               {result.recommendation && (
                 <View style={[styles.detailRow, styles.recommendationContainer]}>
-                  <Text style={styles.recommendationTitle}>{t("recommendation" as any)}</Text>
+                  <Text style={styles.recommendationTitle}>{t("recommendation" as TranslationKey)}</Text>
                   <Text style={styles.recommendationText}>{result.recommendation}</Text>
                 </View>
               )}
