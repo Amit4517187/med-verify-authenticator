@@ -34,8 +34,14 @@ graph LR
 
 ---
 
-### Immediate "Stop-Gap" Measures
-While the token is public, ensure the following are enabled on the backend (`app.py`):
-- [x] **Rate Limiting**: Currently set to 100/min to prevent brute-force database scraping.
-- [x] **CORS Origin Filtering**: Restrict `ALLOWED_ORIGINS` to only your deployed domains.
-- [x] **Neutral Wording**: Avoid definitive "Authentic" labels to reduce legal risk from spoofed results.
+### Immediate "Stop-Gap" Measures (Implemented)
+The following layers are currently active:
+- **Domain-Lock (Web)**: The backend (`app.py`) validates the `Origin` header. Requests from authorized domains (e.g., `https://med-verify-authenticator.vercel.app`) are allowed without a token, enabling the removal of public `VITE_` variables.
+- **Rate Limiting**: Currently set to 100/min to prevent brute-force database scraping.
+- **CORS Origin Filtering**: Restrict `ALLOWED_ORIGINS` to only your deployed domains.
+
+### Mobile Authentication Caveat
+Mobile apps do not consistently send a verifiable `Origin` header. For the mobile client:
+1.  **Current**: Relies on a shared `API_KEY` passed in `X-API-Key`.
+2.  **Recommendation**: Route mobile traffic through a proxy (Next.js API route or similar) that validates the mobile client signature and attaches the backend secret server-side.
+

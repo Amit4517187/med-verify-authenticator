@@ -2,6 +2,7 @@ import Constants from "expo-constants";
 import { VerificationResult } from "../types";
 
 export const API_URL = (Constants.expoConfig?.extra?.apiUrl as string) || "";
+// Optional: Use a server-side proxy for production to avoid exposing keys in mobile bundles
 export const API_KEY = (Constants.expoConfig?.extra?.apiKey as string) || "";
 
 export type AnalyzeInput =
@@ -28,12 +29,17 @@ export async function analyzeMedicine(input: AnalyzeInput): Promise<Verification
     formData.append("manual_text", parts.join("\n"));
   }
 
+  const headers: Record<string, string> = {
+    "ngrok-skip-browser-warning": "true",
+  };
+
+  if (API_KEY) {
+    headers["X-API-Key"] = API_KEY;
+  }
+
   const response = await fetch(API_URL, {
     method: "POST",
-    headers: {
-      "X-API-Key": API_KEY,
-      "ngrok-skip-browser-warning": "true",
-    },
+    headers,
     body: formData,
   });
 

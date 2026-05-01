@@ -17,7 +17,7 @@ import { Separator } from "@/components/ui/separator";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { ScrollReveal } from "../components/animations/ScrollReveal";
 
-type ApiStatus = "safe" | "caution" | "danger" | "verified_global" | "unable_to_verify";
+type ApiStatus = "safe" | "verified_database" | "verified_barcode" | "caution" | "danger" | "verified_global" | "unable_to_verify";
 
 interface BatchVerification {
   status: "verified" | "recalled" | "not_found" | "error";
@@ -516,13 +516,12 @@ const ResultsPage = () => {
                     setReporting(true);
                     try {
                       const API_URL = import.meta.env.VITE_API_URL || "";
-                      const API_KEY = import.meta.env.VITE_MEDVERIFY_ACCESS_TOKEN || "";
                       const base = API_URL.replace(/\/analyze$/, "");
                       await fetch(`${base}/report`, {
                         method: "POST",
                         headers: {
                           "Content-Type": "application/json",
-                          "X-API-Key": API_KEY,
+                          // X-API-Key removed for security: backend now uses Domain-Lock (Origin header)
                         },
                         body: JSON.stringify({ medicine_name: drugName }),
                       });
