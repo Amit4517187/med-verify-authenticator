@@ -620,7 +620,7 @@ const ResultsPage = () => {
                 <CardContent className="p-4 space-y-4">
                   <div className="flex flex-col gap-2">
                     <p className="text-sm font-bold text-foreground">Find MedVerify Trusted Stockists</p>
-                    <p className="text-xs text-muted-foreground">Only buy from verified partners to ensure genuine medicines. Enter your code (e.g. 110001, 400001) for demo.</p>
+                    <p className="text-xs text-muted-foreground">Search for authorized stockists in your area to ensure you receive only genuine, lab-tested medicines.</p>
                   </div>
                   <div className="flex gap-2">
                     <div className="relative flex-1">
@@ -639,9 +639,21 @@ const ResultsPage = () => {
                   </div>
 
                   {pharmacySearched && !loadingPharmacies && pharmacies.length === 0 && (
-                    <div className="text-center py-4 bg-white/50 rounded-lg border border-border/50">
-                      <ShieldX className="h-6 w-6 text-muted-foreground mx-auto mb-2 opacity-50" />
-                      <p className="text-xs text-muted-foreground">No MedVerify Trusted pharmacies found near {pincode || "this location"}.</p>
+                    <div className="text-center py-6 bg-white/50 rounded-xl border border-dashed border-border/50">
+                      <div className="flex h-12 w-12 items-center justify-center rounded-full bg-slate-100 mx-auto mb-3">
+                        <MapPin className="h-6 w-6 text-slate-400" />
+                      </div>
+                      <p className="text-sm font-semibold text-foreground">No Certified Partners Found</p>
+                      <p className="text-xs text-muted-foreground mt-1 px-4">
+                        We haven't verified a stockist in {pincode || "this area"} yet. You can find nearby general pharmacies on Google Maps.
+                      </p>
+                      <Button 
+                        variant="link" 
+                        className="mt-2 text-primary font-bold gap-2"
+                        onClick={() => window.open(`https://www.google.com/maps/search/pharmacy+near+${pincode || 'me'}`, '_blank')}
+                      >
+                        Find on Google Maps <ChevronRight className="h-4 w-4" />
+                      </Button>
                     </div>
                   )}
 
