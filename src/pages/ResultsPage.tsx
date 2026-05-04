@@ -62,6 +62,7 @@ const ResultsPage = () => {
   const certificateRef = useRef<HTMLDivElement>(null);
   const [downloadingPDF, setDownloadingPDF] = useState(false);
   const [addedToCabinet, setAddedToCabinet] = useState(false);
+  const [showEvidence, setShowEvidence] = useState(false);
 
   const downloadPDF = async () => {
     if (!certificateRef.current) return;
@@ -388,33 +389,47 @@ const ResultsPage = () => {
                       <FileText className="h-4 w-4 text-primary" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-xs font-medium text-muted-foreground">{t("evidenceBreakdown")}</p>
-                      <ul className="mt-2 space-y-1.5 text-sm text-foreground bg-muted/30 p-2.5 rounded-md border border-border/50">
-                        <li className="flex justify-between items-center border-b border-border/40 pb-1">
-                          <span className="text-muted-foreground text-xs">{t("medicineIdentified")}</span>
-                          <span className="font-semibold text-xs">{state.evidence.medicine_identified}</span>
-                        </li>
-                        <li className="flex justify-between items-center border-b border-border/40 pb-1">
-                          <span className="text-muted-foreground text-xs">{t("databaseMatch")}</span>
-                          <span className="font-semibold text-xs">{state.evidence.database_match}</span>
-                        </li>
-                        <li className="flex justify-between items-center border-b border-border/40 pb-1">
-                          <span className="text-muted-foreground text-xs">{t("regulatoryStatus")}</span>
-                          <span className="font-semibold text-xs">{state.evidence.regulatory_status}</span>
-                        </li>
-                        <li className="flex justify-between items-center border-b border-border/40 pb-1">
-                          <span className="text-muted-foreground text-xs">{t("packagingAnalysis")}</span>
-                          <span className="font-semibold text-xs">{state.evidence.packaging_analysis}</span>
-                        </li>
-                        <li className="flex justify-between items-center border-b border-border/40 pb-1">
-                          <span className="text-muted-foreground text-xs">{t("barcodeMatch")}</span>
-                          <span className="font-semibold text-xs">{state.evidence.barcode_match}</span>
-                        </li>
-                        <li className="flex justify-between items-center">
-                          <span className="text-muted-foreground text-xs">{t("ocrConfidence")}</span>
-                          <span className="font-semibold text-xs">{state.evidence.ocr_confidence}</span>
-                        </li>
-                      </ul>
+                      <div 
+                        className="flex items-center justify-between cursor-pointer group select-none"
+                        onClick={() => setShowEvidence(!showEvidence)}
+                      >
+                        <p className="text-xs font-medium text-muted-foreground group-hover:text-primary transition-colors">{t("evidenceBreakdown")}</p>
+                        <div className="flex items-center gap-1.5">
+                          <span className="text-[10px] text-primary font-bold uppercase tracking-wider">
+                            {showEvidence ? "Hide Details" : "Show Details"}
+                          </span>
+                          <ChevronRight className={`h-3 w-3 text-primary transition-transform duration-200 ${showEvidence ? "rotate-90" : ""}`} />
+                        </div>
+                      </div>
+                      
+                      {showEvidence && (
+                        <ul className="mt-2 space-y-1.5 text-sm text-foreground bg-muted/30 p-2.5 rounded-md border border-border/50 animate-in fade-in slide-in-from-top-1 duration-200">
+                          <li className="flex justify-between items-center border-b border-border/40 pb-1">
+                            <span className="text-muted-foreground text-xs">{t("medicineIdentified")}</span>
+                            <span className="font-semibold text-xs">{state.evidence.medicine_identified}</span>
+                          </li>
+                          <li className="flex justify-between items-center border-b border-border/40 pb-1">
+                            <span className="text-muted-foreground text-xs">{t("databaseMatch")}</span>
+                            <span className="font-semibold text-xs">{state.evidence.database_match}</span>
+                          </li>
+                          <li className="flex justify-between items-center border-b border-border/40 pb-1">
+                            <span className="text-muted-foreground text-xs">{t("regulatoryStatus")}</span>
+                            <span className="font-semibold text-xs">{state.evidence.regulatory_status}</span>
+                          </li>
+                          <li className="flex justify-between items-center border-b border-border/40 pb-1">
+                            <span className="text-muted-foreground text-xs">{t("packagingAnalysis")}</span>
+                            <span className="font-semibold text-xs">{state.evidence.packaging_analysis}</span>
+                          </li>
+                          <li className="flex justify-between items-center border-b border-border/40 pb-1">
+                            <span className="text-muted-foreground text-xs">{t("barcodeMatch")}</span>
+                            <span className="font-semibold text-xs">{state.evidence.barcode_match}</span>
+                          </li>
+                          <li className="flex justify-between items-center">
+                            <span className="text-muted-foreground text-xs">{t("ocrConfidence")}</span>
+                            <span className="font-semibold text-xs">{state.evidence.ocr_confidence}</span>
+                          </li>
+                        </ul>
+                      )}
                     </div>
                   </div>
                   {state?.recommendation && (
