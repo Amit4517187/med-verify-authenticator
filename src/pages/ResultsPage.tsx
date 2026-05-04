@@ -67,18 +67,46 @@ const ResultsPage = () => {
     if (!certificateRef.current) return;
     try {
       setDownloadingPDF(true);
-      const canvas = await html2canvas(certificateRef.current, { scale: 2, useCORS: true });
-      const imgData = canvas.toDataURL("image/png");
+      const canvas = await html2canvas(certificateRef.current, { 
+        scale: 2, 
+        useCORS: true,
+        backgroundColor: "#ffffff",
+        logging: false
+      });
+      
+      // Use JPEG with 0.75 quality to drastically reduce file size (from 10MB+ to ~300KB)
+      const imgData = canvas.toDataURL("image/jpeg", 0.75);
       const pdf = new jsPDF("p", "mm", "a4");
+      
       const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+      const pdfPageHeight = pdf.internal.pageSize.getHeight();
       
-      pdf.addImage(imgData, "PNG", 0, 10, pdfWidth, pdfHeight);
+      // Calculate dimensions with 10mm margins
+      const margin = 10;
+      const contentWidth = pdfWidth - (2 * margin);
+      const contentHeight = (canvas.height * contentWidth) / canvas.width;
       
-      // Footer text
-      pdf.setFontSize(10);
-      pdf.setTextColor(100);
-      pdf.text(`MedVerify Verification Certificate - Document Generated: ${new Date().toLocaleString()}`, 15, pdf.internal.pageSize.getHeight() - 10);
+      // Logic to prevent cutting off: if content is too tall, scale it to fit the page
+      let finalWidth = contentWidth;
+      let finalHeight = contentHeight;
+      const maxAllowedHeight = pdfPageHeight - 30; // 30mm reserved for margins and footer
+      
+      if (contentHeight > maxAllowedHeight) {
+        finalHeight = maxAllowedHeight;
+        finalWidth = (canvas.width * finalHeight) / canvas.height;
+      }
+      
+      // Center the image horizontally
+      const xOffset = (pdfWidth - finalWidth) / 2;
+      
+      pdf.addImage(imgData, "JPEG", xOffset, margin, finalWidth, finalHeight);
+      
+      // Footer text - cleaner and more professional
+      pdf.setFontSize(8);
+      pdf.setTextColor(160);
+      const footerY = pdfPageHeight - 10;
+      pdf.text(`MedVerify Digital Certificate of Authentication - Generated on ${new Date().toLocaleDateString()}`, margin, footerY);
+      pdf.text(`Page 1/1`, pdfWidth - margin, footerY, { align: "right" });
       
       pdf.save(`MedVerify_Certificate_${drugName.replace(/\s+/g, "_")}.pdf`);
     } catch (err) {
@@ -541,7 +569,7 @@ const ResultsPage = () => {
                 </Button>
               )}
               
-              {(status === "safe" || status === "verified_global") && (
+              {(status === "safe" || status === "verified_global" || status === "verified_database" || status === "verified_barcode") && (
                 <>
                   <Button
                     variant="outline"
