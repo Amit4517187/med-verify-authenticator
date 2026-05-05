@@ -36,6 +36,7 @@ interface ResultState {
   drugName: string;
   composition: string;
   message: string;
+  usage_description?: { en: string; hi: string } | string;
   communityFlagged?: boolean;
   communityReportCount?: number;
   batchVerification?: BatchVerification | null;
@@ -165,6 +166,37 @@ const ResultsPage = () => {
   if (!state) return <Navigate to="/scan" replace />;
 
   const { status, drugName, composition, usage_description, message, communityFlagged, communityReportCount, batchVerification } = state;
+  const { lang, t } = useLanguage();
+
+  const getTranslatedValue = (val: string) => {
+    const map: Record<string, any> = {
+      "Yes": "evidenceYes",
+      "No": "evidenceNo",
+      "MedVerify Registry": "evidenceMedverifyRegistry",
+      "OpenFDA Registry": "evidenceOpenfdaRegistry",
+      "NIH RxNorm (Global)": "evidenceNihRegistry",
+      "Recalled/Banned": "evidenceRecalledBanned",
+      "Safe": "evidenceSafe",
+      "Flagged": "evidenceFlagged",
+      "Low Risk": "evidenceLowRisk",
+      "Matches": "evidenceMatches",
+      "Not Provided": "evidenceNotProvided",
+      "Invalid": "evidenceInvalid",
+      "High": "evidenceHigh",
+      "Medium": "evidenceMedium",
+      "Low": "evidenceLow",
+      "N/A": "evidenceNA",
+      "Always purchase from a licensed pharmacy.": "recLicensedPharmacy",
+      "DO NOT USE. Please report this to CDSCO.": "recDoNotUse",
+      "Packaging appears suspicious. Verify with a pharmacist.": "recSuspicious",
+      "Medicine recognized globally, but always buy from a licensed Indian pharmacy.": "recGlobal"
+    };
+    return map[val] ? t(map[val]) : val;
+  };
+
+  const displayUsageDesc = typeof usage_description === 'object' && usage_description !== null 
+    ? usage_description[lang] 
+    : usage_description;
 
   if (status === "error") {
     return (
@@ -368,10 +400,10 @@ const ResultsPage = () => {
                   >
                     {composition}
                   </p>
-                  {usage_description && usage_description !== "Information not available." && (
+                  {displayUsageDesc && displayUsageDesc !== "Information not available." && (
                     <div className="mt-2 rounded-md bg-muted/50 p-2.5 border border-border/50">
                       <p className="text-xs font-semibold text-primary mb-0.5 mt-0">{t("whatUsedFor")}</p>
-                      <p className="text-xs text-muted-foreground leading-relaxed">{usage_description}</p>
+                      <p className="text-xs text-muted-foreground leading-relaxed">{displayUsageDesc}</p>
                     </div>
                   )}
                 </div>
@@ -424,27 +456,27 @@ const ResultsPage = () => {
                         <ul className="mt-2 space-y-1.5 text-sm text-foreground bg-muted/30 p-2.5 rounded-md border border-border/50 animate-in fade-in slide-in-from-top-1 duration-200">
                           <li className="flex justify-between items-center border-b border-border/40 pb-1">
                             <span className="text-muted-foreground text-xs">{t("medicineIdentified")}</span>
-                            <span className="font-semibold text-xs">{state.evidence.medicine_identified}</span>
+                            <span className="font-semibold text-xs">{getTranslatedValue(state.evidence.medicine_identified)}</span>
                           </li>
                           <li className="flex justify-between items-center border-b border-border/40 pb-1">
                             <span className="text-muted-foreground text-xs">{t("databaseMatch")}</span>
-                            <span className="font-semibold text-xs">{state.evidence.database_match}</span>
+                            <span className="font-semibold text-xs">{getTranslatedValue(state.evidence.database_match)}</span>
                           </li>
                           <li className="flex justify-between items-center border-b border-border/40 pb-1">
                             <span className="text-muted-foreground text-xs">{t("regulatoryStatus")}</span>
-                            <span className="font-semibold text-xs">{state.evidence.regulatory_status}</span>
+                            <span className="font-semibold text-xs">{getTranslatedValue(state.evidence.regulatory_status)}</span>
                           </li>
                           <li className="flex justify-between items-center border-b border-border/40 pb-1">
                             <span className="text-muted-foreground text-xs">{t("packagingAnalysis")}</span>
-                            <span className="font-semibold text-xs">{state.evidence.packaging_analysis}</span>
+                            <span className="font-semibold text-xs">{getTranslatedValue(state.evidence.packaging_analysis)}</span>
                           </li>
                           <li className="flex justify-between items-center border-b border-border/40 pb-1">
                             <span className="text-muted-foreground text-xs">{t("barcodeMatch")}</span>
-                            <span className="font-semibold text-xs">{state.evidence.barcode_match}</span>
+                            <span className="font-semibold text-xs">{getTranslatedValue(state.evidence.barcode_match)}</span>
                           </li>
                           <li className="flex justify-between items-center">
                             <span className="text-muted-foreground text-xs">{t("ocrConfidence")}</span>
-                            <span className="font-semibold text-xs">{state.evidence.ocr_confidence}</span>
+                            <span className="font-semibold text-xs">{getTranslatedValue(state.evidence.ocr_confidence)}</span>
                           </li>
                         </ul>
                       )}
@@ -455,7 +487,7 @@ const ResultsPage = () => {
                       <Separator className="my-1" />
                       <div className="rounded-md bg-blue-50 dark:bg-blue-900/20 p-3 border border-blue-200 dark:border-blue-800">
                         <p className="text-xs font-bold text-blue-700 dark:text-blue-300 mb-1">{t("recommendation")}</p>
-                        <p className="text-xs text-blue-800 dark:text-blue-200 leading-relaxed font-medium">{state.recommendation}</p>
+                        <p className="text-xs text-blue-800 dark:text-blue-200 leading-relaxed font-medium">{getTranslatedValue(state.recommendation)}</p>
                       </div>
                     </>
                   )}
