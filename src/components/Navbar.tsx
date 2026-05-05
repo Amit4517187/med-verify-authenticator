@@ -47,6 +47,15 @@ const Navbar = () => {
               {t("about")}
             </Button>
           </Link>
+          <Link to="/insights">
+            <Button 
+              variant={isActive("/insights") ? "secondary" : "ghost"} 
+              size="sm" 
+              className="font-medium text-teal-600 hover:text-teal-700 hover:bg-teal-50"
+            >
+              Insights
+            </Button>
+          </Link>
           <Button
             variant="outline"
             size="sm"
@@ -106,6 +115,14 @@ const Navbar = () => {
                 className="w-full justify-start font-medium"
               >
                 {t("about")}
+              </Button>
+            </Link>
+            <Link to="/insights" onClick={() => setMobileOpen(false)}>
+              <Button
+                variant={isActive("/insights") ? "secondary" : "ghost"}
+                className="w-full justify-start font-medium text-teal-600"
+              >
+                Insights
               </Button>
             </Link>
           </div>
