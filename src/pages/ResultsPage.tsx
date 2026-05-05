@@ -559,7 +559,43 @@ const ResultsPage = () => {
 
         {/* Actions */}
         <ScrollReveal delay={0.4}>
-          <div className="mt-6 grid gap-3">
+          {/* Responsible Use Disclaimer */}
+          <div className="mt-6 rounded-xl border border-border/60 bg-muted/30 p-4 space-y-2">
+            <p className="text-xs font-bold text-foreground uppercase tracking-wide">Important Notice</p>
+            <p className="text-xs text-muted-foreground leading-relaxed">
+              <strong className="text-foreground">MedVerify is an identity verification tool</strong> — it checks whether a medicine's name, barcode, or batch number matches approved records. It does not physically inspect or guarantee the quality of the medicine in your hand.
+            </p>
+            <p className="text-xs text-muted-foreground leading-relaxed">
+              If you suspect your medicine is <strong className="text-foreground">fake, tampered, or of poor quality</strong>, please:
+            </p>
+            <ul className="space-y-1.5 text-xs text-muted-foreground list-none">
+              <li className="flex items-start gap-2">
+                <span className="text-destructive font-bold shrink-0 mt-0.5">1.</span>
+                <span>
+                  Report it to{" "}
+                  <a
+                    href="https://cdsco.gov.in/opencms/opencms/en/consumer/consumer-complaint/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary font-semibold underline underline-offset-2 hover:opacity-80"
+                  >
+                    CDSCO — Central Drugs Standard Control Organisation
+                  </a>{" "}
+                  (India's official drug regulator)
+                </span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-destructive font-bold shrink-0 mt-0.5">2.</span>
+                <span>Contact the pharmacy where you purchased it and ask for a replacement or refund.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-destructive font-bold shrink-0 mt-0.5">3.</span>
+                <span>Consult your doctor before continuing any treatment.</span>
+              </li>
+            </ul>
+          </div>
+
+          <div className="mt-4 grid gap-3">
             <Link to="/scan">
               <Button variant="default" size="lg" className="w-full gap-2 bg-primary hover:bg-primary/90">
                 <Scan className="h-5 w-5" />
