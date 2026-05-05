@@ -1,12 +1,13 @@
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Upload, Camera, Loader2, FileImage, WifiOff, Shield, X } from "lucide-react";
+import { Upload, Camera, Loader2, FileImage, WifiOff, Shield, X, ScanLine } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import BarcodeScanner from "@/components/BarcodeScanner";
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter,
 } from "@/components/ui/dialog";
@@ -31,12 +32,18 @@ const ScanPage = () => {
   const [showError, setShowError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [errorType, setErrorType] = useState<"network" | "server" | "api" | "validation">("network");
+  const [showScanner, setShowScanner] = useState(false);
   const [form, setForm] = useState({
     medicineName: "",
     batchNumber: "",
     barcode: "",
     manufacturer: "",
   });
+
+  const handleBarcodeDetected = (code: string) => {
+    setShowScanner(false);
+    setForm((prev) => ({ ...prev, barcode: code }));
+  };
 
   useEffect(() => {
     if (!loading) return;
@@ -212,6 +219,13 @@ const ScanPage = () => {
 
   return (
     <div className="min-h-screen bg-background py-6 md:py-16">
+      {/* Full-screen barcode scanner */}
+      {showScanner && (
+        <BarcodeScanner
+          onDetected={handleBarcodeDetected}
+          onClose={() => setShowScanner(false)}
+        />
+      )}
       {/* Full-screen loading overlay */}
       {loading && (
         <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-background/97 backdrop-blur-sm px-4">
@@ -384,13 +398,31 @@ const ScanPage = () => {
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="barcode" className="text-sm font-medium">{t("barcode")}</Label>
-                <Input
-                  id="barcode"
-                  placeholder="e.g. 8901234567890"
-                  value={form.barcode}
-                  onChange={(e) => setForm({ ...form, barcode: e.target.value })}
-                  className="h-10 text-sm"
-                />
+                <div className="flex gap-2">
+                  <Input
+                    id="barcode"
+                    placeholder="e.g. 8901234567890"
+                    value={form.barcode}
+                    onChange={(e) => setForm({ ...form, barcode: e.target.value })}
+                    className="h-10 text-sm flex-1"
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="icon"
+                    className="h-10 w-10 shrink-0 border-primary/40 text-primary hover:bg-primary/10"
+                    onClick={() => setShowScanner(true)}
+                    title="Scan barcode with camera"
+                  >
+                    <ScanLine className="h-4 w-4" />
+                  </Button>
+                </div>
+                {form.barcode && (
+                  <p className="text-xs text-primary flex items-center gap-1 mt-0.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-primary inline-block"></span>
+                    Code detected: {form.barcode}
+                  </p>
+                )}
               </div>
             </div>
             <div className="grid gap-2">
