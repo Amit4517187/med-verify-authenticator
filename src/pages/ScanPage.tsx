@@ -22,7 +22,7 @@ const ANALYSIS_STEPS = [
 ] as const;
 
 const ScanPage = () => {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
   const navigate = useNavigate();
   const fileRef = useRef<HTMLInputElement>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -106,6 +106,8 @@ const ScanPage = () => {
         formData.append("barcode", trimmedBarcode);
         formData.append("manufacturer", trimmedMfg);
       }
+      // Always pass language so backend can generate response in correct language
+      formData.append("lang", lang);
 
       let baseApiUrl = API_URL.trim();
       

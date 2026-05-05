@@ -220,6 +220,61 @@ const translations = {
     terms2Desc: "AI analysis is a risk-assessment tool. It cannot detect chemical purity without laboratory testing. Use as a primary screening layer.",
     terms3Title: "User Responsibility",
     terms3Desc: "Users are encouraged to report suspicious medicines to authorities. MedVerify is not liable for errors in visual AI detection.",
+
+    // Results page — new human-language labels
+    aboutThisMedicine: "About This Medicine",
+    whatShouldIDo: "What should I do?",
+    whatUsedFor: "What it is used for:",
+
+    // configMap titles & descriptions
+    verifiedDbTitle: "✅ Medicine identity confirmed",
+    verifiedDbDesc: "We found this medicine name and composition in our approved records. This means the medicine itself is a legitimate, approved product.",
+    verifiedDbSafetyLabel: "Identity Confirmed",
+    verifiedDbAction: "We confirmed this is a real, approved medicine. We cannot verify the specific box in your hand — always check the expiry date, buy from a licensed pharmacy, and if the packaging looks damaged or unusual, do not use it.",
+
+    verifiedBarcodeTitle: "✅ Barcode matched an approved medicine",
+    verifiedBarcodeDesc: "The barcode on this medicine matched a known, approved product in our records.",
+    verifiedBarcodeSafetyLabel: "Barcode Recognised",
+    verifiedBarcodeAction: "The barcode is legitimate. We cannot verify the specific box in your hand — always check the expiry date, buy from a licensed pharmacy, and if the packaging looks damaged or unusual, do not use it.",
+
+    verifiedGlobalTitle: "✅ This medicine is a known product",
+    verifiedGlobalDesc: "This medicine is found in international health databases as a recognised product. It is not yet in our Indian registry.",
+    verifiedGlobalSafetyLabel: "Recognised Globally",
+    verifiedGlobalAction: "This medicine exists as a real product, but we could not verify it in our Indian database. Buy only from a licensed pharmacy and always check the expiry date.",
+
+    cautionTitle: "⚠️ Be careful with this medicine",
+    cautionDesc: "Something about this medicine needs your attention. Please check it with a pharmacist before using.",
+    cautionSafetyLabel: "Check Before Using",
+    cautionAction: "Do not use this medicine yet. Show it to a licensed pharmacist or your doctor first.",
+
+    dangerTitle: "🚫 Do NOT use this medicine",
+    dangerDesc: "This medicine has been flagged. It may be fake, recalled, or harmful. Stop using it immediately.",
+    dangerSafetyLabel: "Do Not Use",
+    dangerAction: "Stop using this medicine immediately. Report it to your pharmacist and the nearest government health centre.",
+
+    unableTitle: "🔍 We could not confirm this medicine",
+    unableDesc: "We searched our records but could not find this medicine. This does not mean it is fake — it may not be in our database yet.",
+    unableSafetyLabel: "Could Not Confirm",
+    unableAction: "Ask your pharmacist to verify this medicine before you take it. When in doubt, do not use.",
+
+    // Disclaimer block
+    importantNotice: "Important Notice",
+    disclaimerLine1: "MedVerify is an identity verification tool — it checks whether a medicine's name, barcode, or batch number matches approved records. It does not physically inspect or guarantee the quality of the medicine in your hand.",
+    disclaimerLine2: "If you suspect your medicine is fake, tampered, or of poor quality, please:",
+    disclaimerStep1: "Report it to CDSCO — Central Drugs Standard Control Organisation (India's official drug regulator)",
+    disclaimerStep2: "Contact the pharmacy where you purchased it and ask for a replacement or refund.",
+    disclaimerStep3: "Consult your doctor before continuing any treatment.",
+
+    // Batch verification card
+    batchVerificationTitle: "Batch Verification",
+
+    // Scanner
+    scannerTitle: "Scan Barcode / QR Code",
+    scannerStarting: "Starting camera...",
+    scannerPermissionDenied: "Camera permission denied. Please allow camera access in your browser settings.",
+    scannerError: "Could not start camera. Please ensure no other app is using it.",
+    scannerGoBack: "Go Back",
+    scannerHint: "Point your camera at the barcode or QR code on the medicine box. Hold steady until detected.",
   },
   hi: {
     appName: "MedVerify",
@@ -430,6 +485,61 @@ const translations = {
     terms2Desc: "AI विश्लेषण एक जोखिम-मूल्यांकन उपकरण है। यह प्रयोगशाला परीक्षण के बिना रासायनिक शुद्धता का पता नहीं लगा सकता है। इसका उपयोग प्राथमिक स्क्रीनिंग परत के रूप में करें।",
     terms3Title: "उपयोगकर्ता की जिम्मेदारी",
     terms3Desc: "उपयोगकर्ताओं को अधिकारियों को संदिग्ध दवाओं की रिपोर्ट करने के लिए प्रोत्साहित किया जाता है। MedVerify विज़ुअल AI पहचान में त्रुटियों के लिए उत्तरदायी नहीं है।",
+
+    // Results page — new human-language labels
+    aboutThisMedicine: "इस दवा के बारे में",
+    whatShouldIDo: "मुझे क्या करना चाहिए?",
+    whatUsedFor: "इसका उपयोग किसलिए होता है:",
+
+    // configMap titles & descriptions
+    verifiedDbTitle: "✅ दवा की पहचान सत्यापित हुई",
+    verifiedDbDesc: "हमें यह दवा का नाम और संरचना हमारे अनुमोदित रिकॉर्ड में मिली। इसका मतलब है कि यह दवा एक वैध, अनुमोदित उत्पाद है।",
+    verifiedDbSafetyLabel: "पहचान सत्यापित",
+    verifiedDbAction: "हमने पुष्टि की है कि यह एक असली, अनुमोदित दवा है। हम आपके हाथ में मौजूद विशिष्ट पैकेट की जाँच नहीं कर सकते — हमेशा समाप्ति तिथि जाँचें, लाइसेंसी फार्मेसी से खरीदें, और यदि पैकेजिंग क्षतिग्रस्त या असामान्य लगे तो उपयोग न करें।",
+
+    verifiedBarcodeTitle: "✅ बारकोड एक अनुमोदित दवा से मेल खाया",
+    verifiedBarcodeDesc: "इस दवा का बारकोड हमारे रिकॉर्ड में एक ज्ञात, अनुमोदित उत्पाद से मेल खाया।",
+    verifiedBarcodeSafetyLabel: "बारकोड पहचाना गया",
+    verifiedBarcodeAction: "बारकोड वैध है। हम आपके हाथ में मौजूद विशिष्ट पैकेट की जाँच नहीं कर सकते — हमेशा समाप्ति तिथि जाँचें, लाइसेंसी फार्मेसी से खरीदें, और यदि पैकेजिंग असामान्य लगे तो उपयोग न करें।",
+
+    verifiedGlobalTitle: "✅ यह दवा एक ज्ञात उत्पाद है",
+    verifiedGlobalDesc: "यह दवा अंतरराष्ट्रीय स्वास्थ्य डेटाबेस में एक मान्यता प्राप्त उत्पाद के रूप में मिली है। यह अभी हमारी भारतीय रजिस्ट्री में नहीं है।",
+    verifiedGlobalSafetyLabel: "वैश्विक स्तर पर मान्यता प्राप्त",
+    verifiedGlobalAction: "यह दवा एक असली उत्पाद के रूप में मौजूद है, लेकिन हम इसे हमारे भारतीय डेटाबेस में सत्यापित नहीं कर सके। केवल लाइसेंसी फार्मेसी से खरीदें और हमेशा समाप्ति तिथि जाँचें।",
+
+    cautionTitle: "⚠️ इस दवा के बारे में सावधान रहें",
+    cautionDesc: "इस दवा के बारे में कुछ है जिस पर आपको ध्यान देना होगा। उपयोग करने से पहले कृपया किसी फार्मासिस्ट से जाँचें।",
+    cautionSafetyLabel: "उपयोग से पहले जाँचें",
+    cautionAction: "अभी इस दवा का उपयोग न करें। पहले इसे किसी लाइसेंसी फार्मासिस्ट या अपने डॉक्टर को दिखाएँ।",
+
+    dangerTitle: "🚫 इस दवा का उपयोग न करें",
+    dangerDesc: "इस दवा को चिह्नित किया गया है। यह नकली, वापस बुलाई गई, या हानिकारक हो सकती है। इसका उपयोग तुरंत बंद करें।",
+    dangerSafetyLabel: "उपयोग न करें",
+    dangerAction: "इस दवा का उपयोग तुरंत बंद करें। अपने फार्मासिस्ट और निकटतम सरकारी स्वास्थ्य केंद्र को इसकी रिपोर्ट करें।",
+
+    unableTitle: "🔍 हम इस दवा की पुष्टि नहीं कर सके",
+    unableDesc: "हमने अपने रिकॉर्ड में खोजा लेकिन यह दवा नहीं मिली। इसका मतलब यह नहीं कि यह नकली है — यह अभी हमारे डेटाबेस में नहीं हो सकती।",
+    unableSafetyLabel: "पुष्टि नहीं हो सकी",
+    unableAction: "दवा लेने से पहले अपने फार्मासिस्ट से इसे सत्यापित करवाएं। संदेह होने पर उपयोग न करें।",
+
+    // Disclaimer block
+    importantNotice: "महत्वपूर्ण सूचना",
+    disclaimerLine1: "MedVerify एक पहचान सत्यापन उपकरण है — यह जाँचता है कि किसी दवा का नाम, बारकोड या बैच नंबर अनुमोदित रिकॉर्ड से मेल खाता है या नहीं। यह आपके हाथ में मौजूद दवा की भौतिक जाँच नहीं करता और उसकी गुणवत्ता की गारंटी नहीं देता।",
+    disclaimerLine2: "यदि आपको संदेह है कि आपकी दवा नकली, मिलावटी या खराब गुणवत्ता की है, तो कृपया:",
+    disclaimerStep1: "CDSCO — केंद्रीय औषधि मानक नियंत्रण संगठन (भारत के आधिकारिक दवा नियामक) को रिपोर्ट करें",
+    disclaimerStep2: "उस फार्मेसी से संपर्क करें जहाँ से आपने इसे खरीदा और बदलने या वापसी के लिए कहें।",
+    disclaimerStep3: "कोई भी उपचार जारी रखने से पहले अपने डॉक्टर से परामर्श करें।",
+
+    // Batch verification card
+    batchVerificationTitle: "बैच सत्यापन",
+
+    // Scanner
+    scannerTitle: "बारकोड / QR कोड स्कैन करें",
+    scannerStarting: "कैमरा शुरू हो रहा है...",
+    scannerPermissionDenied: "कैमरा अनुमति अस्वीकार की गई। कृपया अपनी ब्राउज़र सेटिंग में कैमरा पहुँच की अनुमति दें।",
+    scannerError: "कैमरा शुरू नहीं हो सका। सुनिश्चित करें कि कोई अन्य ऐप इसका उपयोग नहीं कर रहा।",
+    scannerGoBack: "वापस जाएँ",
+    scannerHint: "दवा के डिब्बे पर बारकोड या QR कोड पर कैमरा रखें। पहचान होने तक स्थिर रखें।",
   },
 
 } as const;

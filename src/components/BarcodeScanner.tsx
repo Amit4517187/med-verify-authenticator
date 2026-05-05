@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Html5Qrcode, Html5QrcodeSupportedFormats } from "html5-qrcode";
 import { X, ScanLine, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface BarcodeScannerProps {
   onDetected: (code: string) => void;
@@ -11,6 +12,7 @@ interface BarcodeScannerProps {
 const SCANNER_ID = "medverify-barcode-scanner";
 
 const BarcodeScanner = ({ onDetected, onClose }: BarcodeScannerProps) => {
+  const { t } = useLanguage();
   const [status, setStatus] = useState<"starting" | "scanning" | "error">("starting");
   const [errorMsg, setErrorMsg] = useState("");
   const scannerRef = useRef<Html5Qrcode | null>(null);
@@ -52,9 +54,9 @@ const BarcodeScanner = ({ onDetected, onClose }: BarcodeScannerProps) => {
       } catch (err: unknown) {
         const msg = err instanceof Error ? err.message : String(err);
         if (msg.toLowerCase().includes("permission") || msg.toLowerCase().includes("denied")) {
-          setErrorMsg("Camera permission denied. Please allow camera access in your browser settings.");
+          setErrorMsg(t("scannerPermissionDenied"));
         } else {
-          setErrorMsg("Could not start camera. Please ensure no other app is using it.");
+          setErrorMsg(t("scannerError"));
         }
         setStatus("error");
       }
@@ -84,7 +86,7 @@ const BarcodeScanner = ({ onDetected, onClose }: BarcodeScannerProps) => {
       <div className="flex items-center justify-between px-5 py-4 bg-black/80 backdrop-blur-sm">
         <div className="flex items-center gap-2">
           <ScanLine className="w-5 h-5 text-primary" />
-          <span className="text-white font-semibold text-sm">Scan Barcode / QR Code</span>
+          <span className="text-white font-semibold text-sm">{t("scannerTitle")}</span>
         </div>
         <button
           onClick={handleClose}
@@ -100,7 +102,7 @@ const BarcodeScanner = ({ onDetected, onClose }: BarcodeScannerProps) => {
         {status === "starting" && (
           <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 z-10">
             <Loader2 className="w-8 h-8 text-primary animate-spin" />
-            <p className="text-white/70 text-sm">Starting camera...</p>
+            <p className="text-white/70 text-sm">{t("scannerStarting")}</p>
           </div>
         )}
 
@@ -111,7 +113,7 @@ const BarcodeScanner = ({ onDetected, onClose }: BarcodeScannerProps) => {
             </div>
             <p className="text-white text-center text-sm leading-relaxed">{errorMsg}</p>
             <Button variant="outline" onClick={handleClose} className="mt-2 text-white border-white/30">
-              Go Back
+              {t("scannerGoBack")}
             </Button>
           </div>
         )}
@@ -146,8 +148,7 @@ const BarcodeScanner = ({ onDetected, onClose }: BarcodeScannerProps) => {
       {/* Footer hint */}
       <div className="px-5 py-4 bg-black/80 text-center">
         <p className="text-white/50 text-xs leading-relaxed">
-          Point your camera at the barcode or QR code on the medicine box.
-          <br />Hold steady until detected.
+          {t("scannerHint")}
         </p>
       </div>
     </div>

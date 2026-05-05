@@ -202,75 +202,75 @@ const ResultsPage = () => {
   }> = {
     verified_database: {
       Icon: ShieldCheck,
-      title: "✅ Medicine identity confirmed",
-      desc: "We found this medicine name and composition in our approved records. This means the medicine itself is a legitimate, approved product.",
+      title: t("verifiedDbTitle"),
+      desc: t("verifiedDbDesc"),
       bgClass: "bg-primary/8",
       textClass: "text-primary",
       borderClass: "border-primary/30",
       badgeBg: "bg-primary/10",
       safetyEmoji: "✅",
-      safetyLabel: "Identity Confirmed",
-      actionMessage: "We confirmed this is a real, approved medicine. We cannot verify the specific box in your hand — always check the expiry date, buy from a licensed pharmacy, and if the packaging looks damaged or unusual, do not use it.",
+      safetyLabel: t("verifiedDbSafetyLabel"),
+      actionMessage: t("verifiedDbAction"),
     },
     verified_barcode: {
       Icon: ShieldCheck,
-      title: "✅ Barcode matched an approved medicine",
-      desc: "The barcode on this medicine matched a known, approved product in our records.",
+      title: t("verifiedBarcodeTitle"),
+      desc: t("verifiedBarcodeDesc"),
       bgClass: "bg-primary/8",
       textClass: "text-primary",
       borderClass: "border-primary/30",
       badgeBg: "bg-primary/10",
       safetyEmoji: "✅",
-      safetyLabel: "Barcode Recognised",
-      actionMessage: "The barcode is legitimate. We cannot verify the specific box in your hand — always check the expiry date, buy from a licensed pharmacy, and if the packaging looks damaged or unusual, do not use it.",
+      safetyLabel: t("verifiedBarcodeSafetyLabel"),
+      actionMessage: t("verifiedBarcodeAction"),
     },
     verified_global: {
       Icon: ShieldCheck,
-      title: "✅ This medicine is a known product",
-      desc: "This medicine is found in international health databases as a recognised product. It is not yet in our Indian registry.",
+      title: t("verifiedGlobalTitle"),
+      desc: t("verifiedGlobalDesc"),
       bgClass: "bg-blue-500/8",
       textClass: "text-blue-600",
       borderClass: "border-blue-500/30",
       badgeBg: "bg-blue-500/10",
       safetyEmoji: "✅",
-      safetyLabel: "Recognised Globally",
-      actionMessage: "This medicine exists as a real product, but we could not verify it in our Indian database. Buy only from a licensed pharmacy and always check the expiry date.",
+      safetyLabel: t("verifiedGlobalSafetyLabel"),
+      actionMessage: t("verifiedGlobalAction"),
     },
     caution: {
       Icon: ShieldAlert,
-      title: "⚠️ Be careful with this medicine",
-      desc: "Something about this medicine needs your attention. Please check it with a pharmacist before using.",
+      title: t("cautionTitle"),
+      desc: t("cautionDesc"),
       bgClass: "bg-warning/8",
       textClass: "text-warning",
       borderClass: "border-warning/30",
       badgeBg: "bg-warning/10",
       safetyEmoji: "⚠️",
-      safetyLabel: "Check Before Using",
-      actionMessage: "Do not use this medicine yet. Show it to a licensed pharmacist or your doctor first.",
+      safetyLabel: t("cautionSafetyLabel"),
+      actionMessage: t("cautionAction"),
     },
     danger: {
       Icon: ShieldX,
-      title: "🚫 Do NOT use this medicine",
-      desc: "This medicine has been flagged. It may be fake, recalled, or harmful. Stop using it immediately.",
+      title: t("dangerTitle"),
+      desc: t("dangerDesc"),
       bgClass: "bg-destructive/8",
       textClass: "text-destructive",
       borderClass: "border-destructive/30",
       badgeBg: "bg-destructive/10",
       safetyEmoji: "🚫",
-      safetyLabel: "Do Not Use",
-      actionMessage: "Stop using this medicine immediately. Report it to your pharmacist and the nearest government health centre.",
+      safetyLabel: t("dangerSafetyLabel"),
+      actionMessage: t("dangerAction"),
     },
     unable_to_verify: {
       Icon: HelpCircle,
-      title: "🔍 We could not confirm this medicine",
-      desc: "We searched our records but could not find this medicine. This does not mean it is fake — it may not be in our database yet.",
+      title: t("unableTitle"),
+      desc: t("unableDesc"),
       bgClass: "bg-slate-500/8",
       textClass: "text-slate-600",
       borderClass: "border-slate-500/30",
       badgeBg: "bg-slate-500/10",
       safetyEmoji: "🔍",
-      safetyLabel: "Could Not Confirm",
-      actionMessage: "Ask your pharmacist to verify this medicine before you take it. When in doubt, do not use.",
+      safetyLabel: t("unableSafetyLabel"),
+      actionMessage: t("unableAction"),
     },
   };
 
@@ -338,7 +338,7 @@ const ResultsPage = () => {
         <ScrollReveal delay={0.2} duration={0.6}>
           <Card className="mt-5 border-border/60 shadow-sm">
             <CardHeader className="px-4 pb-2 pt-4 sm:px-6 sm:pt-6">
-              <CardTitle className="font-display text-base sm:text-lg">About This Medicine</CardTitle>
+              <CardTitle className="font-display text-base sm:text-lg">{t("aboutThisMedicine")}</CardTitle>
             </CardHeader>
             <CardContent className="grid gap-4 px-4 pb-4 pt-0 sm:gap-4 sm:px-6 sm:pb-6">
               {/* Drug Name */}
@@ -370,7 +370,7 @@ const ResultsPage = () => {
                   </p>
                   {usage_description && usage_description !== "Information not available." && (
                     <div className="mt-2 rounded-md bg-muted/50 p-2.5 border border-border/50">
-                      <p className="text-xs font-semibold text-primary mb-0.5 mt-0">What it is used for:</p>
+                      <p className="text-xs font-semibold text-primary mb-0.5 mt-0">{t("whatUsedFor")}</p>
                       <p className="text-xs text-muted-foreground leading-relaxed">{usage_description}</p>
                     </div>
                   )}
@@ -387,7 +387,7 @@ const ResultsPage = () => {
                   <span className="text-base leading-none">{config.safetyEmoji}</span>
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-xs font-medium text-muted-foreground">What should I do?</p>
+                  <p className="text-xs font-medium text-muted-foreground">{t("whatShouldIDo")}</p>
                   <p className={`mt-0.5 text-sm font-bold ${threatColorClass}`}>
                     {config.safetyLabel}
                   </p>
@@ -493,7 +493,7 @@ const ResultsPage = () => {
                     batchVerification.status === "recalled" ? "text-destructive" :
                     batchVerification.status === "verified" ? "text-primary" : "text-muted-foreground"
                   }`} />
-                  Batch-Level Verification
+                  {t("batchVerificationTitle")}
                   <span className={`ml-auto rounded-full px-2 py-0.5 text-[10px] font-bold ${
                     batchVerification.status === "recalled" ? "bg-destructive text-destructive-foreground" :
                     batchVerification.status === "verified"  ? "bg-primary text-primary-foreground" :
@@ -561,36 +561,35 @@ const ResultsPage = () => {
         <ScrollReveal delay={0.4}>
           {/* Responsible Use Disclaimer */}
           <div className="mt-6 rounded-xl border border-border/60 bg-muted/30 p-4 space-y-2">
-            <p className="text-xs font-bold text-foreground uppercase tracking-wide">Important Notice</p>
+            <p className="text-xs font-bold text-foreground uppercase tracking-wide">{t("importantNotice")}</p>
             <p className="text-xs text-muted-foreground leading-relaxed">
-              <strong className="text-foreground">MedVerify is an identity verification tool</strong> — it checks whether a medicine's name, barcode, or batch number matches approved records. It does not physically inspect or guarantee the quality of the medicine in your hand.
+              <strong className="text-foreground">MedVerify</strong> — {t("disclaimerLine1")}
             </p>
             <p className="text-xs text-muted-foreground leading-relaxed">
-              If you suspect your medicine is <strong className="text-foreground">fake, tampered, or of poor quality</strong>, please:
+              {t("disclaimerLine2")}
             </p>
             <ul className="space-y-1.5 text-xs text-muted-foreground list-none">
               <li className="flex items-start gap-2">
                 <span className="text-destructive font-bold shrink-0 mt-0.5">1.</span>
                 <span>
-                  Report it to{" "}
                   <a
                     href="https://cdsco.gov.in/opencms/opencms/en/consumer/consumer-complaint/"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-primary font-semibold underline underline-offset-2 hover:opacity-80"
                   >
-                    CDSCO — Central Drugs Standard Control Organisation
-                  </a>{" "}
-                  (India's official drug regulator)
+                    CDSCO
+                  </a>
+                  {" "}{t("disclaimerStep1").replace("CDSCO — ", "").replace("CDSCO — ", "")}
                 </span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-destructive font-bold shrink-0 mt-0.5">2.</span>
-                <span>Contact the pharmacy where you purchased it and ask for a replacement or refund.</span>
+                <span>{t("disclaimerStep2")}</span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-destructive font-bold shrink-0 mt-0.5">3.</span>
-                <span>Consult your doctor before continuing any treatment.</span>
+                <span>{t("disclaimerStep3")}</span>
               </li>
             </ul>
           </div>
