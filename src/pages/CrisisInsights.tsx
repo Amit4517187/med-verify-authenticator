@@ -14,32 +14,15 @@ const CrisisInsights = () => {
   const [riskValue, setRiskValue] = useState("--");
 
   return (
-    <div className="min-h-screen bg-[#060809] text-[#e0e3e5] pt-20 selection:bg-[#41eec2] selection:text-[#00382b] font-sans">
-      {/* 2026 Header Accent */}
-      <div className="h-14 border-b border-white/5 bg-[#060809]/80 backdrop-blur-md px-8 flex items-center justify-between sticky top-16 z-40">
-          <div className="flex items-center gap-10">
-            <div className="px-3 py-1 border border-[#41eec2]/40 rounded bg-[#41eec2]/5 text-[#41eec2] font-bold text-[10px] tracking-[0.1em] flex items-center gap-2">
-              <Shield className="w-3.5 h-3.5" />
-              MEDVERIFY 2026
-            </div>
-            <div className="hidden lg:flex items-center gap-8 text-[10px] font-bold uppercase tracking-[0.25em] text-[#8e9198]">
-              <span className="hover:text-white cursor-pointer transition-colors">Verify</span>
-              <span className="hover:text-white cursor-pointer transition-colors">Dashboard</span>
-              <span className="text-[#41eec2] border-b-2 border-[#41eec2] pb-4 mt-4">History</span>
-              <span className="hover:text-white cursor-pointer transition-colors">Inventory</span>
-            </div>
-          </div>
-          <div className="flex items-center gap-4 text-[10px] font-bold text-teal-400/60 uppercase tracking-widest">
-            <span className="w-2 h-2 rounded-full bg-teal-400 animate-pulse"></span>
-            System Live
-          </div>
-      </div>
-
+    <div className="min-h-screen bg-[#060809] text-[#e0e3e5] pt-10 selection:bg-[#41eec2] selection:text-[#00382b] font-sans">
       <main className="max-w-[1600px] mx-auto p-8 lg:p-12 space-y-12">
         {/* Header Section */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8">
           <div className="space-y-3">
-            <p className="text-[11px] font-bold uppercase tracking-[0.4em] text-[#e9c400] opacity-80">Global Impact Report</p>
+            <div className="flex items-center gap-3">
+              <p className="text-[11px] font-bold uppercase tracking-[0.4em] text-[#e9c400] opacity-80">Global Impact Report</p>
+              <span className="px-2 py-0.5 rounded bg-white/5 border border-white/10 text-[8px] font-bold text-slate-500 tracking-[0.1em]">2026 PROTOTYPE DATA</span>
+            </div>
             <h1 className="text-5xl lg:text-7xl font-bold tracking-tighter leading-none">Counterfeit <br/>Prevalence<span className="text-[#41eec2]">.</span></h1>
           </div>
           <div className="bg-gradient-to-br from-[#0a2540] to-[#060809] border border-white/10 p-6 rounded-2xl flex items-center gap-6 relative overflow-hidden group shadow-2xl">
