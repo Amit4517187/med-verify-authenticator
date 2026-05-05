@@ -196,66 +196,81 @@ const ResultsPage = () => {
     textClass: string;
     borderClass: string;
     badgeBg: string;
+    safetyLabel: string;
+    safetyEmoji: string;
+    actionMessage: string;
   }> = {
     verified_database: {
       Icon: ShieldCheck,
-      title: t("genuine"),
-      desc: t("genuineDesc"),
+      title: "✅ This medicine is safe to use",
+      desc: "We checked this medicine in our verified records. It is a known, approved medicine.",
       bgClass: "bg-primary/8",
       textClass: "text-primary",
       borderClass: "border-primary/30",
       badgeBg: "bg-primary/10",
-      threatLabel: "LOW — Database Match",
+      safetyEmoji: "✅",
+      safetyLabel: "Safe to Use",
+      actionMessage: "You can take this medicine. Always buy from a licensed pharmacy and check the expiry date.",
     },
     verified_barcode: {
       Icon: ShieldCheck,
-      title: t("genuine"),
-      desc: t("genuineDesc"),
+      title: "✅ This medicine is safe to use",
+      desc: "The barcode on this medicine matched our verified records. It is genuine.",
       bgClass: "bg-primary/8",
       textClass: "text-primary",
       borderClass: "border-primary/30",
       badgeBg: "bg-primary/10",
-      threatLabel: "LOW — Barcode Match",
+      safetyEmoji: "✅",
+      safetyLabel: "Safe to Use",
+      actionMessage: "You can take this medicine. Always buy from a licensed pharmacy and check the expiry date.",
     },
     verified_global: {
       Icon: ShieldCheck,
-      title: t("realMedicine"),
-      desc: t("realMedicineDesc"),
+      title: "✅ This medicine is recognised",
+      desc: "This medicine is found in international health databases. It is a known, real medicine.",
       bgClass: "bg-blue-500/8",
       textClass: "text-blue-600",
       borderClass: "border-blue-500/30",
       badgeBg: "bg-blue-500/10",
-      threatLabel: "VERIFIED — Global Registry Match",
+      safetyEmoji: "✅",
+      safetyLabel: "Recognised Medicine",
+      actionMessage: "This medicine is real. It is not yet in our Indian database — buy only from a licensed pharmacy to be safe.",
     },
     caution: {
       Icon: ShieldAlert,
-      title: t("suspicious"),
-      desc: t("suspiciousDesc"),
+      title: "⚠️ Be careful with this medicine",
+      desc: "Something about this medicine needs your attention. Please check it with a pharmacist before using.",
       bgClass: "bg-warning/8",
       textClass: "text-warning",
       borderClass: "border-warning/30",
       badgeBg: "bg-warning/10",
-      threatLabel: "MEDIUM — Inconsistencies found",
+      safetyEmoji: "⚠️",
+      safetyLabel: "Check Before Using",
+      actionMessage: "Do not use this medicine yet. Show it to a licensed pharmacist or your doctor first.",
     },
     danger: {
       Icon: ShieldX,
-      title: t("fake"),
-      desc: t("fakeDesc"),
+      title: "🚫 Do NOT use this medicine",
+      desc: "This medicine has been flagged. It may be fake, recalled, or harmful. Stop using it immediately.",
       bgClass: "bg-destructive/8",
       textClass: "text-destructive",
       borderClass: "border-destructive/30",
       badgeBg: "bg-destructive/10",
-      threatLabel: "HIGH — Likely counterfeit",
+      safetyEmoji: "🚫",
+      safetyLabel: "Do Not Use",
+      actionMessage: "Stop using this medicine immediately. Report it to your pharmacist and the nearest government health centre.",
     },
     unable_to_verify: {
       Icon: HelpCircle,
-      title: t("unableToVerify"),
-      desc: t("unableToVerifyDesc"),
+      title: "🔍 We could not confirm this medicine",
+      desc: "We searched our records but could not find this medicine. This does not mean it is fake — it may not be in our database yet.",
       bgClass: "bg-slate-500/8",
       textClass: "text-slate-600",
       borderClass: "border-slate-500/30",
       badgeBg: "bg-slate-500/10",
-      threatLabel: "UNKNOWN — Not found in databases",
+      safetyEmoji: "🔍",
+      safetyLabel: "Could Not Confirm",
+      actionMessage: "Ask your pharmacist to verify this medicine before you take it. When in doubt, do not use.",
     },
   };
 
@@ -323,7 +338,7 @@ const ResultsPage = () => {
         <ScrollReveal delay={0.2} duration={0.6}>
           <Card className="mt-5 border-border/60 shadow-sm">
             <CardHeader className="px-4 pb-2 pt-4 sm:px-6 sm:pt-6">
-              <CardTitle className="font-display text-base sm:text-lg">Medicine Analysis Data</CardTitle>
+              <CardTitle className="font-display text-base sm:text-lg">About This Medicine</CardTitle>
             </CardHeader>
             <CardContent className="grid gap-4 px-4 pb-4 pt-0 sm:gap-4 sm:px-6 sm:pb-6">
               {/* Drug Name */}
@@ -364,17 +379,20 @@ const ResultsPage = () => {
 
               <Separator />
 
-              {/* Threat Status */}
+              {/* What should I do? */}
               <div className="flex items-start gap-3">
                 <div
                   className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg sm:h-9 sm:w-9 ${config.badgeBg}`}
                 >
-                  <AlertTriangle className={`h-4 w-4 ${threatColorClass}`} />
+                  <span className="text-base leading-none">{config.safetyEmoji}</span>
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-xs font-medium text-muted-foreground">{t("threatStatus")}</p>
+                  <p className="text-xs font-medium text-muted-foreground">What should I do?</p>
                   <p className={`mt-0.5 text-sm font-bold ${threatColorClass}`}>
-                    {config.threatLabel}
+                    {config.safetyLabel}
+                  </p>
+                  <p className="mt-1 text-xs text-muted-foreground leading-relaxed">
+                    {config.actionMessage}
                   </p>
                 </div>
               </div>
