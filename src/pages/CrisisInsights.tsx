@@ -12,6 +12,22 @@ import {
 
 const CrisisInsights = () => {
   const [riskValue, setRiskValue] = useState("--");
+  const [isCalculating, setIsCalculating] = useState(false);
+  const [pharmacyType, setPharmacyType] = useState<"hospital" | "retailer">("hospital");
+  const [selectedCity, setSelectedCity] = useState("Mumbai Metropolitan");
+
+  const runDiagnostic = () => {
+    setIsCalculating(true);
+    setRiskValue("--");
+    
+    // Simulate complex calculation delay
+    setTimeout(() => {
+      let base = selectedCity.includes("Delhi") ? 14.2 : 8.7;
+      if (pharmacyType === "retailer") base += 4.5;
+      setRiskValue(base.toFixed(1) + "%");
+      setIsCalculating(false);
+    }, 800);
+  };
 
   return (
     <div className="min-h-screen bg-[#060809] text-[#e0e3e5] pt-10 selection:bg-[#41eec2] selection:text-[#00382b] font-sans">
@@ -117,7 +133,11 @@ const CrisisInsights = () => {
                     <div className="space-y-2">
                       <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#8e9198]">Target Region</label>
                       <div className="relative">
-                        <select className="w-full bg-[#1d2022] border border-white/10 rounded-2xl py-4 px-6 text-sm outline-none appearance-none cursor-pointer focus:border-[#e9c400] transition-all">
+                        <select 
+                          value={selectedCity}
+                          onChange={(e) => setSelectedCity(e.target.value)}
+                          className="w-full bg-[#1d2022] border border-white/10 rounded-2xl py-4 px-6 text-sm outline-none appearance-none cursor-pointer focus:border-[#e9c400] transition-all"
+                        >
                           <option>Mumbai Metropolitan</option>
                           <option>Delhi NCR</option>
                           <option>Hyderabad Hub</option>
@@ -130,16 +150,27 @@ const CrisisInsights = () => {
                     <div className="space-y-2">
                       <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#8e9198]">Pharmacy Protocol</label>
                       <div className="grid grid-cols-2 gap-3">
-                         <button className="py-4 rounded-2xl border border-[#41eec2] bg-[#41eec2]/10 text-[#41eec2] text-[10px] font-bold uppercase tracking-widest transition-all hover:bg-[#41eec2]/20">Hospital</button>
-                         <button className="py-4 rounded-2xl border border-white/5 bg-transparent text-[#8e9198] text-[10px] font-bold uppercase tracking-widest transition-all hover:border-white/20">Retailer</button>
+                         <button 
+                          onClick={() => setPharmacyType("hospital")}
+                          className={`py-4 rounded-2xl border transition-all ${pharmacyType === 'hospital' ? 'border-[#41eec2] bg-[#41eec2]/10 text-[#41eec2]' : 'border-white/5 bg-transparent text-[#8e9198] hover:border-white/20'} text-[10px] font-bold uppercase tracking-widest`}
+                         >
+                           Hospital
+                         </button>
+                         <button 
+                          onClick={() => setPharmacyType("retailer")}
+                          className={`py-4 rounded-2xl border transition-all ${pharmacyType === 'retailer' ? 'border-[#41eec2] bg-[#41eec2]/10 text-[#41eec2]' : 'border-white/5 bg-transparent text-[#8e9198] hover:border-white/20'} text-[10px] font-bold uppercase tracking-widest`}
+                         >
+                           Retailer
+                         </button>
                       </div>
                     </div>
 
                     <button 
-                      onClick={() => setRiskValue("14.2%")}
-                      className="w-full py-5 bg-[#e9c400] text-[#060809] font-bold text-[11px] uppercase tracking-[0.3em] rounded-2xl hover:bg-[#ffe16d] transition-all shadow-[0_0_40px_rgba(233,196,0,0.2)] active:scale-[0.98]"
+                      onClick={runDiagnostic}
+                      disabled={isCalculating}
+                      className="w-full py-5 bg-[#e9c400] text-[#060809] font-bold text-[11px] uppercase tracking-[0.3em] rounded-2xl hover:bg-[#ffe16d] transition-all shadow-[0_0_40px_rgba(233,196,0,0.2)] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      Run Risk Diagnostic
+                      {isCalculating ? "Calculating Neural Risk..." : "Run Risk Diagnostic"}
                     </button>
                   </div>
                 </div>
@@ -188,7 +219,14 @@ const CrisisInsights = () => {
               <div className="space-y-3">
                  <h4 className="text-sm font-bold uppercase tracking-[0.2em] text-white">CDSCO Enforcement Intelligence</h4>
                  <p className="text-xs text-slate-500 leading-relaxed">Central Drugs Standard Control Organization. Real-time data sync with national pharmaceutical crime database.</p>
-                 <button className="text-[10px] font-bold text-[#41eec2] mt-2 flex items-center gap-2 group-hover:translate-x-2 transition-transform uppercase tracking-widest">Protocol Citation <ArrowRight className="w-3.5 h-3.5" /></button>
+                 <a 
+                   href="https://cdsco.gov.in/opencms/opencms/en/Home/" 
+                   target="_blank" 
+                   rel="noopener noreferrer"
+                   className="text-[10px] font-bold text-[#41eec2] mt-2 flex items-center gap-2 group-hover:translate-x-2 transition-transform uppercase tracking-widest"
+                 >
+                   Protocol Citation <ArrowRight className="w-3.5 h-3.5" />
+                 </a>
               </div>
            </div>
            <div className="flex items-start gap-6 p-8 bg-[#111618] rounded-3xl border border-white/5 group hover:border-[#e9c400]/30 transition-all">
@@ -198,7 +236,14 @@ const CrisisInsights = () => {
               <div className="space-y-3">
                  <h4 className="text-sm font-bold uppercase tracking-[0.2em] text-white">WHO International Surveillance</h4>
                  <p className="text-xs text-slate-500 leading-relaxed">Global monitoring of falsified medical products. Cross-border intelligence feed for MedVerify 2026 nodes.</p>
-                 <button className="text-[10px] font-bold text-[#e9c400] mt-2 flex items-center gap-2 group-hover:translate-x-2 transition-transform uppercase tracking-widest">Global Citation <ArrowRight className="w-3.5 h-3.5" /></button>
+                 <a 
+                   href="https://www.who.int/health-topics/substandard-and-falsified-medical-products#tab=tab_1" 
+                   target="_blank" 
+                   rel="noopener noreferrer"
+                   className="text-[10px] font-bold text-[#e9c400] mt-2 flex items-center gap-2 group-hover:translate-x-2 transition-transform uppercase tracking-widest"
+                 >
+                   Global Citation <ArrowRight className="w-3.5 h-3.5" />
+                 </a>
               </div>
            </div>
         </div>
