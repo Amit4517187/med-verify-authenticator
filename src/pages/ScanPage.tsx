@@ -180,6 +180,7 @@ const ScanPage = () => {
           status: data.status,
           drugName: data.drug_name,
           composition: data.composition,
+          manufacturer: data.manufacturer,
           usage_description: data.usage_description,
           message: data.message,
           communityFlagged: data.community_flagged ?? false,

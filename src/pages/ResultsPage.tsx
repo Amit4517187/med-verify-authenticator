@@ -35,6 +35,7 @@ interface ResultState {
   status: ApiStatus | "error";
   drugName: string;
   composition: string;
+  manufacturer?: string;
   message: string;
   usage_description?: { en: string; hi: string } | string;
   communityFlagged?: boolean;
@@ -52,7 +53,6 @@ interface ResultState {
 }
 
 const ResultsPage = () => {
-  const { t } = useLanguage();
   const location = useLocation();
   const state = location.state as ResultState | null;
 
@@ -165,7 +165,7 @@ const ResultsPage = () => {
 
   if (!state) return <Navigate to="/scan" replace />;
 
-  const { status, drugName, composition, usage_description, message, communityFlagged, communityReportCount, batchVerification } = state;
+  const { status, drugName, composition, manufacturer, usage_description, message, communityFlagged, communityReportCount, batchVerification } = state;
   const { lang, t } = useLanguage();
 
   const getTranslatedValue = (val: string) => {
@@ -381,6 +381,12 @@ const ResultsPage = () => {
                 <div className="flex-1 min-w-0">
                   <p className="text-xs font-medium text-muted-foreground">{t("drugName")}</p>
                   <p className="mt-0.5 text-sm font-semibold text-foreground break-words">{drugName}</p>
+                  {manufacturer && manufacturer !== "N/A" && manufacturer !== "Unknown" && (
+                    <div className="mt-1 flex items-center gap-1">
+                      <Factory className="h-3 w-3 text-muted-foreground" />
+                      <p className="text-[10px] font-medium text-muted-foreground italic">by {manufacturer}</p>
+                    </div>
+                  )}
                 </div>
               </div>
 
