@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import Navbar from "@/components/Navbar";
+import MaintenanceBanner from "@/components/MaintenanceBanner";
 import Footer from "@/components/Footer";
 import Index from "@/pages/Index";
 import ScanPage from "@/pages/ScanPage";
@@ -26,6 +27,7 @@ const App = () => {
         <Sonner />
         <BrowserRouter>
           <Navbar />
+          <MaintenanceBanner />
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/scan" element={<ScanPage />} />
