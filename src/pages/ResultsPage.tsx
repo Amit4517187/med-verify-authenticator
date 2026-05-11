@@ -169,7 +169,8 @@ const ResultsPage = () => {
   if (!state) return <Navigate to="/scan" replace />;
   const { 
     status, 
-    drug_name: drugName, 
+    drug_name, 
+    drugName: stateDrugName, // Catch camelCase just in case
     composition, 
     manufacturer, 
     usage_description, 
@@ -180,6 +181,8 @@ const ResultsPage = () => {
     community_report_count: communityReportCount, 
     batchVerification 
   } = state;
+
+  const drugName = drug_name || stateDrugName || (composition ? composition.split(' ')[0] : "Unknown Medicine");
   const { lang, t } = useLanguage();
 
   const getTranslatedValue = (val: string) => {
@@ -391,12 +394,13 @@ const ResultsPage = () => {
                   <Pill className="h-4 w-4 text-primary" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-xs font-medium text-muted-foreground">{t("drugName")}</p>
-                  <p className="mt-0.5 text-sm font-semibold text-foreground break-words">{drugName}</p>
+                  <h3 className="text-lg font-bold text-foreground break-words leading-tight">
+                    {drugName}
+                  </h3>
                   {manufacturer && manufacturer !== "N/A" && manufacturer !== "Unknown" && (
                     <div className="mt-1 flex items-center gap-1">
-                      <Factory className="h-3 w-3 text-muted-foreground" />
-                      <p className="text-[10px] font-medium text-muted-foreground italic">by {manufacturer}</p>
+                      <Factory className="h-3.5 w-3.5 text-primary/60" />
+                      <p className="text-xs font-medium text-muted-foreground italic">by {manufacturer}</p>
                     </div>
                   )}
                 </div>
