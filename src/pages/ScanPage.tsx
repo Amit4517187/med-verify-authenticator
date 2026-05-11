@@ -25,6 +25,12 @@ const ANALYSIS_STEPS = [
 const ScanPage = () => {
   const { t, lang } = useLanguage();
   const navigate = useNavigate();
+
+  // Pre-load the offline database in the background so it's ready when needed
+  useEffect(() => {
+    searchMedicineOffline("").catch(() => {});
+  }, []);
+
   const fileRef = useRef<HTMLInputElement>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
