@@ -66,19 +66,48 @@ export async function searchMedicineOffline(query: string) {
   const db = await loadDb();
   if (!db.length) return null;
 
-  // Sanitize query: lowercase, trim, remove double spaces
-  const searchTerm = query.toLowerCase().trim().replace(/\s+/g, ' ');
+  // 1. Sanitize & Normalize
+  const originalSearch = query.toLowerCase().trim();
+  const cleanSearch = originalSearch
+    .replace(/(tablets|tablet|capsules|capsule|ip|bp|usp|injection|syrup|gel|ointment|mg|ml|mcg)/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
   
-  // 1. Try Exact Match
-  const exactMatch = db.find(m => m.n === searchTerm);
+  const searchNoSpaces = originalSearch.replace(/\s+/g, '');
+  const cleanNoSpaces = cleanSearch.replace(/\s+/g, '');
+
+  console.log(`Searching for: "${originalSearch}" (Cleaned: "${cleanSearch}")`);
+
+  // --- TIER 1: EXACT MATCH ---
+  const exactMatch = db.find(m => m.n.toLowerCase() === originalSearch);
   if (exactMatch) return exactMatch;
 
-  // 2. Try 'Contains' match for the name
-  const containsMatch = db.find(m => m.n.includes(searchTerm));
-  if (containsMatch) return containsMatch;
+  // --- TIER 2: DEEP CONTAINS ---
+  // Check if DB name is inside query OR query is inside DB name
+  const deepMatch = db.find(m => {
+    const dbName = m.n.toLowerCase();
+    const dbNoSpaces = dbName.replace(/\s+/g, '');
+    
+    return dbName.includes(cleanSearch) || 
+           cleanSearch.includes(dbName) ||
+           dbNoSpaces.includes(cleanNoSpaces) ||
+           cleanNoSpaces.includes(dbNoSpaces);
+  });
+  if (deepMatch) return deepMatch;
 
-  // 3. Try searching in the Composition (if user typed salt name)
-  const saltMatch = db.find(m => m.c.includes(searchTerm));
+  // --- TIER 3: KEYWORD MATCH (Minimum 2 keywords) ---
+  const keywords = cleanSearch.split(' ').filter(w => w.length > 2);
+  if (keywords.length >= 2) {
+    const keywordMatch = db.find(m => {
+      const dbName = m.n.toLowerCase();
+      // Check if ALL keywords are present in the DB name
+      return keywords.every(k => dbName.includes(k));
+    });
+    if (keywordMatch) return keywordMatch;
+  }
+
+  // --- TIER 4: COMPOSITION MATCH ---
+  const saltMatch = db.find(m => m.c.toLowerCase().includes(cleanSearch));
   if (saltMatch) return saltMatch;
 
   return null;
