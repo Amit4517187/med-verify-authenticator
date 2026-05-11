@@ -192,13 +192,13 @@ const ScanPage = () => {
       navigate("/results", {
         state: {
           status: data.status,
-          drugName: data.drug_name,
+          drug_name: data.drug_name,
           composition: data.composition,
           manufacturer: data.manufacturer,
           usage_description: data.usage_description,
           message: data.message,
-          communityFlagged: data.community_flagged ?? false,
-          communityReportCount: data.community_report_count ?? 0,
+          community_flagged: data.community_flagged ?? false,
+          community_report_count: data.community_report_count ?? 0,
           batchVerification,
           evidence: data.evidence,
           recommendation: data.recommendation,
@@ -222,7 +222,7 @@ const ScanPage = () => {
           navigate("/results", {
             state: {
               status: "verified_database",
-              drugName: offlineMatch.n.toUpperCase(),
+              drug_name: offlineMatch.n.toUpperCase(),
               composition: offlineMatch.c,
               manufacturer: offlineMatch.m,
               message: "Verified Offline. This medicine matches our pre-downloaded local registry.",
