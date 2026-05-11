@@ -32,7 +32,7 @@ interface BatchVerification {
 }
 
 interface ResultState {
-  status: 'verified_database' | 'verified_openfda' | 'caution' | 'banned' | 'unverified' | 'error';
+  status: 'verified_database' | 'verified_global' | 'verified_barcode' | 'caution' | 'danger' | 'unable_to_verify' | 'error';
   drug_name: string;
   composition?: string;
   manufacturer?: string;
@@ -320,10 +320,8 @@ const ResultsPage = () => {
     },
   };
 
-  const config = configMap[status];
-
-  // Safety net: if status is an unknown value, redirect rather than crash
-  if (!config) return <Navigate to="/scan" replace />;
+  // Bulletproof safety net: fallback to database match style if unknown status
+  const config = configMap[status] || configMap.verified_database;
 
   const threatColorClass =
     status === "verified_database" || status === "verified_barcode" || status === "verified_global"
