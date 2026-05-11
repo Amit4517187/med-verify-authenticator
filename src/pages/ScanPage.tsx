@@ -293,24 +293,6 @@ const ScanPage = () => {
         />
       )}
 
-      <div className="container mx-auto max-w-2xl px-4">
-        {/* OFFLINE SYNC INDICATOR */}
-        <div className="mb-6 flex items-center justify-between rounded-full bg-secondary/30 px-4 py-2 backdrop-blur-sm border border-border/40 shadow-sm">
-          <div className="flex items-center gap-2.5">
-            <div className={`h-2.5 w-2.5 animate-pulse rounded-full ${dbReady ? 'bg-primary' : (dbLoading ? 'bg-amber-500' : 'bg-destructive')}`} />
-            <span className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
-              {dbReady ? 'Offline Brain Active' : (dbLoading ? 'Syncing 300k+ Records...' : 'Offline Not Synced')}
-            </span>
-          </div>
-          {!dbReady && !dbLoading && (
-            <button 
-              onClick={() => searchMedicineOffline("").catch(() => {})}
-              className="text-[11px] font-extrabold text-primary hover:text-primary/80 transition-colors uppercase tracking-wider"
-            >
-              Sync Now
-            </button>
-          )}
-        </div>
       {/* Full-screen loading overlay */}
       {loading && (
         <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-background/97 backdrop-blur-sm px-4">
@@ -349,204 +331,224 @@ const ScanPage = () => {
         </div>
       )}
 
-      {/* Error dialog */}
-      <Dialog open={showError} onOpenChange={setShowError}>
-        <DialogContent className="w-[calc(100vw-2rem)] max-w-md rounded-2xl mx-auto">
-          <DialogHeader>
-            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-destructive/10">
-              {errorType === "network" ? (
-                <WifiOff className="h-7 w-7 text-destructive" />
-              ) : errorType === "validation" ? (
-                <Shield className="h-7 w-7 text-warning" />
-              ) : (
-                <X className="h-7 w-7 text-destructive" />
-              )}
+      <ScrollReveal>
+        <div className="container mx-auto max-w-2xl px-4">
+          {/* OFFLINE SYNC INDICATOR */}
+          <div className="mb-6 flex items-center justify-between rounded-full bg-secondary/30 px-4 py-2 backdrop-blur-sm border border-border/40 shadow-sm">
+            <div className="flex items-center gap-2.5">
+              <div className={`h-2.5 w-2.5 animate-pulse rounded-full ${dbReady ? 'bg-primary' : (dbLoading ? 'bg-amber-500' : 'bg-destructive')}`} />
+              <span className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
+                {dbReady ? 'Offline Brain Active' : (dbLoading ? 'Syncing 300k+ Records...' : 'Offline Not Synced')}
+              </span>
             </div>
-            <DialogTitle className="text-center font-display">
-              {errorType === "network"
-                ? t("connectionErrorTitle")
-                : errorType === "validation"
-                  ? "Missing Information"
-                  : errorType === "server"
-                    ? "Server Error"
-                    : "Analysis Error"}
-            </DialogTitle>
-            <DialogDescription className="text-center text-sm">
-              {errorMessage || t("connectionError")}
-            </DialogDescription>
-          </DialogHeader>
-          <DialogFooter className="flex-col gap-2 sm:flex-row sm:justify-center">
-            {errorType !== "validation" && (
-              <Button
-                variant="default"
-                onClick={() => { setShowError(false); handleSubmit(); }}
-                className="gap-2 w-full sm:w-auto"
+            {!dbReady && !dbLoading && (
+              <button 
+                onClick={() => searchMedicineOffline("").catch(() => {})}
+                className="text-[11px] font-extrabold text-primary hover:text-primary/80 transition-colors uppercase tracking-wider"
               >
-                <Loader2 className="h-4 w-4" />
-                {t("tryAgain")}
-              </Button>
+                Sync Now
+              </button>
             )}
-            <Button variant="outline" onClick={() => setShowError(false)} className="w-full sm:w-auto">
-              {errorType === "validation" ? "OK" : "Cancel"}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+          </div>
 
-      <div className="container mx-auto max-w-2xl px-4">
-        {/* Header */}
-        <div className="text-center">
-          <h1 className="font-display text-2xl font-bold text-foreground sm:text-3xl md:text-4xl">
-            {t("uploadTitle")}
-          </h1>
-          <p className="mt-2 text-sm text-muted-foreground sm:text-base">{t("uploadSubtitle")}</p>
-        </div>
+          {/* Header */}
+          <div className="text-center">
+            <h1 className="font-display text-2xl font-bold text-foreground sm:text-3xl md:text-4xl">
+              {t("uploadTitle")}
+            </h1>
+            <p className="mt-2 text-sm text-muted-foreground sm:text-base">{t("uploadSubtitle")}</p>
+          </div>
 
-        {/* Image Upload */}
-        <Card className="mt-8 border-border/60 shadow-sm">
-          <CardHeader className="pb-3">
-            <CardTitle className="flex items-center gap-2 font-display text-base sm:text-lg">
-              <Camera className="h-5 w-5 text-primary" />
-              {t("uploadPhoto")}
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="px-4 pb-4 sm:px-6 sm:pb-6">
-            <div
-              onClick={() => fileRef.current?.click()}
-              onDragOver={(e) => e.preventDefault()}
-              onDrop={handleDrop}
-              className="group relative flex min-h-[180px] cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-border bg-muted/20 transition-colors hover:border-primary/50 hover:bg-primary/3 sm:min-h-[220px]"
-            >
-              {imagePreview ? (
-                <div className="relative w-full overflow-hidden rounded-lg p-2">
-                  <img
-                    src={imagePreview}
-                    alt="Medicine"
-                    className="mx-auto max-h-[220px] w-auto object-contain rounded-lg"
-                  />
-                  {/* Scan line overlay */}
-                  <div className="absolute inset-2 rounded-lg pointer-events-none overflow-hidden">
-                    <div className="absolute left-0 right-0 h-0.5 bg-primary/60 animate-scan-line" />
+          {/* Image Upload */}
+          <Card className="mt-8 border-border/60 shadow-sm">
+            <CardHeader className="pb-3">
+              <CardTitle className="flex items-center gap-2 font-display text-base sm:text-lg">
+                <Camera className="h-5 w-5 text-primary" />
+                {t("uploadPhoto")}
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="px-4 pb-4 sm:px-6 sm:pb-6">
+              <div
+                onClick={() => fileRef.current?.click()}
+                onDragOver={(e) => e.preventDefault()}
+                onDrop={handleDrop}
+                className="group relative flex min-h-[180px] cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-border bg-muted/20 transition-colors hover:border-primary/50 hover:bg-primary/3 sm:min-h-[220px]"
+              >
+                {imagePreview ? (
+                  <div className="relative w-full overflow-hidden rounded-lg p-2">
+                    <img
+                      src={imagePreview}
+                      alt="Medicine"
+                      className="mx-auto max-h-[220px] w-auto object-contain rounded-lg"
+                    />
+                    {/* Scan line overlay */}
+                    <div className="absolute inset-2 rounded-lg pointer-events-none overflow-hidden">
+                      <div className="absolute left-0 right-0 h-0.5 bg-primary/60 animate-scan-line" />
+                    </div>
+                    {/* Clear button */}
+                    <button
+                      onClick={clearImage}
+                      className="absolute top-3 right-3 flex h-7 w-7 items-center justify-center rounded-full bg-destructive/90 text-white hover:bg-destructive transition-colors"
+                    >
+                      <X className="h-3.5 w-3.5" />
+                    </button>
                   </div>
-                  {/* Clear button */}
-                  <button
-                    onClick={clearImage}
-                    className="absolute top-3 right-3 flex h-7 w-7 items-center justify-center rounded-full bg-destructive/90 text-white hover:bg-destructive transition-colors"
-                  >
-                    <X className="h-3.5 w-3.5" />
-                  </button>
-                </div>
-              ) : (
-                <>
-                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10">
-                    <Upload className="h-6 w-6 text-primary" />
-                  </div>
-                  <p className="mt-3 text-sm font-medium text-muted-foreground">{t("dragDrop")}</p>
-                  <p className="mt-1 text-xs text-muted-foreground/60">PNG, JPG up to 10 MB</p>
-                </>
-              )}
-              <input ref={fileRef} type="file" accept="image/*" capture="environment" className="hidden" onChange={handleFile} />
-            </div>
-          </CardContent>
-        </Card>
+                ) : (
+                  <>
+                    <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10">
+                      <Upload className="h-6 w-6 text-primary" />
+                    </div>
+                    <p className="mt-3 text-sm font-medium text-muted-foreground">{t("dragDrop")}</p>
+                    <p className="mt-1 text-xs text-muted-foreground/60">PNG, JPG up to 10 MB</p>
+                  </>
+                )}
+                <input ref={fileRef} type="file" accept="image/*" capture="environment" className="hidden" onChange={handleFile} />
+              </div>
+            </CardContent>
+          </Card>
 
-        {/* Divider */}
-        <div className="my-6 flex items-center gap-4">
-          <Separator className="flex-1" />
-          <span className="text-xs font-medium text-muted-foreground sm:text-sm">{t("orEnterManually")}</span>
-          <Separator className="flex-1" />
-        </div>
+          {/* Divider */}
+          <div className="my-6 flex items-center gap-4">
+            <Separator className="flex-1" />
+            <span className="text-xs font-medium text-muted-foreground sm:text-sm">{t("orEnterManually")}</span>
+            <Separator className="flex-1" />
+          </div>
 
-        {/* Manual form */}
-        <Card className="border-border/60 shadow-sm">
-          <CardContent className="grid gap-4 p-4 sm:gap-5 sm:p-6">
-            <div className="grid gap-2">
-              <Label htmlFor="name" className="text-sm font-medium">{t("medicineName")}</Label>
-              <Input
-                id="name"
-                placeholder="e.g. Paracetamol 500mg"
-                value={form.medicineName}
-                onChange={(e) => setForm({ ...form, medicineName: e.target.value })}
-                className="h-10 text-sm"
-              />
-            </div>
-            <div className="grid grid-cols-1 gap-4 xs:grid-cols-2">
+          {/* Manual form */}
+          <Card className="border-border/60 shadow-sm">
+            <CardContent className="grid gap-4 p-4 sm:gap-5 sm:p-6">
               <div className="grid gap-2">
-                <Label htmlFor="batch" className="text-sm font-medium">{t("batchNumber")}</Label>
+                <Label htmlFor="name" className="text-sm font-medium">{t("medicineName")}</Label>
                 <Input
-                  id="batch"
-                  placeholder="e.g. BN-2024-001"
-                  value={form.batchNumber}
-                  onChange={(e) => setForm({ ...form, batchNumber: e.target.value })}
+                  id="name"
+                  placeholder="e.g. Paracetamol 500mg"
+                  value={form.medicineName}
+                  onChange={(e) => setForm({ ...form, medicineName: e.target.value })}
                   className="h-10 text-sm"
                 />
               </div>
-              <div className="grid gap-2">
-                <Label htmlFor="barcode" className="text-sm font-medium">{t("barcode")}</Label>
-                <div className="flex gap-2">
+              <div className="grid grid-cols-1 gap-4 xs:grid-cols-2">
+                <div className="grid gap-2">
+                  <Label htmlFor="batch" className="text-sm font-medium">{t("batchNumber")}</Label>
                   <Input
-                    id="barcode"
-                    placeholder="e.g. 8901234567890"
-                    value={form.barcode}
-                    onChange={(e) => setForm({ ...form, barcode: e.target.value })}
-                    className="h-10 text-sm flex-1"
+                    id="batch"
+                    placeholder="e.g. BN-2024-001"
+                    value={form.batchNumber}
+                    onChange={(e) => setForm({ ...form, batchNumber: e.target.value })}
+                    className="h-10 text-sm"
                   />
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="icon"
-                    className="h-10 w-10 shrink-0 border-primary/40 text-primary hover:bg-primary/10"
-                    onClick={() => setShowScanner(true)}
-                    title="Scan barcode with camera"
-                  >
-                    <ScanLine className="h-4 w-4" />
-                  </Button>
                 </div>
-                {form.barcode && (
-                  <p className="text-xs text-primary flex items-center gap-1 mt-0.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-primary inline-block"></span>
-                    Code detected: {form.barcode}
-                  </p>
-                )}
+                <div className="grid gap-2">
+                  <Label htmlFor="barcode" className="text-sm font-medium">{t("barcode")}</Label>
+                  <div className="flex gap-2">
+                    <Input
+                      id="barcode"
+                      placeholder="e.g. 8901234567890"
+                      value={form.barcode}
+                      onChange={(e) => setForm({ ...form, barcode: e.target.value })}
+                      className="h-10 text-sm flex-1"
+                    />
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="icon"
+                      className="h-10 w-10 shrink-0 border-primary/40 text-primary hover:bg-primary/10"
+                      onClick={() => setShowScanner(true)}
+                      title="Scan barcode with camera"
+                    >
+                      <ScanLine className="h-4 w-4" />
+                    </Button>
+                  </div>
+                  {form.barcode && (
+                    <p className="text-xs text-primary flex items-center gap-1 mt-0.5">
+                      <span className="w-1.5 h-1.5 rounded-full bg-primary inline-block"></span>
+                      Code detected: {form.barcode}
+                    </p>
+                  )}
+                </div>
               </div>
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="mfg" className="text-sm font-medium">{t("manufacturer")}</Label>
-              <Input
-                id="mfg"
-                placeholder="e.g. Cipla Ltd."
-                value={form.manufacturer}
-                onChange={(e) => setForm({ ...form, manufacturer: e.target.value })}
-                className="h-10 text-sm"
-              />
-            </div>
-          </CardContent>
-        </Card>
+              <div className="grid gap-2">
+                <Label htmlFor="mfg" className="text-sm font-medium">{t("manufacturer")}</Label>
+                <Input
+                  id="mfg"
+                  placeholder="e.g. Cipla Ltd."
+                  value={form.manufacturer}
+                  onChange={(e) => setForm({ ...form, manufacturer: e.target.value })}
+                  className="h-10 text-sm"
+                />
+              </div>
+            </CardContent>
+          </Card>
 
-        {/* Submit */}
-        <Button
-          size="lg"
-          className="mt-6 w-full gap-2 text-base shadow-lg shadow-primary/20 bg-primary hover:bg-primary/90 h-12"
-          disabled={!canSubmit || loading}
-          onClick={handleSubmit}
-        >
-          {loading ? (
-            <>
-              <Loader2 className="h-5 w-5 animate-spin" />
-              {t("analyzing")}
-            </>
-          ) : (
-            <>
-              <FileImage className="h-5 w-5" />
-              {t("verifyMedicine")}
-            </>
-          )}
-        </Button>
+          {/* Submit */}
+          <Button
+            size="lg"
+            className="mt-6 w-full gap-2 text-base shadow-lg shadow-primary/20 bg-primary hover:bg-primary/90 h-12"
+            disabled={!canSubmit || loading}
+            onClick={handleSubmit}
+          >
+            {loading ? (
+              <>
+                <Loader2 className="h-5 w-5 animate-spin" />
+                {t("analyzing")}
+              </>
+            ) : (
+              <>
+                <FileImage className="h-5 w-5" />
+                {t("verifyMedicine")}
+              </>
+            )}
+          </Button>
 
-        <p className="mt-3 text-center text-xs text-muted-foreground">
-          Your data is processed securely and never stored.
-        </p>
-      </div>
+          <p className="mt-3 text-center text-xs text-muted-foreground">
+            Your data is processed securely and never stored.
+          </p>
+
+          {/* Error dialog */}
+          <Dialog open={showError} onOpenChange={setShowError}>
+            <DialogContent className="w-[calc(100vw-2rem)] max-w-md rounded-2xl mx-auto">
+              <DialogHeader>
+                <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-destructive/10">
+                  {errorType === "network" ? (
+                    <WifiOff className="h-7 w-7 text-destructive" />
+                  ) : errorType === "validation" ? (
+                    <Shield className="h-7 w-7 text-warning" />
+                  ) : (
+                    <X className="h-7 w-7 text-destructive" />
+                  )}
+                </div>
+                <DialogTitle className="text-center font-display">
+                  {errorType === "network"
+                    ? t("connectionErrorTitle")
+                    : errorType === "validation"
+                      ? "Missing Information"
+                      : errorType === "server"
+                        ? "Server Error"
+                        : "Analysis Error"}
+                </DialogTitle>
+                <DialogDescription className="text-center text-sm">
+                  {errorMessage || t("connectionError")}
+                </DialogDescription>
+              </DialogHeader>
+              <DialogFooter className="flex-col gap-2 sm:flex-row sm:justify-center">
+                {errorType !== "validation" && (
+                  <Button
+                    variant="default"
+                    onClick={() => { setShowError(false); handleSubmit(); }}
+                    className="gap-2 w-full sm:w-auto"
+                  >
+                    <Loader2 className="h-4 w-4" />
+                    {t("tryAgain")}
+                  </Button>
+                )}
+                <Button variant="outline" onClick={() => setShowError(false)} className="w-full sm:w-auto">
+                  {errorType === "validation" ? "OK" : "Cancel"}
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+        </div>
+      </ScrollReveal>
     </div>
   );
 };
