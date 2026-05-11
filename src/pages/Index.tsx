@@ -10,6 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ScrollReveal } from "../components/animations/ScrollReveal";
+import InstallPWA from "@/components/InstallPWA";
 
 interface CabinetItem {
   id: string;
@@ -128,6 +129,11 @@ const Index = () => {
           </div>
         </div>
       )}
+
+      {/* Phase 6: PWA Install Prompt */}
+      <div className="container mx-auto pt-6">
+        <InstallPWA />
+      </div>
 
       {/* Hero */}
       <section className="relative overflow-hidden py-16 md:py-32 bg-medical-pattern">
