@@ -12,21 +12,28 @@ def convert():
         return
 
     medicines = []
-    print(f"Starting conversion of {csv_path}...")
+    print(f"Starting conversion of {csv_path} with concise descriptions...")
     
     with open(csv_path, mode='r', encoding='utf-8') as f:
         reader = csv.DictReader(f)
         count = 0
         for row in reader:
-            # Keep it super lightweight with short keys
-            # n: name, m: manufacturer, c: composition
             name = row.get('medicine_name', '').strip()
-            if not name: continue # Skip empty rows
+            if not name: continue
             
+            # Get description and truncate to ~15 words to save tokens/space
+            desc = row.get('description', '').strip()
+            if not desc or desc.lower() == 'unknown':
+                desc = "Used for patient health management."
+            
+            # Truncate to 100 characters max for offline portability
+            short_desc = (desc[:97] + '...') if len(desc) > 100 else desc
+
             medicines.append({
                 "n": name.lower(),
                 "m": row.get('manufacturer', '').strip().lower(),
-                "c": row.get('composition', '').strip().lower()
+                "c": row.get('composition', '').strip().lower(),
+                "d": short_desc # d for description
             })
             count += 1
             if count % 50000 == 0:
@@ -34,7 +41,7 @@ def convert():
     
     print(f"Writing {len(medicines)} records to {json_output}...")
     with open(json_output, 'w', encoding='utf-8') as f:
-        json.dump(medicines, f, separators=(',', ':')) # Compact JSON
+        json.dump(medicines, f, separators=(',', ':')) # Ultra-Compact JSON
     
     print(f"Done! Final file size: {os.path.getsize(json_output) / 1024 / 1024:.2f} MB")
 

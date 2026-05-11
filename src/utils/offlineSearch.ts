@@ -8,6 +8,7 @@ interface Medicine {
   n: string; // name
   c: string; // composition
   m: string; // manufacturer
+  d?: string; // description
 }
 
 let cachedDb: Medicine[] | null = null;
