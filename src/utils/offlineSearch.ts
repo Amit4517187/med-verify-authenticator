@@ -18,22 +18,39 @@ export const isOfflineDbReady = () => !!cachedDb;
 export const isOfflineDbLoading = () => isLoading;
 
 async function loadDb(): Promise<Medicine[]> {
-  if (cachedDb) return cachedDb;
-  if (isLoading) return [];
+  if (cachedDb) {
+    console.log("Using cached offline database.");
+    return cachedDb;
+  }
   
+  if (isLoading) {
+    console.log("Database download already in progress...");
+    return [];
+  }
+  
+  console.log("🚀 STARTING OFFLINE SYNC (36MB)...");
   isLoading = true;
   try {
-    console.log("Loading massive offline database (36MB)...");
-    const response = await fetch('/medicine_db.json');
-    if (!response.ok) throw new Error('Offline database not found');
+    const response = await fetch('/medicine_db.json', { 
+      cache: 'no-cache', // Force fresh download if it's stuck
+      priority: 'low'    // Don't block the UI
+    });
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
     const data = await response.json();
+    if (!Array.isArray(data)) {
+      throw new Error("Invalid database format: Expected an array");
+    }
+
     cachedDb = data;
-    console.log(`Offline database ready with ${cachedDb?.length} records.`);
-    return cachedDb || [];
+    console.log(`✅ OFFLINE SYNC COMPLETE: ${cachedDb.length} records loaded.`);
+    return cachedDb;
   } catch (error) {
-    console.error('Failed to load offline database:', error);
-    // Reset isLoading so it can be retried later
-    isLoading = false; 
+    console.error('❌ OFFLINE SYNC FAILED:', error);
+    isLoading = false; // Reset immediately on error
     return [];
   } finally {
     isLoading = false;

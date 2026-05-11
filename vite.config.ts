@@ -43,6 +43,10 @@ export default defineConfig(({ mode }) => ({
             purpose: 'any maskable'
           }
         ]
+      },
+      workbox: {
+        maximumFileSizeToCacheInBytes: 50 * 1024 * 1024, // 50MB limit for the 36MB DB
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,json}'], // Ensure json is cached
       }
     })
   ].filter(Boolean),
