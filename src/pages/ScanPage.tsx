@@ -11,6 +11,7 @@ import BarcodeScanner from "@/components/BarcodeScanner";
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter,
 } from "@/components/ui/dialog";
+import { searchMedicineOffline } from "@/utils/offlineSearch";
 
 const API_URL = import.meta.env.VITE_API_URL || "";
 
@@ -207,8 +208,34 @@ const ScanPage = () => {
         error?.message?.includes("net::");
 
       if (isNetworkError) {
+        // --- HYBRID OFFLINE FALLBACK ---
+        console.log("Network error detected. Switching to Offline Mode...");
+        const offlineMatch = await searchMedicineOffline(trimmedName || trimmedBarcode || "");
+        
+        if (offlineMatch) {
+          navigate("/results", {
+            state: {
+              status: "verified_database",
+              drugName: offlineMatch.n.toUpperCase(),
+              composition: offlineMatch.c,
+              manufacturer: offlineMatch.m,
+              message: "Verified Offline. This medicine matches our pre-downloaded local registry.",
+              usage_description: "Information restricted in offline mode.",
+              traceability_id: "OFFLINE-ID-" + Math.random().toString(36).substr(2, 6).toUpperCase(),
+              evidence: {
+                medicine_identified: "Yes (Offline)",
+                database_match: "Local Registry",
+                regulatory_status: "Verified (Cached)",
+                ocr_confidence: "N/A"
+              },
+              recommendation: "Always purchase from a licensed pharmacy. Connect to internet for a full AI analysis.",
+            },
+          });
+          return;
+        }
+
         setErrorType("network");
-        setErrorMessage(t("connectionError"));
+        setErrorMessage(t("connectionError") + " (And no local match found)");
       } else {
         setErrorType("server");
         setErrorMessage(
