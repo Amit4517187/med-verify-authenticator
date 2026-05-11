@@ -378,6 +378,7 @@ const ResultsPage = () => {
               </div>
             </div>
           </ScrollReveal>
+        )}
         {/* --- NEW: Visual Integrity & Forgery Guard --- */}
         <ScrollReveal delay={0.18} duration={0.6}>
           <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
