@@ -195,6 +195,7 @@ const ScanPage = () => {
           batchVerification,
           evidence: data.evidence,
           recommendation: data.recommendation,
+          traceability_id: data.traceability_id,
         },
       });
     } catch (err: unknown) {
