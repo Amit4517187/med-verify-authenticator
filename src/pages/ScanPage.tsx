@@ -27,8 +27,19 @@ const ScanPage = () => {
   const navigate = useNavigate();
 
   // Pre-load the offline database in the background so it's ready when needed
+  const [dbReady, setDbReady] = useState(isOfflineDbReady());
+  const [dbLoading, setDbLoading] = useState(isOfflineDbLoading());
+
   useEffect(() => {
+    const checkStatus = setInterval(() => {
+      setDbReady(isOfflineDbReady());
+      setDbLoading(isOfflineDbLoading());
+    }, 1000);
+    
+    // Initial trigger
     searchMedicineOffline("").catch(() => {});
+    
+    return () => clearInterval(checkStatus);
   }, []);
 
   const fileRef = useRef<HTMLInputElement>(null);
@@ -281,6 +292,25 @@ const ScanPage = () => {
           onClose={() => setShowScanner(false)}
         />
       )}
+
+      <div className="container mx-auto max-w-2xl px-4">
+        {/* OFFLINE SYNC INDICATOR */}
+        <div className="mb-6 flex items-center justify-between rounded-full bg-secondary/30 px-4 py-2 backdrop-blur-sm border border-border/40 shadow-sm">
+          <div className="flex items-center gap-2.5">
+            <div className={`h-2.5 w-2.5 animate-pulse rounded-full ${dbReady ? 'bg-primary' : (dbLoading ? 'bg-amber-500' : 'bg-destructive')}`} />
+            <span className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
+              {dbReady ? 'Offline Brain Active' : (dbLoading ? 'Syncing 300k+ Records...' : 'Offline Not Synced')}
+            </span>
+          </div>
+          {!dbReady && !dbLoading && (
+            <button 
+              onClick={() => searchMedicineOffline("").catch(() => {})}
+              className="text-[11px] font-extrabold text-primary hover:text-primary/80 transition-colors uppercase tracking-wider"
+            >
+              Sync Now
+            </button>
+          )}
+        </div>
       {/* Full-screen loading overlay */}
       {loading && (
         <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-background/97 backdrop-blur-sm px-4">

@@ -23,14 +23,17 @@ async function loadDb(): Promise<Medicine[]> {
   
   isLoading = true;
   try {
-    console.log("Loading massive offline database...");
+    console.log("Loading massive offline database (36MB)...");
     const response = await fetch('/medicine_db.json');
     if (!response.ok) throw new Error('Offline database not found');
-    cachedDb = await response.json();
+    const data = await response.json();
+    cachedDb = data;
     console.log(`Offline database ready with ${cachedDb?.length} records.`);
     return cachedDb || [];
   } catch (error) {
     console.error('Failed to load offline database:', error);
+    // Reset isLoading so it can be retried later
+    isLoading = false; 
     return [];
   } finally {
     isLoading = false;
