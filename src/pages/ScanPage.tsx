@@ -11,7 +11,7 @@ import BarcodeScanner from "@/components/BarcodeScanner";
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter,
 } from "@/components/ui/dialog";
-import { searchMedicineOffline } from "@/utils/offlineSearch";
+import { searchMedicineOffline, isOfflineDbReady, isOfflineDbLoading } from "@/utils/offlineSearch";
 
 const API_URL = import.meta.env.VITE_API_URL || "";
 
@@ -240,8 +240,19 @@ const ScanPage = () => {
           return;
         }
 
+        // --- NEW IMPROVED ERROR FEEDBACK ---
+        const dbReady = isOfflineDbReady();
+        const dbLoading = isOfflineDbLoading();
+        
+        let specificError = t("connectionError") + " (And no local match found)";
+        if (dbLoading) {
+          specificError = "The Offline Safety Brain is still downloading its 300,000+ records. Please wait a moment and try again.";
+        } else if (!dbReady) {
+          specificError = "Offline verification is not yet ready. Please connect to the internet once to synchronize the database.";
+        }
+
         setErrorType("network");
-        setErrorMessage(t("connectionError") + " (And no local match found)");
+        setErrorMessage(specificError);
       } else {
         setErrorType("server");
         setErrorMessage(
