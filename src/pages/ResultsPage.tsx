@@ -377,40 +377,6 @@ const ResultsPage = () => {
             </div>
           </ScrollReveal>
         )}
-        {/* --- NEW: Visual Integrity & Forgery Guard --- */}
-        <ScrollReveal delay={0.18} duration={0.6}>
-          <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <Card className={`overflow-hidden border-l-4 ${visual_anomaly_detected ? 'border-l-destructive border-destructive/20 bg-destructive/5' : 'border-l-primary border-primary/20 bg-primary/5'}`}>
-              <CardContent className="p-4 flex items-center gap-4">
-                <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full ${visual_anomaly_detected ? 'bg-destructive/10' : 'bg-primary/10'}`}>
-                  <ShieldCheck className={`h-5 w-5 ${visual_anomaly_detected ? 'text-destructive' : 'text-primary'}`} />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-[10px] uppercase font-bold tracking-wider text-muted-foreground">Visual Integrity</p>
-                  <p className={`text-sm font-bold ${visual_anomaly_detected ? 'text-destructive' : 'text-primary'}`}>
-                    {state?.evidence?.print_quality || 'High Quality'}
-                  </p>
-                  <p className="text-[10px] text-muted-foreground mt-0.5">AI score: {state?.evidence?.visual_score || '98%'}</p>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="overflow-hidden border-l-4 border-l-blue-500 border-blue-500/20 bg-blue-500/5">
-              <CardContent className="p-4 flex items-center gap-4">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-blue-500/10">
-                  <Fingerprint className="h-5 w-5 text-blue-500" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-[10px] uppercase font-bold tracking-wider text-muted-foreground">Digital Ledger ID</p>
-                  <p className="text-sm font-mono font-bold text-blue-600 truncate">
-                    {traceability_id || 'NOT_LOGGED'}
-                  </p>
-                  <p className="text-[10px] text-muted-foreground mt-0.5">Secure supply-chain record</p>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </ScrollReveal>
 
         {/* Analysis data */}
         <ScrollReveal delay={0.2} duration={0.6}>
