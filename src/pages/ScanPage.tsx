@@ -12,7 +12,7 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter,
 } from "@/components/ui/dialog";
 import { searchMedicineOffline, isOfflineDbReady, isOfflineDbLoading } from "@/utils/offlineSearch";
-import { ScrollReveal } from "@/components/ScrollReveal";
+import { ScrollReveal } from "@/components/animations/ScrollReveal";
 
 const API_URL = import.meta.env.VITE_API_URL || "";
 
