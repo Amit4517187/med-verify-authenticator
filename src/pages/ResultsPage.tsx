@@ -4,7 +4,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import {
   ShieldCheck, ShieldAlert, ShieldX, AlertTriangle, MapPin, ChevronRight, HelpCircle,
   Pill, FlaskConical, Scan, FileText, Users, CheckCircle2, Package, CalendarClock, Factory,
-  Search, Building2, Star, Loader2, Download, Plus, Archive
+  Search, Building2, Star, Loader2, Download, Plus, Archive, Fingerprint
 } from "lucide-react";
 // @ts-expect-error - jspdf types
 import jsPDF from "jspdf";
