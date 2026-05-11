@@ -29,7 +29,7 @@ const App = () => {
             <Sonner />
             <BrowserRouter>
               <Navbar />
-              <MaintenanceBanner />
+              {/* <MaintenanceBanner /> */}
               <Routes>
                 <Route path="/" element={<Index />} />
                 <Route path="/scan" element={<ScanPage />} />
