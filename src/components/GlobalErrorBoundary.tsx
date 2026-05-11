@@ -62,6 +62,18 @@ class GlobalErrorBoundary extends Component<Props, State> {
             </Button>
           </div>
           
+          {this.state.error && (
+            <div className="mt-6 w-full max-w-lg overflow-hidden rounded-lg border border-destructive/20 bg-destructive/5 p-4 text-left">
+              <p className="text-xs font-bold uppercase tracking-wider text-destructive/70">Technical Diagnostics</p>
+              <p className="mt-2 font-mono text-[11px] text-destructive">
+                {this.state.error.message}
+              </p>
+              <pre className="mt-2 max-h-32 overflow-auto font-mono text-[9px] text-destructive/60">
+                {this.state.error.stack}
+              </pre>
+            </div>
+          )}
+          
           <p className="mt-12 text-[10px] uppercase tracking-widest text-muted-foreground/50">
             MedVerify System Protection Active
           </p>
