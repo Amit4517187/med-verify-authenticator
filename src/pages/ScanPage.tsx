@@ -133,8 +133,15 @@ const ScanPage = () => {
       });
 
       if (!response.ok) {
+        let serverMsg = "Unexpected error";
+        try {
+          const errData = await response.json();
+          serverMsg = errData.message || serverMsg;
+        } catch {
+          serverMsg = response.statusText || serverMsg;
+        }
         setErrorType("server");
-        throw new Error(`Server returned ${response.status}: ${response.statusText || "Unexpected error"}`);
+        throw new Error(`Server returned ${response.status}: ${serverMsg}`);
       }
 
       const data = await response.json();
