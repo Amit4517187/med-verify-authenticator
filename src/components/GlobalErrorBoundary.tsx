@@ -62,7 +62,7 @@ class GlobalErrorBoundary extends Component<Props, State> {
             </Button>
           </div>
           
-          {this.state.error && (
+          {this.state.error && import.meta.env.DEV && (
             <div className="mt-6 w-full max-w-lg overflow-hidden rounded-lg border border-destructive/20 bg-destructive/5 p-4 text-left">
               <p className="text-xs font-bold uppercase tracking-wider text-destructive/70">Technical Diagnostics</p>
               <p className="mt-2 font-mono text-[11px] text-destructive">

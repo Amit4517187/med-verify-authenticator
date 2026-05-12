@@ -339,7 +339,7 @@ const ScanPage = () => {
       <ScrollReveal>
         <div className="container mx-auto max-w-2xl px-4">
           {/* OFFLINE SYNC INDICATOR */}
-          <div className={`mb-6 flex flex-col gap-2 rounded-2xl p-3 backdrop-blur-sm border shadow-sm transition-all duration-500 ${dbReady ? 'bg-primary/5 border-primary/20' : (dbLoading ? 'bg-amber-500/5 border-amber-500/20' : 'bg-destructive/5 border-destructive/20')}`}>
+          <div className={`mb-6 flex flex-col gap-2 rounded-2xl p-3 backdrop-blur-sm border shadow-sm transition-all duration-500 md:hidden ${dbReady ? 'bg-primary/5 border-primary/20' : (dbLoading ? 'bg-amber-500/5 border-amber-500/20' : 'bg-destructive/5 border-destructive/20')}`}>
             <div className="flex items-center justify-between px-1">
               <div className="flex items-center gap-2.5">
                 <div className={`h-2.5 w-2.5 rounded-full ${dbReady ? 'bg-primary shadow-[0_0_8px_rgba(var(--primary),0.6)]' : (dbLoading ? 'bg-amber-500 animate-pulse' : 'bg-destructive')}`} />
