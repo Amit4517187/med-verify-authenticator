@@ -1,69 +1,85 @@
-# MedVerify — AI-Powered Medicine Authenticator
+# MedVerify — AI-Powered Medicine Authenticator 🛡️
 
-MedVerify is a mobile-first web app that helps users verify the authenticity of medicines in seconds. It uses a 5-layer AI analysis engine to detect counterfeit drugs from a photo of the packaging or manually entered medicine details.
+MedVerify is a production-grade, offline-capable Progressive Web Application (PWA) designed to detect counterfeit medicines in rural and low-connectivity environments across India. 
 
-## Features
+It uses an edge-deployed 5-layer AI analysis engine (Visual AI, OCR, Barcode/QR, Pricing Intelligence, and Pharmacy Registry Checks) backed by a massive locally-cached CDSCO database.
 
-- 📸 **Image Upload** — Scan medicine packaging via photo upload or drag-and-drop
-- ✍️ **Manual Entry** — Enter medicine name, batch number, barcode, or manufacturer manually
-- 🤖 **AI Analysis** — 5-layer verification: Visual AI, OCR + Database, Barcode/QR, Price Intelligence, Pharmacy Check
-- 🌐 **Bilingual** — Full English and Hindi support
-- 📱 **Mobile-first** — Responsive design optimized for all screen sizes
+![Architecture: Zero-Storage, Edge-First](https://img.shields.io/badge/Architecture-Offline_First-10b981) ![Security: Enterprise Grade](https://img.shields.io/badge/Security-Enterprise_Grade-eab308) ![Status: Production Ready](https://img.shields.io/badge/Status-Production-3b82f6)
 
-## Tech Stack
+---
 
-- **React 18** + **TypeScript**
-- **Vite** — build tool
-- **Tailwind CSS** + **shadcn/ui** — styling and components
-- **React Router** — client-side routing
+## 🚀 Key Features (Enterprise-Grade)
 
-## Getting Started
+- 📡 **Offline-First "Safety Brain"**: Caches a highly-compressed (50MB) subset of the CDSCO database via IndexedDB and Service Workers. If a user loses internet in a rural pharmacy, MedVerify continues to instantly verify medicines offline.
+- 🔒 **Zero-Storage Security Architecture**: All uploaded images are processed entirely in-memory using `BytesIO`. No user data, prescriptions, or images are ever written to disk, ensuring 100% HIPAA and privacy compliance.
+- 🤖 **Defensive AI Pipeline**: Employs rigorous LLM prompt injection defenses, strict `max_tokens` limits (to prevent token-exhaustion attacks), and real-time usage logging via Groq's high-speed inference engine.
+- 🚧 **Hardened API Infrastructure**: Protected by multi-tier rate limiting (global `60/min`, AI routes `5/min`), strict CORS policies, and rigorous MIME-type and byte-signature validation for all file uploads.
+- ⚡ **PWA Edge Caching**: Installs directly to iOS and Android home screens, bypassing App Store delays, with fully automated background syncing.
+- 🌐 **Bilingual (English/Hindi)**: Deep context translation powered by `deep-translator` to support grassroots health workers.
 
+## 🛠️ Technology Stack
+
+**Frontend (Vercel)**
+- **Framework**: React 18 + Vite + TypeScript
+- **Styling**: Tailwind CSS + shadcn/ui + ScrollReveal (micro-animations)
+- **Offline Engine**: Workbox Service Workers + IndexedDB (`idb`)
+- **Routing**: React Router DOM
+
+**Backend (HuggingFace Spaces)**
+- **Framework**: Python Flask (Application Factory Pattern)
+- **AI / Inference**: Groq API (LLaMA 3 70B) + EasyOCR + OpenCV
+- **Database**: Google BigQuery (Parameterized Queries for SQLi prevention)
+- **Security**: Flask-Limiter, Flask-CORS, secure HTTP headers (HSTS, CSP, X-Frame-Options)
+
+---
+
+## 🔒 Security Posture & Hardening
+
+This application has been meticulously hardened for production scale:
+1. **Dependency Pinning**: All packages strictly version-pinned to prevent supply chain attacks.
+2. **HTTP Security Headers**: Enforced `Content-Security-Policy`, `X-Content-Type-Options`, and `Strict-Transport-Security`.
+3. **Graceful Error Boundaries**: Stack traces and internal server paths are strictly hidden behind `NODE_ENV` checks in production.
+4. **Token Cost Management**: Granular throttling and token-capping prevent malicious automated scraping and API bill shocks.
+
+---
+
+## 💻 Local Development Setup
+
+### 1. Frontend
 ```sh
-# Clone the repository
 git clone https://github.com/Amit4517187/med-verify-authenticator.git
-
-# Navigate into the project
 cd med-verify-authenticator
-
-# Install dependencies
 npm install
-
-# Start the development server
 npm run dev
 ```
+*Frontend runs at `http://localhost:5173`*
 
-The app will be running at `http://localhost:5173`.
-
-## Project Structure
-
+### 2. Backend
+Ensure you have Python 3.10+ installed.
+```sh
+cd backend # Assuming you have cloned the backend repo
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+pip install -r requirements.txt
 ```
-src/
-├── components/       # Navbar and reusable UI components
-├── contexts/         # Language context (i18n)
-├── pages/            # Index, ScanPage, ResultsPage, AboutPage
-└── index.css         # Global styles and Tailwind configuration
+Create a `.env` file in the backend root:
+```env
+GROQ_API_KEY=your_key_here
+GOOGLE_APPLICATION_CREDENTIALS=/path/to/your/gcp/key.json
+MEDVERIFY_ACCESS_TOKEN=your_secure_secret_here
 ```
-
-## API
-
-The app sends scan requests to a backend analysis engine. Configure the endpoint in `src/pages/ScanPage.tsx`:
-
-```ts
-const API_URL = "https://<your-backend-url>/analyze";
-```
-
-The API accepts a `multipart/form-data` POST with either an `image` file or a `manual_text` string, and returns:
-
-```json
-{
-  "status": "safe" | "caution" | "danger" | "error",
-  "drug_name": "...",
-  "composition": "...",
-  "message": "..."
-}
+Run the server:
+```sh
+gunicorn "app:create_app()" -w 4 -b 0.0.0.0:5000
 ```
 
-## Team
+---
 
-Built by **Team MedVerify Innovations** to protect lives against India's ₹6,000 Cr counterfeit medicine market.
+## 🧠 Engineering & Architecture Philosophy
+
+This project was architected to solve a genuine, life-threatening problem: **₹6,000 Cr worth of counterfeit medicines circulating in India.** 
+
+Instead of building a simple wrapper, MedVerify is built with **"Resilient Engineering"** in mind. Knowing that the primary users are ASHA workers and community pharmacists in tier-3 cities with patchy 3G connections, the architecture heavily leans on edge-computing (IndexedDB caching) rather than relying solely on cloud availability. 
+
+---
+*Built with ❤️ to protect lives.*
