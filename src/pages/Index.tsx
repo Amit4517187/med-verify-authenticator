@@ -98,7 +98,6 @@ const Index = () => {
   ];
 
   const trustPoints = [
-    "Used by 50+ health workers across rural India",
     "Backed by CDSCO medicine database",
     "No personal data stored",
   ];
@@ -508,73 +507,6 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Testimonials */}
-      <section className="py-20 md:py-32 bg-background">
-        <div className="container mx-auto px-4">
-          <ScrollReveal>
-            <div className="text-center">
-              <span className="inline-block rounded-full bg-primary/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-primary">
-                {t("fromTheField")}
-              </span>
-              <h2 className="mt-4 font-display text-3xl font-extrabold text-foreground sm:text-5xl">
-                {t("trustedTitle")}
-              </h2>
-              <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground">
-                {t("trustedSubtitle")}
-              </p>
-            </div>
-          </ScrollReveal>
-
-          <div className="mt-16 grid gap-8 md:grid-cols-3">
-            {[
-              {
-                quote: t("testimonial1Quote"),
-                author: t("testimonial1Author"),
-                role: t("testimonial1Role"),
-                stat: t("testimonial1Stat"),
-              },
-              {
-                quote: t("testimonial2Quote"),
-                author: t("testimonial2Author"),
-                role: t("testimonial2Role"),
-                stat: t("testimonial2Stat"),
-              },
-              {
-                quote: t("testimonial3Quote"),
-                author: t("testimonial3Author"),
-                role: t("testimonial3Role"),
-                stat: t("testimonial3Stat"),
-              },
-            ].map((item, idx) => (
-              <ScrollReveal key={idx} delay={idx * 0.15}>
-                <Card className="h-full border-border/60 bg-white hover:border-primary/20 transition-all flex flex-col justify-between">
-                  <CardContent className="p-8">
-                    <Quote className="h-10 w-10 text-primary/10 mb-6" />
-                    <p className="text-foreground font-medium leading-relaxed italic">
-                      "{item.quote}"
-                    </p>
-                    
-                    <div className="mt-10 flex items-center gap-4 border-t border-border/40 pt-6">
-                      <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center font-display font-bold text-primary shrink-0">
-                        {item.author[0]}
-                      </div>
-                      <div>
-                        <h4 className="font-display font-bold text-foreground text-sm">{item.author}</h4>
-                        <p className="text-xs text-muted-foreground">{item.role}</p>
-                      </div>
-                    </div>
-                    
-                    <div className="mt-4 bg-primary/5 rounded-full px-4 py-2 text-[10px] font-bold text-primary inline-flex items-center gap-2">
-                       <CheckCircle2 className="h-3 w-3" />
-                       {item.stat}
-                    </div>
-                  </CardContent>
-                </Card>
-              </ScrollReveal>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* CTA */}
       <section className="py-16 md:py-24 bg-white">

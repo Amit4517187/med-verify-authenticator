@@ -13,57 +13,98 @@ interface Medicine {
 
 let cachedDb: Medicine[] | null = null;
 let isLoading = false;
+let syncProgress = 0;
+let syncError: string | null = null;
 
 export const isOfflineDbReady = () => !!cachedDb;
 export const isOfflineDbLoading = () => isLoading;
+export const getOfflineSyncProgress = () => syncProgress;
+export const getOfflineSyncError = () => syncError;
 
-async function loadDb(): Promise<Medicine[]> {
-  if (cachedDb) {
-    console.log("Using cached offline database.");
-    return cachedDb;
-  }
+async function loadDb(force = false): Promise<Medicine[]> {
+  if (cachedDb && !force) return cachedDb;
+  if (isLoading && !force) return [];
   
-  if (isLoading) {
-    console.log("Database download already in progress...");
-    return [];
-  }
-  
-  console.log("🚀 STARTING OFFLINE SYNC (36MB)...");
+  console.log("🚀 STARTING ROBUST OFFLINE SYNC...");
   isLoading = true;
-  try {
-    const response = await fetch('/medicine_db.json', { 
-      cache: 'no-cache', // Force fresh download if it's stuck
-      priority: 'low'    // Don't block the UI
-    });
-    
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
+  syncError = null;
+  syncProgress = 0;
 
-    const data = await response.json();
-    if (!Array.isArray(data)) {
-      throw new Error("Invalid database format: Expected an array");
-    }
+  let attempt = 0;
+  const maxAttempts = 3;
 
-    cachedDb = data;
-    console.log(`✅ OFFLINE SYNC COMPLETE: ${cachedDb.length} records loaded.`);
-    return cachedDb;
-  } catch (error) {
-    console.error('❌ OFFLINE SYNC FAILED:', error);
-    isLoading = false; // Reset immediately on error
-    return [];
-  } finally {
-    isLoading = false;
+  while (attempt < maxAttempts) {
+    try {
+      const response = await fetch('/medicine_db.json', { 
+        cache: 'no-cache',
+        priority: 'low'
+      });
+      
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+      const contentLength = response.headers.get('content-length');
+      const total = contentLength ? parseInt(contentLength, 10) : 0;
+      
+      if (!response.body) throw new Error("No response body");
+
+      const reader = response.body.getReader();
+      let loaded = 0;
+      const chunks: Uint8Array[] = [];
+
+      while(true) {
+        const {done, value} = await reader.read();
+        if (done) break;
+        
+        chunks.push(value);
+        loaded += value.length;
+        
+        if (total) {
+          syncProgress = Math.round((loaded / total) * 100);
+        } else {
+          syncProgress = Math.min(99, Math.round((loaded / (38 * 1024 * 1024)) * 100));
+        }
+      }
+
+      const allChunks = new Uint8Array(loaded);
+      let position = 0;
+      for (const chunk of chunks) {
+        allChunks.set(chunk, position);
+        position += chunk.length;
+      }
+
+      const jsonString = new TextDecoder().decode(allChunks);
+      const data = JSON.parse(jsonString);
+
+      if (!Array.isArray(data)) throw new Error("Invalid format");
+
+      cachedDb = data;
+      syncProgress = 100;
+      console.log(`✅ SYNC SUCCESS: ${cachedDb.length} records.`);
+      return cachedDb;
+
+    } catch (error: any) {
+      attempt++;
+      console.warn(`⚠️ Sync attempt ${attempt} failed:`, error.message);
+      if (attempt >= maxAttempts) {
+        syncError = error.message;
+        isLoading = false;
+        break;
+      }
+      await new Promise(r => setTimeout(r, 2000 * attempt));
+    }
   }
+
+  isLoading = false;
+  return [];
 }
 
-export async function searchMedicineOffline(query: string) {
+export async function searchMedicineOffline(query: string, force = false) {
   if (!query.trim()) {
-    await loadDb(); // Just trigger load
+    await loadDb(force); // Just trigger load
     return null;
   }
 
-  const db = await loadDb();
+  const db = await loadDb(force);
   if (!db.length) return null;
 
   // 1. Sanitize & Normalize
@@ -107,8 +148,18 @@ export async function searchMedicineOffline(query: string) {
   }
 
   // --- TIER 4: COMPOSITION MATCH ---
-  const saltMatch = db.find(m => m.c.toLowerCase().includes(cleanSearch));
+  const saltMatch = db.find(m => {
+    const dbComp = m.c.toLowerCase();
+    return dbComp.includes(cleanSearch) || dbComp.includes(originalSearch);
+  });
   if (saltMatch) return saltMatch;
+
+  // --- TIER 5: LOOSE NAME MATCH ---
+  const looseMatch = db.find(m => {
+    const dbName = m.n.toLowerCase();
+    return dbName.includes(cleanSearch) || cleanSearch.includes(dbName);
+  });
+  if (looseMatch) return looseMatch;
 
   return null;
 }

@@ -11,7 +11,7 @@ import BarcodeScanner from "@/components/BarcodeScanner";
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter,
 } from "@/components/ui/dialog";
-import { searchMedicineOffline, isOfflineDbReady, isOfflineDbLoading } from "@/utils/offlineSearch";
+import { searchMedicineOffline, isOfflineDbReady, isOfflineDbLoading, getOfflineSyncProgress, getOfflineSyncError } from "@/utils/offlineSearch";
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
 
 const API_URL = import.meta.env.VITE_API_URL || "";
@@ -30,12 +30,16 @@ const ScanPage = () => {
   // Pre-load the offline database in the background so it's ready when needed
   const [dbReady, setDbReady] = useState(isOfflineDbReady());
   const [dbLoading, setDbLoading] = useState(isOfflineDbLoading());
+  const [dbProgress, setDbProgress] = useState(getOfflineSyncProgress());
+  const [dbError, setDbError] = useState(getOfflineSyncError());
 
   useEffect(() => {
     const checkStatus = setInterval(() => {
       setDbReady(isOfflineDbReady());
       setDbLoading(isOfflineDbLoading());
-    }, 1000);
+      setDbProgress(getOfflineSyncProgress());
+      setDbError(getOfflineSyncError());
+    }, 500);
     
     // Initial trigger
     searchMedicineOffline("").catch(() => {});
@@ -335,20 +339,37 @@ const ScanPage = () => {
       <ScrollReveal>
         <div className="container mx-auto max-w-2xl px-4">
           {/* OFFLINE SYNC INDICATOR */}
-          <div className="mb-6 flex items-center justify-between rounded-full bg-secondary/30 px-4 py-2 backdrop-blur-sm border border-border/40 shadow-sm">
-            <div className="flex items-center gap-2.5">
-              <div className={`h-2.5 w-2.5 animate-pulse rounded-full ${dbReady ? 'bg-primary' : (dbLoading ? 'bg-amber-500' : 'bg-destructive')}`} />
-              <span className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
-                {dbReady ? 'Offline Brain Active' : (dbLoading ? 'Syncing 300k+ Records...' : 'Offline Not Synced')}
-              </span>
+          <div className={`mb-6 flex flex-col gap-2 rounded-2xl p-3 backdrop-blur-sm border shadow-sm transition-all duration-500 ${dbReady ? 'bg-primary/5 border-primary/20' : (dbLoading ? 'bg-amber-500/5 border-amber-500/20' : 'bg-destructive/5 border-destructive/20')}`}>
+            <div className="flex items-center justify-between px-1">
+              <div className="flex items-center gap-2.5">
+                <div className={`h-2.5 w-2.5 rounded-full ${dbReady ? 'bg-primary shadow-[0_0_8px_rgba(var(--primary),0.6)]' : (dbLoading ? 'bg-amber-500 animate-pulse' : 'bg-destructive')}`} />
+                <span className="text-[11px] font-bold uppercase tracking-widest text-foreground/80">
+                  {dbReady ? 'Offline Safety Brain Active' : (dbLoading ? `Syncing Local Registry (${dbProgress}%)` : 'Offline Registry Not Ready')}
+                </span>
+              </div>
+              {!dbReady && !dbLoading && (
+                <button 
+                  onClick={() => searchMedicineOffline("", true).catch(() => {})}
+                  className="text-[11px] font-extrabold text-primary hover:text-primary/80 transition-colors uppercase tracking-wider underline decoration-2 underline-offset-4"
+                >
+                  Sync Now
+                </button>
+              )}
             </div>
-            {!dbReady && !dbLoading && (
-              <button 
-                onClick={() => searchMedicineOffline("").catch(() => {})}
-                className="text-[11px] font-extrabold text-primary hover:text-primary/80 transition-colors uppercase tracking-wider"
-              >
-                Sync Now
-              </button>
+            
+            {dbLoading && (
+              <div className="h-1.5 w-full overflow-hidden rounded-full bg-amber-500/10">
+                <div 
+                  className="h-full bg-amber-500 transition-all duration-300 ease-out" 
+                  style={{ width: `${dbProgress}%` }}
+                />
+              </div>
+            )}
+            
+            {dbError && !dbLoading && !dbReady && (
+              <p className="px-1 text-[10px] font-medium text-destructive/80">
+                ⚠️ Sync failed: {dbError}. Check connection and try manual sync.
+              </p>
             )}
           </div>
 
