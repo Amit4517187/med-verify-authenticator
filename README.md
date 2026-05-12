@@ -10,7 +10,9 @@ It uses an edge-deployed 5-layer AI analysis engine (Visual AI, OCR, Barcode/QR,
 
 ## 🚀 Key Features (Enterprise-Grade)
 
-- 📡 **Offline-First "Safety Brain"**: Caches a highly-compressed (50MB) subset of the CDSCO database via IndexedDB and Service Workers. If a user loses internet in a rural pharmacy, MedVerify continues to instantly verify medicines offline.
+- 📡 **Hybrid "Offline-Second" Architecture**: Gracefully degrades from Cloud AI to a local IndexedDB cache when internet is lost.
+  - **Online Mode (Full Power)**: Uses LLaMA 3, EasyOCR, and Python to extract text from photos and answer complex usage questions.
+  - **Offline Mode (Backup)**: AI image extraction and LLM answering are disabled. Users manually enter the medicine name or barcode to instantly verify it against a highly-compressed 50MB local CDSCO registry cached on their mobile phone.
 - 🔒 **Zero-Storage Security Architecture**: All uploaded images are processed entirely in-memory using `BytesIO`. No user data, prescriptions, or images are ever written to disk, ensuring 100% HIPAA and privacy compliance.
 - 🤖 **Defensive AI Pipeline**: Employs rigorous LLM prompt injection defenses, strict `max_tokens` limits (to prevent token-exhaustion attacks), and real-time usage logging via Groq's high-speed inference engine.
 - 🚧 **Hardened API Infrastructure**: Protected by multi-tier rate limiting (global `60/min`, AI routes `5/min`), strict CORS policies, and rigorous MIME-type and byte-signature validation for all file uploads.
@@ -79,7 +81,12 @@ gunicorn "app:create_app()" -w 4 -b 0.0.0.0:5000
 
 This project was architected to solve a genuine, life-threatening problem: **₹6,000 Cr worth of counterfeit medicines circulating in India.** 
 
-Instead of building a simple wrapper, MedVerify is built with **"Resilient Engineering"** in mind. Knowing that the primary users are ASHA workers and community pharmacists in tier-3 cities with patchy 3G connections, the architecture heavily leans on edge-computing (IndexedDB caching) rather than relying solely on cloud availability. 
+Instead of building a simple wrapper, MedVerify is built with **"Resilient Engineering"** in mind. Knowing that the primary users are ASHA workers and community pharmacists in tier-3 cities with patchy 3G connections, the application uses a **Graceful Degradation** approach:
+
+1. **Cloud-Heavy Operations (Online)**: We offload OCR, image processing, and LLM generative answers to the HuggingFace backend because mobile browsers cannot handle heavy AI inference or massive batch-number cross-referencing without crashing.
+2. **Edge-Caching Fallback (Offline)**: If the connection drops, the app switches to an offline backup mode. The LLM is disabled, and the app relies strictly on the user manually typing the name or barcode to verify against a 50MB IndexedDB CDSCO cache. 
+
+This strict separation ensures that the app never just shows a "No Internet" screen; it always provides a critical path to verification.
 
 ---
 *Built with ❤️ to protect lives.*
