@@ -1,4 +1,6 @@
 ![Amit's Stats](https://github-readme-stats-lime-beta-51.vercel.app/api?username=Amit4517187&show_icons=true&theme=tokyonight)
+![Top Langs](https://github-readme-stats-lime-beta-51.vercel.app/api/top-langs/?username=Amit4517187&layout=compact&theme=tokyonight)
+[![MedVerify](https://github-readme-stats-lime-beta-51.vercel.app/api/pin/?username=Amit4517187&repo=med-verify-authenticator&theme=tokyonight)](https://github.com/Amit4517187/med-verify-authenticator)
 # MedVerify — AI-Powered Medicine Authenticator 🛡️
 
 MedVerify is a production-grade, offline-capable Progressive Web Application (PWA) designed to detect counterfeit medicines in rural and low-connectivity environments across India. 
