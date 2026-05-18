@@ -1,3 +1,4 @@
+![Amit's Stats](https://github-readme-stats.vercel.app/api?username=Amit4517187&show_icons=true&theme=tokyonight)
 # MedVerify — AI-Powered Medicine Authenticator 🛡️
 
 MedVerify is a production-grade, offline-capable Progressive Web Application (PWA) designed to detect counterfeit medicines in rural and low-connectivity environments across India. 
